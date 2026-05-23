@@ -68,9 +68,9 @@ export function SpatialContent() {
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
       <p style={{ fontSize: '1.25rem', color: 'var(--ivory-dim)', fontStyle: 'italic', marginBottom: '32px', paddingLeft: '20px', borderLeft: '3px solid var(--accent)', lineHeight: '1.75' }}>
-        "Wisdom sits in places. It's like water and never dries up. You need to drink water to stay alive, don't you? Well, you also need to drink from places... You must remember everything about them. You must learn their names. You must remember what happened at them long ago. You must think about it and keep your mind smooth and clear."
+        "Wisdom sits in places. It’s like water and never dries up. You need to drink water to stay alive, don’t you? Well, you also need to drink from places. You must remember everything about them. You must learn their names. You must remember what happened at them long ago. You must think about it and keep on thinking about it. Then your mind will become smoother and smoother. Then you will see danger before it happens."
         <br/><br/>
-        - Dudley Patterson (Western Apache)
+        — Chiricahua Apache horsemen
       </p>
 
       <ImageWithCaption src="/Spatial/Cave.webp" alt="Cave" caption="Cave-like overhang at ~4,700 ft above sea level and the object of our expedition." />
@@ -191,7 +191,7 @@ export function SpatialContent() {
         <ImageWithCaption src="/Spatial/dragonoid.webp" alt="Sunset" />
 
         <p style={{ fontStyle: 'italic', color: 'var(--ivory-dim)', marginTop: '20px', fontSize: '1.18rem', lineHeight: '1.75' }}>
-          "Stop searching. Face the earth where you can. Literally speaking, it’s all you have to go on."<br/>- Richard Hugo
+          "Stop searching. Face the earth where you can. Literally speaking, it’s all you have to go on."<br/>— Richard Ford
         </p>
       </CollapsibleSection>
 
@@ -454,7 +454,16 @@ export function AudiovisualContent() {
 export function ProfessionalContent() {
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
-      <p style={{ marginBottom: '32px', color: 'var(--ivory)', fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: '1.6' }}>
+      <p style={{ 
+        marginBottom: '32px', 
+        color: 'var(--ivory-dim)', 
+        fontSize: '1.05rem', 
+        lineHeight: '1.7',
+        fontFamily: 'var(--font-serif)',
+        fontStyle: 'italic',
+        borderLeft: '2px solid var(--accent)',
+        paddingLeft: '16px'
+      }}>
         As Digital Scholarship Program Manager for Harvard Library (and, formerly, as Head of Emerging Technologies for the University of Oklahoma Libraries), I explore/develop/deploy tech for research and instructional purposes.
       </p>
 

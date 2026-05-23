@@ -16,10 +16,9 @@ export default function ProfessionalPage() {
       <div className="content-section" style={{ paddingTop: '120px' }}>
         <div className="section-header">
           <div className="section-label">Engineering</div>
-          <h1 className="section-title">Projects</h1>
+          <h1 className="section-title">Professional</h1>
           <p className="section-desc">
-            Full-stack software, 3D visualization, AI pipelines, embedded systems,
-            and experimental interfaces.
+            As Digital Scholarship Program Manager for Harvard Library (and, formerly, as Head of Emerging Technologies for the University of Oklahoma Libraries), I explore/develop/deploy tech for research and instructional purposes.
           </p>
         </div>
 
