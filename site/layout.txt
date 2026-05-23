@@ -1,0 +1,104 @@
+TEXT: As Digital Scholarship Program Manager forHarvard LibrarY(and, formerly, as Head ofEmerging Technolo
+IMAGE: 3DF_testLogo3.jpg | CAPTION: 
+TEXT: Deployed in virtual and augmented reality, 3D models provide the means for researchers and students 
+IMAGE: UofU_3DF_8.jpg | CAPTION: 
+TEXT: Professor Zackand I have been working on the issue of scholarly 3D/VR for about a decade,since the r
+IMAGE: UMass_3DF_2.jpg | CAPTION: 
+TEXT: At the core of 3DF istravel.The narrativespecifies a range of 3D scanning lab types, where the resea
+IMAGE: RQ4_3DF_3.jpg | CAPTION: 
+TEXT: Getting back to research question #4 (RQ4), we have a viable protocol and promising early participan
+IMAGE: MattZackJosh_3DF_2024.jpg | CAPTION: 
+TEXT: Longhand
+IMAGE: longhandThrougput_updated.png | CAPTION: 
+TEXT: Computational workflowscan generate machine-actionable data from “raw” (e.g. handwritten) textual so
+IMAGE: Longhand_gif_AmazingStories_AdobeExpress.gif | CAPTION: 
+TEXT: So, how might oneglimpsethe contents of a text corpus, to generate preliminary research questions th
+TEXT: Widener 360
+TEXT: Isometric perspective, with expanded annotation (featuring historical imagery), on the Matterport-ho
+IMAGE: WidenerScan1_Cook2020.jpg | CAPTION: Isometric perspective, with expanded annotation (featuring historical imagery), on the Matterport-hosted Widener Library 3D scan.
+TEXT: Given the increasing size and complexity of research data generally, and the recent advancement of s
+EMBED: https://my.matterport.com/show/?m=fs3gQv7n1QG&utm_source=4
+TEXT: But, as we began annotating the scan with historical imagery, links to Harvard Library materials, an
+TEXT: Spotify-hosted podcast “hidden” in the book stacks. The podcast can be played in the browser.
+IMAGE: image-asset.png | CAPTION: Spotify-hosted podcast “hidden” in the book stacks. The podcast can be played in the browser.
+TEXT: We’ve seen an encouraging number of site visitors to the tour page in the few months since it has go
+TEXT: Decimating and cropping Widener scan data for use in shared online environments, like Mozilla’s Hubs
+IMAGE: Widener360_Blender.jpg | CAPTION: Decimating and cropping Widener scan data for use in shared online environments, like Mozilla’s Hubs platform.
+TEXT: Instructional chess
+TEXT: Using Oculus Medium's "Clay" tool to model the knight piece
+IMAGE: KnightBuild1.png | CAPTION: Using Oculus Medium's "Clay" tool to model the knight piece
+TEXT: MotivationsThere are an estimated 600 million chess players worldwide and a diverse body ofpeer-revi
+TEXT: Brainstorming instructional chess piece design in my pocket notebook.
+IMAGE: Chess_Sketch1.jpg | CAPTION: Brainstorming instructional chess piece design in my pocket notebook.
+TEXT: VR ModelingComplete blindness to the goings-on in your physical surroundings is both a strength and 
+TEXT: Early knight design demonstrating the flexibility of VR modeling.
+IMAGE: giphy+%281%29.gif | CAPTION: Early knight design demonstrating the flexibility of VR modeling.
+TEXT: Prepping and PrintingWhile it's a clear step towards a VR-based rapid prototyping solution, Medium i
+TEXT: Early instructional chess prototype printing on LulzBot Mini
+IMAGE: image-asset.gif | CAPTION: Early instructional chess prototype printing on LulzBot Mini
+TEXT: What's Next?Print out a set for yourself!The complete Instructional Chess 3D model setis downloadabl
+EMBED: //cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fsketchfab.com%2Fmodels%2F6b7f539e814c417a8f02c12eef887271%2Fembed%3F&url=https%3A%2F%2Fsketchfab.com%2Fmodels%2F6b7f539e814c417a8f02c12eef887271&image=https%3A%2F%2Fmedia.sketchfab.com%2Furls%2F6b7f539e814c417a8f02c12eef887271%2Fdist%2Fthumbnails%2F9e5e3df9ea8844afa5590c79d91dcb3e%2F4469584feeaf44cb90e750bf76ca29d4.jpeg&key=c6502efcb3c84824bc6c1f27d683be13&type=text%2Fhtml&schema=sketchfab&wmode=opaque
+IMAGE: image-asset.png | CAPTION: 
+TEXT: The Sparq labyrinth is an interactive meditation tool.With atouch-screen interface, the Sparq user s
+TEXT: View fullsize
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: The Sparq provides for a uniquely personal meditation experience. Withtouch-screen access to a varie
+TEXT: View fullsize
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: The Sparq provides for a uniquely personal meditation experience. Withtouch-screen access to a varie
+IMAGE: image-asset.png | CAPTION: 
+TEXT: In Pima & Papago (native American) cultures the design below represents "Siuu-hu Ki" - "Elder Brothe
+TEXT: View fullsize
+IMAGE: image-asset.png | CAPTION: 
+TEXT: "Hypnose" - Rapid Prototying project
+TEXT: View fullsizeBruton, Eric.Clocks & Watches.New York: Hamlyn Publishing Group, 1968.
+IMAGE: image-asset.png | CAPTION: Bruton, Eric.Clocks & Watches.New York: Hamlyn Publishing Group, 1968.
+TEXT: OU Libraries' new makerspace/fab lab/incubatorInnovation @ the EDGEis centered on the idea thatdemys
+TEXT: View fullsizeBronze Head of Hypnose from Civitella d'Arna
+IMAGE: image-asset.jpeg | CAPTION: Bronze Head of Hypnose from Civitella d'Arna
+TEXT: The original motivation for the Hypnose was simple: there are problems associated with waking up and
+TEXT: https://www.sparkfun.com/tutorials/400
+IMAGE: image-asset.jpeg | CAPTION: https://www.sparkfun.com/tutorials/400
+TEXT: This implementation used an Arduino Uno along with a SparkFun motor shield to power a stepper motor 
+TEXT: int dirpin = 2;
+int steppin = 3;
+
+void setup() 
+{
+pinMode(dirpin, OUTPUT);
+pinMode(steppin, OUTPUT);
+IMAGE: image-asset.png | CAPTION: 
+TEXT: The assembly, originally modeled in Sketchup (above), takes its cue froma 1st century bronze sculptu
+TEXT: View fullsize
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: The Hypnose "face" - an amalgamation of a free, low-poly mask model found online and a set of wings,
+TEXT: View fullsize
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: View fullsize
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: We are in a second proof-of-concept stage for a mobile app thatguides users through large indoor whi
+TEXT: People tend to refer to the central routing feature as “indoor GPS”. It’s accurate at up to a meter 
+TEXT: View fullsize
+IMAGE: image-asset.png | CAPTION: 
+TEXT: At the end of the 2015/16 academic year – the first semester where the NavApp was available for (fre
+IMAGE: image-asset.png | CAPTION: 
+TEXT: After months of R&D, OVAL 1.0 is ready for use. With this hardware/software platform, instructors an
+TEXT: View fullsizeCHEM 4923, group RNA fly-through.
+IMAGE: image-asset.png | CAPTION: CHEM 4923, group RNA fly-through.
+TEXT: Not only are previously imperceptible/fragile/distant objects (like chemical molecules, museum artif
+TEXT: View fullsizeCustom fabricated, library-designed VR workstation - courtesy of OU Physics dept.
+IMAGE: image-asset.jpeg | CAPTION: Custom fabricated, library-designed VR workstation - courtesy of OU Physics dept.
+TEXT: Finally, natural interaction types - like leaning in get a closer look at a detailed model - are pre
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: "The impact on the students this week was immeasurable", says one OU faculty member who has already 
+IMAGE: image-asset.jpeg | CAPTION: 
+TEXT: 3D Scanning- Experiments & ImplicationsMy currentprofessionalfocus on 3D visualization has led to ex
+EMBED: //cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fsketchfab.com%2Fmodels%2Fbbc37de8363e45b5a33175942ffe7368%2Fembed&url=https%3A%2F%2Fsketchfab.com%2Fmodels%2Fbbc37de8363e45b5a33175942ffe7368&image=https%3A%2F%2Fd35krx4ujqgbcr.cloudfront.net%2Furls%2Fbbc37de8363e45b5a33175942ffe7368%2Fdist%2Fthumbnails%2F66a4b319018043bea24af2e9e98331e0%2F640x360.jpeg&key=c6502efcb3c84824bc6c1f27d683be13&type=text%2Fhtml&schema=sketchfab&wmode=opaque
+TEXT: The above prickly pear scan isn't perfect, but it's the only usable botanical scan that I've managed
+EMBED: //cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fsketchfab.com%2Fmodels%2F2ca7f8d0a71a4a8696266629c186092c%2Fembed&url=https%3A%2F%2Fsketchfab.com%2Fmodels%2F2ca7f8d0a71a4a8696266629c186092c&image=https%3A%2F%2Fd35krx4ujqgbcr.cloudfront.net%2Furls%2F2ca7f8d0a71a4a8696266629c186092c%2Fdist%2Fthumbnails%2F60d16e79e86d412d9841b21efc4107e3%2F640x360.jpeg&key=c6502efcb3c84824bc6c1f27d683be13&type=text%2Fhtml&schema=sketchfab&wmode=opaque
+TEXT: This statue of Omar Kayyam is located in the heart of OU's Norman campus. Fortunately, it was an ove
+EMBED: //cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fsketchfab.com%2Fmodels%2F15790973e5b44cf9abdda0fcd9982948%2Fembed&url=https%3A%2F%2Fsketchfab.com%2Fmodels%2F15790973e5b44cf9abdda0fcd9982948%2Fembed&image=https%3A%2F%2Fd35krx4ujqgbcr.cloudfront.net%2Furls%2F15790973e5b44cf9abdda0fcd9982948%2Fdist%2Fthumbnails%2F765c17fa30d7409982313c4687119781%2F640x360.jpeg&key=c6502efcb3c84824bc6c1f27d683be13&type=text%2Fhtml&schema=sketchfab&wmode=opaque
+TEXT: As described onthe spatial page, this Sheepherder's cabin represents a "field scan", whereby off-gri
+TEXT: View fullsizeVR-based analysis of early 20th century sheepherder's ruins. Note the measurement tool.
+IMAGE: image-asset.jpeg | CAPTION: VR-based analysis of early 20th century sheepherder's ruins. Note the measurement tool.
+TEXT: Combining a few best-practices gleaned from generating high-quality field scans like the sheepherder

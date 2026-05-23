@@ -1,0 +1,19 @@
+# Local environments and dependencies
+node_modules/
+site/node_modules/
+venv/
+.env*
+.DS_Store
+
+# Large source files (must ignore because of GitHub 100MB file size limits)
+/*.pdf
+Header Images/
+pdf_images/
+pdf_pages/
+old/
+Art/
+Photos/
+minerals/
+
+# Allow public folder PDFs if any are placed there
+!site/public/s/
