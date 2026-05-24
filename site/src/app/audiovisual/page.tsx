@@ -17,7 +17,7 @@ export default function AudiovisualPage() {
           <div className="section-label">Media</div>
           <h1 className="section-title">Audiovisual</h1>
           <p className="section-desc">
-            Experimental music, sound art, and media projects. Coming soon.
+            Experimental music, sound art, and collaborative media.
           </p>
         </div>
 

@@ -18,7 +18,7 @@ export default function ProfessionalPage() {
           <div className="section-label">Engineering</div>
           <h1 className="section-title">Professional</h1>
           <p className="section-desc">
-            As Digital Scholarship Program Manager for Harvard Library (and, formerly, as Head of Emerging Technologies for the University of Oklahoma Libraries), I explore/develop/deploy tech for research and instructional purposes.
+            Full-stack engineering, WebGL graphics pipelines, and edge-computing applications.
           </p>
         </div>
 

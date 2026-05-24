@@ -20,7 +20,7 @@ export default function SpatialPage() {
           <div className="section-label">Field Work</div>
           <h1 className="section-title">Spatial</h1>
           <p className="section-desc">
-            Homesteading in the New Mexico mesalands. Creative inspiration from a blank spot on the map, which is sometimes filled with danger.
+            Homesteading and creative inspiration in the New Mexico mesalands.
           </p>
         </div>
 

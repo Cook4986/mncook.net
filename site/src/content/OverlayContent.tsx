@@ -301,7 +301,7 @@ export function AudiovisualContent() {
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic'
         }}>
-          An experimental, atmospheric non-fiction video series exploring regional folklore, architectural oddities, and historical occult stories in New England and beyond.
+          Experimental, atmospheric video essays exploring regional New England folklore and historical occult stories.
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
@@ -638,9 +638,108 @@ export function ProfessionalContent() {
   );
 }
 export function ContactContent() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [body, setBody] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/matt@mncook.net', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message: body
+        })
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 3200);
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div style={{ 
+        padding: '40px 20px', 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          width: '64px',
+          height: '64px',
+          border: '2px solid var(--accent)',
+          borderRadius: '50%',
+          borderTopColor: 'transparent',
+          animation: 'spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+          marginBottom: '24px'
+        }} />
+        <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes pulse-glow {
+            0%, 100% { opacity: 0.6; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
+          }
+        `}</style>
+        <h2 style={{ 
+          fontFamily: 'var(--font-display)', 
+          fontSize: '1.8rem', 
+          color: 'var(--ivory)', 
+          marginBottom: '16px',
+          fontStyle: 'italic'
+        }}>
+          Transmission Dispatched
+        </h2>
+        <p style={{ 
+          color: 'var(--ivory-dim)', 
+          lineHeight: '1.8', 
+          maxWidth: '420px', 
+          fontSize: '1.02rem',
+          fontFamily: 'var(--font-serif)',
+          animation: 'pulse-glow 2s infinite ease-in-out'
+        }}>
+          The frequencies are aligned. Your message has been encrypted and safely routed to <span style={{ color: 'var(--accent)' }}>matt@mncook.net</span>.
+        </p>
+        <p style={{ 
+          color: 'var(--ink-faint)', 
+          fontSize: '0.8rem', 
+          marginTop: '32px',
+          fontFamily: 'var(--font-mono)',
+          letterSpacing: '0.1em'
+        }}>
+          RELOADING PORTAL IN 3s...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
       <form 
+        onSubmit={handleSubmit}
         style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -649,7 +748,10 @@ export function ContactContent() {
             type="text" 
             id="name" 
             name="name" 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
+            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -667,7 +769,10 @@ export function ContactContent() {
             type="email" 
             id="email" 
             name="email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -685,7 +790,10 @@ export function ContactContent() {
             id="body" 
             name="body" 
             rows={5}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
             required
+            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -698,8 +806,15 @@ export function ContactContent() {
           />
         </div>
 
+        {status === 'error' && (
+          <p style={{ color: '#ff6b6b', fontSize: '0.9rem', margin: 0 }}>
+            Transmission failed. Please check your network or email matt@mncook.net directly.
+          </p>
+        )}
+
         <button 
           type="submit"
+          disabled={status === 'submitting'}
           style={{
             marginTop: '10px',
             padding: '14px 24px',
@@ -714,12 +829,13 @@ export function ContactContent() {
             fontSize: '0.9rem',
             cursor: 'pointer',
             transition: 'opacity 0.2s ease, transform 0.2s ease',
-            alignSelf: 'flex-start'
+            alignSelf: 'flex-start',
+            opacity: status === 'submitting' ? 0.5 : 1
           }}
-          onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'}
-          onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
+          onMouseOver={(e) => { if (status !== 'submitting') e.currentTarget.style.opacity = '0.8'; }}
+          onMouseOut={(e) => { if (status !== 'submitting') e.currentTarget.style.opacity = '1'; }}
         >
-          Submit
+          {status === 'submitting' ? 'Transmitting...' : 'Submit'}
         </button>
       </form>
       <CactusFooter />
@@ -742,7 +858,7 @@ export function TechnicalContent() {
         borderLeft: '2px solid var(--accent)',
         paddingLeft: '16px'
       }}>
-        My engineering practice centers on bridging physical environments and spatial data. I build high-performance full-stack architectures, 3D WebGL graphics pipelines, and constrained edge-computing systems. From compiled client-side WebAssembly mesh tools and real-time computer vision (YOLO) on embedded hardware, to multi-model LLM orchestration and custom interactive spatial indexes, my work unites modern cloud-native systems with deep computational design.
+        High-performance full-stack architectures, WebGL graphics, and edge AI applications bridging physical environments and spatial data.
       </p>
 
       <CollapsibleSection title="Chatpak — Photobook design generator and layout pipeline">
@@ -750,6 +866,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 14, Supabase (PostgreSQL), Cloudflare R2, Sharp, MediaPipe WASM, PDFKit</span></li>
         </ul>
+        <TechnicalPreview src="/Professional/chatpak-mockup.png" alt="Chatpak Photobook Mockup" caption="AI-powered photobook design layouts." />
       </CollapsibleSection>
 
       <CollapsibleSection title="Rook Sensor — YOLO-based edge AI object detection">
@@ -781,6 +898,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: React, Three.js, React Three Fiber</span></li>
         </ul>
+        <TechnicalPreview src="/Professional/throughputAFrame_Cook2025.jpg" alt="Digital Giza Twin Interface" caption="Digital Giza Twin WebGL visualization pipeline." />
       </CollapsibleSection>
 
       <CollapsibleSection title="AutoTomb — Unity diary-to-3D pipelines and XR coordinate logger">

@@ -584,7 +584,7 @@ type Ghost = { f: number; size: number; tex: 'main' | 'ghost'; color: string; al
 function FakeLensflare({ sunRef }: { sunRef: React.RefObject<THREE.PointLight | null> }) {
   const groupRef = useRef<THREE.Group>(null);
   const spriteRefs = useRef<(THREE.Sprite | null)[]>([]);
-  const { camera } = useThree();
+  const { camera, scene } = useThree();
   const { flareMain, flareGhost } = getSigilTextures();
   const tmp = useMemo(() => new THREE.Vector3(), []);
 
@@ -599,15 +599,9 @@ function FakeLensflare({ sunRef }: { sunRef: React.RefObject<THREE.PointLight | 
     { f: 1.00, size: 0.08, tex: 'ghost', color: '#ffe2b8', alpha: 0.60 },
   ], []);
 
-  // Attach the lens-flare group to the camera so its children's
-  // positions are camera-local and naturally follow camera motion.
-  useEffect(() => {
-    const g = groupRef.current;
-    if (!g) return;
-    camera.add(g);
-    return () => { camera.remove(g); };
-  }, [camera]);
-
+  // Set the lens-flare group's position and rotation in useFrame 
+  // to perfectly match the camera, keeping it camera-local without
+  // interfering with the R3F camera lifecycle or scene-graph.
   useFrame(() => {
     const g = groupRef.current;
     const sun = sunRef.current;
@@ -617,6 +611,9 @@ function FakeLensflare({ sunRef }: { sunRef: React.RefObject<THREE.PointLight | 
       g.visible = false;
       return;
     }
+
+    g.position.copy(camera.position);
+    g.quaternion.copy(camera.quaternion);
 
     tmp.copy(sun.position).project(camera);
     const sx = tmp.x, sy = tmp.y, sz = tmp.z;
@@ -704,7 +701,7 @@ function CelestialSun() {
   }
 
   useEffect(() => {
-    if (state.current) state.current.timer = 5 + Math.random() * 8; // first pass ~ 5-13 s in
+    if (state.current) state.current.timer = 2 + Math.random() * 4; // first pass ~ 2-6 s in
   }, []);
 
   useFrame((_, delta) => {
@@ -736,7 +733,7 @@ function CelestialSun() {
         const a2 = a1 + dir * span;
         s.start.set(Math.cos(a1) * r1, 4 + Math.random() * 5, Math.sin(a1) * r1);
         s.end.set(Math.cos(a2) * r2, 4 + Math.random() * 5, Math.sin(a2) * r2);
-        s.timer = 20 + Math.random() * 18; // next pass in 20-38 s
+        s.timer = 15 + Math.random() * 15; // next pass in 15-30 s
       }
     }
   });
@@ -863,9 +860,9 @@ export default function Atmosphere() {
   useEffect(() => {
     const s = state.current;
     if (!s) return;
-    s.lightningTimer = 12 + Math.random() * 18;
-    s.phenomenaTimer = 4 + Math.random() * 6;
-    s.cryptkeeperCooldown = 60 + Math.random() * 60;
+    s.lightningTimer = 4 + Math.random() * 4; // first lightning strike in 4-8 s
+    s.phenomenaTimer = 2 + Math.random() * 4; // first phenomenon in 2-6 s
+    s.cryptkeeperCooldown = 40 + Math.random() * 40;
     s.lastActiveAt = performance.now() / 1000;
   }, []);
 
@@ -998,8 +995,8 @@ export default function Atmosphere() {
     s.lightningTimer -= delta;
     if (s.lightningTimer <= 0) {
       s.lightningFlashCount = 5 + Math.random() * 5;
-      // 18-32 s between storms
-      s.lightningTimer = 18 + Math.random() * 14;
+      // 10-18 s between storms (previously 18-32s)
+      s.lightningTimer = 10 + Math.random() * 8;
     }
     if (s.lightningFlashCount > 0) {
       const strike = Math.random() > 0.35;
@@ -1016,11 +1013,16 @@ export default function Atmosphere() {
         scratchColor.set(strike ? '#ffffff' : '#0d0d1a');
         (scene.fog as THREE.Fog).color.lerp(scratchColor, 0.7);
       }
+      if (scene.background && 'lerp' in scene.background) {
+        scratchColor.set(strike ? '#ffffff' : '#0d0d1a');
+        (scene.background as THREE.Color).lerp(scratchColor, 0.7);
+      }
       s.lightningFlashCount -= delta * 12;
       if (s.lightningFlashCount <= 0) {
         if (lightningLight.current) lightningLight.current.intensity = 0;
         if (lightningDir.current) lightningDir.current.intensity = 0;
         if (scene.fog && 'color' in scene.fog) (scene.fog as THREE.Fog).color.set('#0d0d1a');
+        if (scene.background && 'set' in scene.background) (scene.background as THREE.Color).set('#0d0d1a');
       }
     }
 
@@ -1070,6 +1072,7 @@ export default function Atmosphere() {
 
   return (
     <>
+      <color attach="background" args={['#0d0d1a']} />
       {/* BASE LIGHTING — warm amber key + cool ambient */}
       <directionalLight position={[8, 12, 4]} intensity={0.8} color="#ffd4a0" />
       <ambientLight intensity={0.25} color="#c4923a" />

@@ -19,8 +19,7 @@ export default function TextualPage() {
           <div className="section-label">Scholarship</div>
           <h1 className="section-title">Publications</h1>
           <p className="section-desc">
-            Peer-reviewed work in book history, digital humanities, manuscript studies,
-            and computational text analysis.
+            Scholarship in book history, digital humanities, and manuscript studies.
           </p>
         </div>
 
@@ -41,7 +40,7 @@ export default function TextualPage() {
           <div className="section-label">Creative Writing</div>
           <h2 className="section-title">Short Fiction</h2>
           <p className="section-desc">
-            Selected short stories. Available as PDF.
+            Selected short stories (PDF).
           </p>
         </div>
 
@@ -64,7 +63,7 @@ export default function TextualPage() {
           <div className="section-label">Creative Writing</div>
           <h2 className="section-title">Novel</h2>
           <p className="section-desc">
-            A novel. Available as PDF.
+            A novel in parts (PDF).
           </p>
         </div>
 
