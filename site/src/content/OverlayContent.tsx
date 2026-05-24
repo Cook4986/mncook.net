@@ -642,48 +642,26 @@ export function ContactContent() {
   const [email, setEmail] = useState('');
   const [body, setBody] = useState('');
   const [honey, setHoney] = useState('');
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'success'>('idle');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('submitting');
-
-    // Silent client-side honeypot protection: if filled, act as if success
+  const handleSubmit = (e: React.FormEvent) => {
+    // If honeypot is filled, silent reject (intercept and prevent actual post)
     if (honey) {
+      e.preventDefault();
+      setStatus('success');
       setTimeout(() => {
-        setStatus('success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 3200);
-      }, 600);
+        window.location.reload();
+      }, 3200);
       return;
     }
 
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/matt@mncook.net', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          message: body
-        })
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 3200);
-      } else {
-        setStatus('error');
-      }
-    } catch (err) {
-      setStatus('error');
-    }
+    // Set success status immediately to trigger transition
+    setStatus('success');
+    
+    // We let the form post natively into the hidden iframe!
+    setTimeout(() => {
+      window.location.reload();
+    }, 3500);
   };
 
   if (status === 'success') {
@@ -750,10 +728,19 @@ export function ContactContent() {
 
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
+      {/* Hidden iframe to receive the submission response without redirecting the parent page */}
+      <iframe name="hidden_iframe" id="hidden_iframe" style={{ display: 'none' }} />
+
       <form 
+        action="https://formsubmit.co/matt@mncook.net"
+        method="POST"
+        target="hidden_iframe"
         onSubmit={handleSubmit}
         style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}
       >
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="about:blank" />
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label htmlFor="name" style={{ color: 'var(--ivory)', fontSize: '0.9rem' }}>Name</label>
           <input 
@@ -763,7 +750,6 @@ export function ContactContent() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -784,7 +770,6 @@ export function ContactContent() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -814,12 +799,11 @@ export function ContactContent() {
           <label htmlFor="body" style={{ color: 'var(--ivory)', fontSize: '0.9rem' }}>What are you working on and how can I help?</label>
           <textarea 
             id="body" 
-            name="body" 
+            name="message" 
             rows={5}
             value={body}
             onChange={(e) => setBody(e.target.value)}
             required
-            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -832,15 +816,8 @@ export function ContactContent() {
           />
         </div>
 
-        {status === 'error' && (
-          <p style={{ color: '#ff6b6b', fontSize: '0.9rem', margin: 0 }}>
-            Transmission failed. Please check your network or email matt@mncook.net directly.
-          </p>
-        )}
-
         <button 
           type="submit"
-          disabled={status === 'submitting'}
           style={{
             marginTop: '10px',
             padding: '14px 24px',
@@ -855,13 +832,12 @@ export function ContactContent() {
             fontSize: '0.9rem',
             cursor: 'pointer',
             transition: 'opacity 0.2s ease, transform 0.2s ease',
-            alignSelf: 'flex-start',
-            opacity: status === 'submitting' ? 0.5 : 1
+            alignSelf: 'flex-start'
           }}
-          onMouseOver={(e) => { if (status !== 'submitting') e.currentTarget.style.opacity = '0.8'; }}
-          onMouseOut={(e) => { if (status !== 'submitting') e.currentTarget.style.opacity = '1'; }}
+          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.8'; }}
+          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
         >
-          {status === 'submitting' ? 'Transmitting...' : 'Submit'}
+          Submit
         </button>
       </form>
       <CactusFooter />
