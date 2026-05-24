@@ -660,21 +660,25 @@ export function ContactContent() {
     }
 
     try {
-      const apiURL = process.env.NEXT_PUBLIC_CONTACT_API_URL || '/api/contact';
-      const response = await fetch(apiURL, {
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "e4cda711-b4f0-4e3a-969f-3efd02cf00be",
           name,
           email,
           message: body,
-          honey
+          subject: `New Message from ${name} via mncook.net`,
+          from_name: "mncook.net Portal",
+          botcheck: honey
         }),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+      if (response.ok && result.success) {
         setStatus('success');
         setTimeout(() => {
           window.location.reload();
