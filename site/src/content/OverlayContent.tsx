@@ -664,79 +664,82 @@ export function ContactContent() {
     }, 3500);
   };
 
-  if (status === 'success') {
-    return (
-      <div style={{ 
-        padding: '40px 20px', 
-        height: '100%', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          width: '64px',
-          height: '64px',
-          border: '2px solid var(--accent)',
-          borderRadius: '50%',
-          borderTopColor: 'transparent',
-          animation: 'spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
-          marginBottom: '24px'
-        }} />
-        <style>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-          @keyframes pulse-glow {
-            0%, 100% { opacity: 0.6; transform: scale(0.98); }
-            50% { opacity: 1; transform: scale(1.02); }
-          }
-        `}</style>
-        <h2 style={{ 
-          fontFamily: 'var(--font-display)', 
-          fontSize: '1.8rem', 
-          color: 'var(--ivory)', 
-          marginBottom: '16px',
-          fontStyle: 'italic'
-        }}>
-          Transmission Dispatched
-        </h2>
-        <p style={{ 
-          color: 'var(--ivory-dim)', 
-          lineHeight: '1.8', 
-          maxWidth: '420px', 
-          fontSize: '1.02rem',
-          fontFamily: 'var(--font-serif)',
-          animation: 'pulse-glow 2s infinite ease-in-out'
-        }}>
-          The frequencies are aligned. Your message has been encrypted and safely routed to <span style={{ color: 'var(--accent)' }}>matt@mncook.net</span>.
-        </p>
-        <p style={{ 
-          color: 'var(--ink-faint)', 
-          fontSize: '0.8rem', 
-          marginTop: '32px',
-          fontFamily: 'var(--font-mono)',
-          letterSpacing: '0.1em'
-        }}>
-          RELOADING PORTAL IN 3s...
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
       {/* Hidden iframe to receive the submission response without redirecting the parent page */}
       <iframe name="hidden_iframe" id="hidden_iframe" style={{ display: 'none' }} />
+
+      {status === 'success' && (
+        <div style={{ 
+          padding: '40px 20px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          textAlign: 'center',
+          marginTop: '40px'
+        }}>
+          <div style={{
+            width: '64px',
+            height: '64px',
+            border: '2px solid var(--accent)',
+            borderRadius: '50%',
+            borderTopColor: 'transparent',
+            animation: 'spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+            marginBottom: '24px'
+          }} />
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            @keyframes pulse-glow {
+              0%, 100% { opacity: 0.6; transform: scale(0.98); }
+              50% { opacity: 1; transform: scale(1.02); }
+            }
+          `}</style>
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            color: 'var(--ivory)', 
+            marginBottom: '16px',
+            fontStyle: 'italic'
+          }}>
+            Transmission Dispatched
+          </h2>
+          <p style={{ 
+            color: 'var(--ivory-dim)', 
+            lineHeight: '1.8', 
+            maxWidth: '420px', 
+            fontSize: '1.02rem',
+            fontFamily: 'var(--font-serif)',
+            animation: 'pulse-glow 2s infinite ease-in-out'
+          }}>
+            The frequencies are aligned. Your message has been encrypted and safely routed to <span style={{ color: 'var(--accent)' }}>matt@mncook.net</span>.
+          </p>
+          <p style={{ 
+            color: 'var(--ink-faint)', 
+            fontSize: '0.8rem', 
+            marginTop: '32px',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.1em'
+          }}>
+            RELOADING PORTAL IN 3s...
+          </p>
+        </div>
+      )}
 
       <form 
         action="https://formsubmit.co/matt@mncook.net"
         method="POST"
         target="hidden_iframe"
         onSubmit={handleSubmit}
-        style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}
+        style={{ 
+          display: status === 'success' ? 'none' : 'flex', 
+          flexDirection: 'column', 
+          gap: '20px', 
+          marginTop: '20px' 
+        }}
       >
         <input type="hidden" name="_captcha" value="false" />
         <input type="hidden" name="_next" value="about:blank" />
