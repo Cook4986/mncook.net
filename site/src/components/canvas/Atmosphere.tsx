@@ -860,7 +860,7 @@ export default function Atmosphere() {
   useEffect(() => {
     const s = state.current;
     if (!s) return;
-    s.lightningTimer = 4 + Math.random() * 4; // first lightning strike in 4-8 s
+    s.lightningTimer = 45 + Math.random() * 45; // first lightning strike in 45-90 s (infrequent)
     s.phenomenaTimer = 2 + Math.random() * 4; // first phenomenon in 2-6 s
     s.cryptkeeperCooldown = 40 + Math.random() * 40;
     s.lastActiveAt = performance.now() / 1000;
@@ -995,8 +995,8 @@ export default function Atmosphere() {
     s.lightningTimer -= delta;
     if (s.lightningTimer <= 0) {
       s.lightningFlashCount = 5 + Math.random() * 5;
-      // 10-18 s between storms (previously 18-32s)
-      s.lightningTimer = 10 + Math.random() * 8;
+      // 70-130 s between storms (less than once per minute)
+      s.lightningTimer = 70 + Math.random() * 60;
     }
     if (s.lightningFlashCount > 0) {
       const strike = Math.random() > 0.35;
