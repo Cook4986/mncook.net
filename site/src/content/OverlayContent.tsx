@@ -642,33 +642,53 @@ export function ContactContent() {
   const [email, setEmail] = useState('');
   const [body, setBody] = useState('');
   const [honey, setHoney] = useState('');
-  const [status, setStatus] = useState<'idle' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+
     // If honeypot is filled, silent reject (intercept and prevent actual post)
     if (honey) {
-      e.preventDefault();
-      setStatus('success');
       setTimeout(() => {
-        window.location.reload();
-      }, 3200);
+        setStatus('success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 3200);
+      }, 600);
       return;
     }
 
-    // Set success status immediately to trigger transition
-    setStatus('success');
-    
-    // We let the form post natively into the hidden iframe!
-    setTimeout(() => {
-      window.location.reload();
-    }, 3500);
+    try {
+      const apiURL = process.env.NEXT_PUBLIC_CONTACT_API_URL || '/api/contact';
+      const response = await fetch(apiURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message: body,
+          honey
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 3500);
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
+    }
   };
 
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
-      {/* Hidden iframe to receive the submission response without redirecting the parent page */}
-      <iframe name="hidden_iframe" id="hidden_iframe" style={{ display: 'none' }} />
-
       {status === 'success' && (
         <div style={{ 
           padding: '40px 20px', 
@@ -730,9 +750,6 @@ export function ContactContent() {
       )}
 
       <form 
-        action="https://formsubmit.co/matt@mncook.net"
-        method="POST"
-        target="hidden_iframe"
         onSubmit={handleSubmit}
         style={{ 
           display: status === 'success' ? 'none' : 'flex', 
@@ -741,9 +758,6 @@ export function ContactContent() {
           marginTop: '20px' 
         }}
       >
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="about:blank" />
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label htmlFor="name" style={{ color: 'var(--ivory)', fontSize: '0.9rem' }}>Name</label>
           <input 
@@ -753,13 +767,15 @@ export function ContactContent() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
               border: '1px solid var(--rule-dark)', 
               borderRadius: '4px',
               color: 'var(--ivory)',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              opacity: status === 'submitting' ? 0.6 : 1
             }} 
           />
         </div>
@@ -773,13 +789,15 @@ export function ContactContent() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
               border: '1px solid var(--rule-dark)', 
               borderRadius: '4px',
               color: 'var(--ivory)',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              opacity: status === 'submitting' ? 0.6 : 1
             }} 
           />
         </div>
@@ -807,6 +825,7 @@ export function ContactContent() {
             value={body}
             onChange={(e) => setBody(e.target.value)}
             required
+            disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
               background: 'rgba(255,255,255,0.05)', 
@@ -814,13 +833,21 @@ export function ContactContent() {
               borderRadius: '4px',
               color: 'var(--ivory)',
               fontSize: '1rem',
-              resize: 'vertical'
+              resize: 'vertical',
+              opacity: status === 'submitting' ? 0.6 : 1
             }} 
           />
         </div>
 
+        {status === 'error' && (
+          <p style={{ color: '#ff6b6b', fontSize: '0.9rem', margin: '10px 0 0 0' }}>
+            Transmission failed. Please check your network or email matt@mncook.net directly.
+          </p>
+        )}
+
         <button 
           type="submit"
+          disabled={status === 'submitting'}
           style={{
             marginTop: '10px',
             padding: '14px 24px',
@@ -833,14 +860,15 @@ export function ContactContent() {
             border: 'none',
             borderRadius: '4px',
             fontSize: '0.9rem',
-            cursor: 'pointer',
+            cursor: status === 'submitting' ? 'not-allowed' : 'pointer',
             transition: 'opacity 0.2s ease, transform 0.2s ease',
-            alignSelf: 'flex-start'
+            alignSelf: 'flex-start',
+            opacity: status === 'submitting' ? 0.5 : 1
           }}
-          onMouseOver={(e) => { e.currentTarget.style.opacity = '0.8'; }}
-          onMouseOut={(e) => { e.currentTarget.style.opacity = '1'; }}
+          onMouseOver={(e) => { if (status !== 'submitting') e.currentTarget.style.opacity = '0.8'; }}
+          onMouseOut={(e) => { if (status !== 'submitting') e.currentTarget.style.opacity = '1'; }}
         >
-          Submit
+          {status === 'submitting' ? 'Transmitting...' : 'Submit'}
         </button>
       </form>
       <CactusFooter />
