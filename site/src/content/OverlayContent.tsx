@@ -641,11 +641,23 @@ export function ContactContent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [body, setBody] = useState('');
+  const [honey, setHoney] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
+
+    // Silent client-side honeypot protection: if filled, act as if success
+    if (honey) {
+      setTimeout(() => {
+        setStatus('success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 3200);
+      }, 600);
+      return;
+    }
 
     try {
       const response = await fetch('https://formsubmit.co/ajax/matt@mncook.net', {
@@ -781,6 +793,20 @@ export function ContactContent() {
               color: 'var(--ivory)',
               fontSize: '1rem'
             }} 
+          />
+        </div>
+
+        {/* Hidden honeypot field to trap automated spambots */}
+        <div style={{ display: 'none' }} aria-hidden="true">
+          <label htmlFor="honey">Leave this field blank</label>
+          <input
+            type="text"
+            id="honey"
+            name="honey"
+            value={honey}
+            onChange={(e) => setHoney(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
           />
         </div>
 
