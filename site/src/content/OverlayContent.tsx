@@ -407,11 +407,12 @@ export function AudiovisualContent() {
                 ✕
               </button>
               <iframe 
+                title="Bizarre Books Episode Video Player"
                 width="100%" 
                 height="100%" 
                 src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&wmode=opaque&enablejsapi=1`} 
                 frameBorder="0" 
-                allow="autoplay; encrypted-media"
+                allow="autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
               ></iframe>
             </div>
@@ -506,7 +507,7 @@ export function ProfessionalContent() {
         <p>Given the increasing size and complexity of research data generally, and the recent advancement of scanning and visualization methods specifically (e.g. photogrammetry and virtual reality), 3D data has the potential to become the asset "of record," or primary source material, for researchers in a wide range of academic disciplines. Moreover, this content can be produced for objects of study at various scales, including large-scale facilities, like Harvard's very own Widener Library.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden' }}>
-          <iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=fs3gQv7n1QG&utm_source=4" frameBorder="0" allowFullScreen></iframe>
+          <iframe title="Widener Library 360-degree Matterport Scan" width="100%" height="100%" src="https://my.matterport.com/show/?m=fs3gQv7n1QG&utm_source=4" frameBorder="0" allowFullScreen></iframe>
         </div>
 
         <p>But, as we began annotating the scan with historical imagery, links to Harvard Library materials, and historical information concerning the inspiring architectural history of the building, we began to understand the linked data implications of these virtual facilities. With Widener 360, our stunning architecture functions as a sort of visual index for collections, services, and history.</p>
@@ -580,7 +581,7 @@ export function ProfessionalContent() {
         <ImageWithCaption src="/Professional/image-asset (14).webp" alt="NavApp Usage" />
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tTpuYP1of1I?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
+          <iframe title="NavApp Indoor Wayfinding Demonstration Video" width="100%" height="100%" src="https://www.youtube.com/embed/tTpuYP1of1I?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
         </div>
       </CollapsibleSection>
 
@@ -602,7 +603,7 @@ export function ProfessionalContent() {
         <ImageWithCaption src="/Professional/image-asset (18).webp" alt="OVAL usage" />
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/tmL3T28Ud1k?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
+          <iframe title="OVAL 1.0 Multiplayer VR Classroom Demonstration Video" width="100%" height="100%" src="https://www.youtube.com/embed/tmL3T28Ud1k?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
         </div>
       </CollapsibleSection>
 

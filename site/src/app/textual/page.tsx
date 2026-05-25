@@ -50,7 +50,7 @@ export default function TextualPage() {
               <div className="pub-title">{f.title}</div>
               <div className="pub-venue">{f.description}</div>
               {f.pdfUrl && (
-                <a href={f.pdfUrl} className="pub-link">
+                <a href={f.pdfUrl} target="_blank" rel="noopener noreferrer" className="pub-link">
                   Read PDF →
                 </a>
               )}
@@ -73,7 +73,7 @@ export default function TextualPage() {
               <div className="pub-title">{f.title}</div>
               <div className="pub-venue">{f.description}</div>
               {f.pdfUrl && (
-                <a href={f.pdfUrl} className="pub-link">
+                <a href={f.pdfUrl} target="_blank" rel="noopener noreferrer" className="pub-link">
                   Read PDF →
                 </a>
               )}

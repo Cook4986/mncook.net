@@ -140,7 +140,6 @@ type PhenomenonType =
   | 'aero'
   | 'pilgrim'
   | 'lantern'
-  | 'watcher'
   | 'whisper'
   | 'scorpion'
   | 'cryptkeeper';
@@ -327,88 +326,6 @@ function PhenomenonLantern({ start, end, duration, onComplete, seed }: Phenomeno
         <meshBasicMaterial ref={coreRef} color="#ffcc66" transparent opacity={0} toneMapped={false} />
       </mesh>
       <pointLight color="#ffaa55" intensity={6} distance={22} decay={1.6} />
-    </group>
-  );
-}
-
-/* ===============================================================
-   THE WATCHER — eye that tracks the camera.
-   Snap-tracks (faster lerp), multi-frequency blinks,
-   rare total invisibility, iris twitches.
-   =============================================================== */
-function PhenomenonWatcher({ start, end, duration, onComplete, seed }: PhenomenonProps) {
-  const ref = useRef<THREE.Group>(null);
-  const haloRef = useRef<THREE.SpriteMaterial>(null);
-  const irisRef = useRef<THREE.Sprite>(null);
-  const pupilRef = useRef<THREE.Sprite>(null);
-  const startTime = useRef(0);
-  const { eye, pupil, haloEmerald } = getSigilTextures();
-  const { camera } = useThree();
-  const drift = useMemo(() => new THREE.Vector3(), []);
-  const sampleDrift = useNoiseDrift(seed * 0.023, 0.50, 0.55);
-  const lookDir = useMemo(() => new THREE.Vector2(), []);
-  const fixedPos = useMemo(() => {
-    // Pin at the midpoint so it stays perfectly fixed in space
-    return new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-  }, [start, end]);
-
-  useEffect(() => { startTime.current = performance.now() / 1000; }, []);
-
-  useFrame(({ clock }) => {
-    if (!ref.current || startTime.current === 0) return;
-    const t = (clock.elapsedTime - startTime.current) / duration;
-    if (t > 1.0) { onComplete(); return; }
-
-    sampleDrift(clock.elapsedTime, drift);
-    // Small positional glitch
-    const px = glitchTick(clock.elapsedTime, seed, 3.5, 0.22) * 0.3;
-    ref.current.position.copy(fixedPos).add(drift);
-    ref.current.position.x += px;
-
-    // Compound lid envelope + multi-frequency blinks
-    const open = Math.pow(Math.sin(t * Math.PI), 0.6);
-    const blinkSlow = 1 - 0.85 * Math.pow(Math.max(0, Math.sin(clock.elapsedTime * 1.7 + seed)), 32);
-    const blinkFast = 1 - 0.70 * Math.pow(Math.max(0, Math.sin(clock.elapsedTime * 4.3 + seed * 0.7)), 64);
-    const rareGone = rareBlink(clock.elapsedTime, seed, 0.6);
-    const lidScale = open * blinkSlow * blinkFast;
-
-    if (irisRef.current) {
-      const mat = irisRef.current.material as THREE.SpriteMaterial;
-      mat.opacity = Math.min(1, open * 1.3) * 0.95 * rareGone;
-      irisRef.current.scale.set(1.6, 1.6 * Math.max(0.04, lidScale) + 0.04, 1);
-    }
-    if (haloRef.current) haloRef.current.opacity = open * 0.7 * rareGone;
-
-    // Pupil — TRACKS the camera. Snap rather than smooth lerp.
-    if (pupilRef.current) {
-      const pmat = pupilRef.current.material as THREE.SpriteMaterial;
-      pmat.opacity = Math.min(1, open * 1.4) * blinkSlow * blinkFast * rareGone;
-      lookDir.set(camera.position.x - ref.current.position.x, camera.position.y - ref.current.position.y).normalize();
-      // Occasional discrete snap to a random direction (uncanny)
-      const snap = glitchTick(clock.elapsedTime, seed + 9, 2.4, 0.18);
-      const snapAngle = (snap > 0 ? (Math.sin(Math.floor(clock.elapsedTime * 2 + seed) * 17) * Math.PI) : 0);
-      const offsetMag = 0.10;
-      pupilRef.current.position.x = lookDir.x * offsetMag + Math.cos(snapAngle) * snap * 0.06;
-      pupilRef.current.position.y = lookDir.y * offsetMag * Math.max(0.04, lidScale) + Math.sin(snapAngle) * snap * 0.06;
-
-      // Iris contraction "tic"
-      const dilation = 0.85 + 0.20 * Math.sin(clock.elapsedTime * 0.6 + seed)
-                            + 0.20 * glitchTick(clock.elapsedTime, seed + 17, 3.2, 0.20);
-      pupilRef.current.scale.set(0.20 * dilation, 0.55 * dilation * Math.max(0.04, lidScale) + 0.04, 1);
-    }
-  });
-
-  return (
-    <group ref={ref}>
-      <sprite scale={[3.6, 3.6, 1]}>
-        <spriteMaterial ref={haloRef} map={haloEmerald} transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} />
-      </sprite>
-      <sprite ref={irisRef} scale={[1.6, 1.6, 1]}>
-        <spriteMaterial map={eye} transparent opacity={0} depthWrite={false} />
-      </sprite>
-      <sprite ref={pupilRef} scale={[0.2, 0.55, 1]}>
-        <spriteMaterial map={pupil} transparent opacity={0} depthWrite={false} />
-      </sprite>
     </group>
   );
 }
@@ -944,15 +861,6 @@ export default function Atmosphere() {
         endZ = startZ + (Math.random() - 0.5) * 1.5;
         duration = 6 + Math.random() * 3;
         break;
-      case 'watcher':
-        startX = sideSign * (8 + Math.random() * 3);
-        startY = 0 + Math.random() * 3;
-        startZ = -4 - Math.random() * 2;
-        endX = -sideSign * (6 + Math.random() * 3);
-        endY = startY + (Math.random() - 0.5) * 1.5;
-        endZ = startZ + (Math.random() - 0.5) * 1;
-        duration = 5 + Math.random() * 2;
-        break;
       case 'whisper':
         startX = sideSign * (10 + Math.random() * 3);
         startY = -1 + Math.random() * 5;
@@ -1109,7 +1017,6 @@ export default function Atmosphere() {
           case 'aero':        return <PhenomenonAero        key={p.id} {...common} />;
           case 'pilgrim':     return <PhenomenonPilgrim     key={p.id} {...common} />;
           case 'lantern':     return <PhenomenonLantern     key={p.id} {...common} />;
-          case 'watcher':     return <PhenomenonWatcher     key={p.id} {...common} />;
           case 'whisper':     return <PhenomenonWhisper     key={p.id} {...common} />;
           case 'scorpion':    return <PhenomenonScorpion    key={p.id} {...common} />;
           case 'cryptkeeper': return <PhenomenonCryptkeeper key={p.id} {...common} />;
