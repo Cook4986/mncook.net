@@ -28,16 +28,10 @@ export const publications: Publication[] = [
     url: 'https://doi.org/10.1016/j.acalib.2017.09.003',
   },
   {
-    title: 'Managing Exploratory Units in Academic Libraries',
-    venue: 'Journal of Library Administration',
-    year: 2019,
-    url: 'https://www.tandfonline.com/doi/full/10.1080/01930826.2019.1626647',
-  },
-  {
-    title: 'Banned Objects Week',
-    venue: 'Journal of Intellectual Freedom & Privacy',
-    year: 2021,
-    url: 'https://journals.ala.org/index.php/jifp/article/view/6519',
+    title: 'Interactive Mindfulness Technology',
+    venue: 'C&RL News',
+    year: 2018,
+    url: 'http://crln.acrl.org/index.php/crlnews/article/view/9328/10444',
   },
   {
     title: 'Challenges and Strategies for Educational VR',
@@ -46,22 +40,34 @@ export const publications: Publication[] = [
     url: 'https://ejournals.bc.edu/index.php/ital/article/view/11075',
   },
   {
-    title: 'Interactive Mindfulness Technology',
-    venue: 'C&RL News',
-    year: 2018,
-    url: 'http://crln.acrl.org/index.php/crlnews/article/view/9328/10444',
+    title: 'Managing Exploratory Units in Academic Libraries',
+    venue: 'Journal of Library Administration',
+    year: 2019,
+    url: 'https://www.tandfonline.com/doi/full/10.1080/01930826.2019.1626647',
   },
   {
-    title: 'Designing and Testing a 360° Vision Simulator',
-    venue: 'Harvard DASH',
-    year: 2020,
-    url: 'https://dash.harvard.edu/bitstream/handle/1/42669465/Janus_PrePrint_Cook2020.pdf?isAllowed=y&sequence=1',
+    title: 'Motivations, Design, and Preliminary Testing for a 360° Vision Simulator',
+    venue: 'Virtual Reality',
+    year: 2021,
+    url: 'https://link.springer.com/article/10.1007/s10055-020-00433-x',
+  },
+  {
+    title: 'Banned Objects Week',
+    venue: 'Journal of Intellectual Freedom & Privacy',
+    year: 2021,
+    url: 'https://journals.ala.org/index.php/jifp/article/view/6519',
   },
   {
     title: 'The Lifecycle of Scholarly 3D Content',
     venue: 'The Journal of Academic Librarianship',
     year: 2024,
     url: 'https://www.sciencedirect.com/science/article/abs/pii/S0099133324000946',
+  },
+  {
+    title: 'Immersive Quality Control for 3D Data Curation',
+    venue: 'Information Research',
+    year: 2026,
+    url: 'https://doi.org/10.47989/ir31iConf64136',
   }
 ];
 
