@@ -117,13 +117,31 @@ export default function TerrainScene() {
 
   // Update window URL hash reactively based on activePin state
   useEffect(() => {
-    if (activePin) {
-      if (window.location.hash !== `#${activePin}`) {
-        window.history.replaceState('', document.title, `#${activePin}`);
+    try {
+      if (activePin) {
+        if (window.location.hash !== `#${activePin}`) {
+          window.history.replaceState('', document.title, `#${activePin}`);
+        }
+      } else {
+        if (window.location.hash) {
+          try {
+            window.history.replaceState('', document.title, window.location.pathname + window.location.search);
+          } catch {
+            window.history.replaceState('', document.title, '#');
+          }
+        }
       }
-    } else {
-      if (window.location.hash) {
-        window.history.replaceState('', document.title, window.location.pathname + window.location.search);
+    } catch (err) {
+      console.warn('Failed to update URL hash due to security/environment restrictions:', err);
+      // Fallback: use direct location.hash if history.replaceState is blocked
+      try {
+        if (activePin) {
+          window.location.hash = activePin;
+        } else {
+          window.location.hash = '';
+        }
+      } catch (fallbackErr) {
+        console.warn('Fallback hash update failed:', fallbackErr);
       }
     }
   }, [activePin]);
@@ -131,15 +149,19 @@ export default function TerrainScene() {
   // Support direct slug-sharing and back/forward browser navigation cleanly
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (OVERLAY_MAP[hash]) {
-        if (activePin !== hash) {
-          handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+      try {
+        const hash = window.location.hash.replace('#', '').toLowerCase();
+        if (OVERLAY_MAP[hash]) {
+          if (activePin !== hash) {
+            handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+          }
+        } else {
+          if (activePin) {
+            handleClose();
+          }
         }
-      } else {
-        if (activePin) {
-          handleClose();
-        }
+      } catch (err) {
+        console.warn('Failed to handle hash change:', err);
       }
     };
 
