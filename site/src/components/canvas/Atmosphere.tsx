@@ -784,8 +784,8 @@ export default function Atmosphere() {
     const s = state.current;
     if (!s) return;
     s.lightningTimer = 45 + Math.random() * 45; // first lightning strike in 45-90 s (infrequent)
-    s.phenomenaTimer = 2 + Math.random() * 4; // first phenomenon in 2-6 s
-    s.cryptkeeperCooldown = 40 + Math.random() * 40;
+    s.phenomenaTimer = 15 + Math.random() * 20; // first phenomenon in 15-35 s (slower start)
+    s.cryptkeeperCooldown = 60 + Math.random() * 60;
     s.lastActiveAt = performance.now() / 1000;
   }, []);
 
@@ -841,7 +841,7 @@ export default function Atmosphere() {
         endX = -sideSign * (12 + Math.random() * 3);
         endY = startY + (Math.random() - 0.5) * 0.6;
         endZ = startZ + (Math.random() - 0.5) * 2;
-        duration = 10 + Math.random() * 4;
+        duration = 25 + Math.random() * 10;
         break;
       case 'scorpion':
         startX = sideSign * (11 + Math.random() * 3);
@@ -850,7 +850,7 @@ export default function Atmosphere() {
         endX = -sideSign * (10 + Math.random() * 3);
         endY = startY + (Math.random() - 0.5) * 0.5;
         endZ = startZ + (Math.random() - 0.5) * 1.2;
-        duration = 3.0 + Math.random() * 2.0;
+        duration = 10.0 + Math.random() * 5.0;
         break;
       case 'lantern':
         startX = (Math.random() - 0.5) * 12;
@@ -859,7 +859,7 @@ export default function Atmosphere() {
         endX = startX + (Math.random() - 0.5) * 3;
         endY = startY + 3 + Math.random() * 3;
         endZ = startZ + (Math.random() - 0.5) * 1.5;
-        duration = 6 + Math.random() * 3;
+        duration = 18 + Math.random() * 8;
         break;
       case 'whisper':
         startX = sideSign * (10 + Math.random() * 3);
@@ -868,7 +868,7 @@ export default function Atmosphere() {
         endX = -sideSign * (8 + Math.random() * 3);
         endY = startY + (Math.random() - 0.5) * 3;
         endZ = startZ + (Math.random() - 0.5) * 1.5;
-        duration = 3.5 + Math.random() * 1.5;
+        duration = 10.0 + Math.random() * 4.0;
         break;
       case 'cryptkeeper':
         startX = sideSign * (12 + Math.random() * 2);
@@ -877,7 +877,7 @@ export default function Atmosphere() {
         endX = -sideSign * (11 + Math.random() * 2);
         endY = startY + (Math.random() - 0.5) * 0.3;
         endZ = startZ;
-        duration = 9 + Math.random() * 3;
+        duration = 24 + Math.random() * 8;
         break;
       case 'pilgrim':
       default:
@@ -887,7 +887,7 @@ export default function Atmosphere() {
         endX = -sideSign * (8 + Math.random() * 3);
         endY = startY + (Math.random() - 0.5) * 4;
         endZ = startZ + (Math.random() - 0.5) * 2;
-        duration = 1.4 + Math.random() * 0.8;
+        duration = 4.5 + Math.random() * 2.0;
         break;
     }
 
@@ -957,15 +957,15 @@ export default function Atmosphere() {
           s.cryptkeeperCooldown = 120 + Math.random() * 90;
         }
       }
-      // 10-25 s between spawns
-      s.phenomenaTimer = 10 + Math.random() * 15;
+      // 45-90 s between spawns (much slower/reduced frequency, higher anticipation)
+      s.phenomenaTimer = 45 + Math.random() * 45;
     }
 
     /* IDLE APPARITION — extends the idle threshold a touch since
        phenomena are now rarer overall. */
     const idleSec = (performance.now() / 1000) - s.lastActiveAt;
     if (
-      idleSec > 45 &&
+      idleSec > 90 &&
       !s.idleApparitionFired &&
       phenomena.length < 1
     ) {
