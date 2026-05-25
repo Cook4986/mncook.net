@@ -78,7 +78,7 @@ export const fiction: Fiction[] = [
   { title: 'First Pizza on Mars', description: 'The sole baker on Mars runs a black-market supply chain under a deadly five-pie limit.', pdfUrl: 'https://mncook.net/s/Best-Pizza_Cook2023_website.pdf' },
   { title: 'Petty Cash', description: 'A burglar is haunted by an antique Ouija board projecting alien geometries on his walls.', pdfUrl: 'https://mncook.net/s/Petty-Cash_Cook2023.pdf' },
   { title: 'Zoning Violation', description: 'A cut-rate psychic in Cambridge begins channeling eccentric, dangerous voices from the beyond.', pdfUrl: 'https://mncook.net/s/theFlorist_Cook2022.pdf' },
-  { title: 'Scorpio', description: 'A multi-layered thriller linking a phantom jetpacker with a midnight library researcher.', pdfUrl: 'https://mncook.net/s/Scorpio_Cook2022_October-fwmr.pdf' }
+  { title: 'Scorpio', description: 'A midnight librarian at Harvard is drawn into an occult subterranean conspiracy after a clawed visitor in black demands a missing ancient text.', pdfUrl: 'https://mncook.net/s/Scorpio_Cook2022_October-fwmr.pdf' }
 ];
 
 // --- PROFESSIONAL ---

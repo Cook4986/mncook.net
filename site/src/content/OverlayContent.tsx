@@ -255,7 +255,7 @@ export function TextualContent() {
         </ul>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Novel — Scorpio: a layered work of fiction">
+      <CollapsibleSection title="Novel — Occult technology in the book stacks">
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', lineHeight: '1.8' }}>
           {novel.map((nov, i) => (
             <li key={i} style={{ marginBottom: '12px' }}>
