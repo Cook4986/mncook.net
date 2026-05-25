@@ -347,6 +347,10 @@ function PhenomenonWatcher({ start, end, duration, onComplete, seed }: Phenomeno
   const drift = useMemo(() => new THREE.Vector3(), []);
   const sampleDrift = useNoiseDrift(seed * 0.023, 0.50, 0.55);
   const lookDir = useMemo(() => new THREE.Vector2(), []);
+  const fixedPos = useMemo(() => {
+    // Pin at the midpoint so it stays perfectly fixed in space
+    return new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+  }, [start, end]);
 
   useEffect(() => { startTime.current = performance.now() / 1000; }, []);
 
@@ -356,10 +360,9 @@ function PhenomenonWatcher({ start, end, duration, onComplete, seed }: Phenomeno
     if (t > 1.0) { onComplete(); return; }
 
     sampleDrift(clock.elapsedTime, drift);
-    const base = new THREE.Vector3().lerpVectors(start, end, t);
     // Small positional glitch
     const px = glitchTick(clock.elapsedTime, seed, 3.5, 0.22) * 0.3;
-    ref.current.position.copy(base).add(drift);
+    ref.current.position.copy(fixedPos).add(drift);
     ref.current.position.x += px;
 
     // Compound lid envelope + multi-frequency blinks
@@ -509,6 +512,10 @@ function PhenomenonCryptkeeper({ start, end, duration, onComplete, seed }: Pheno
   const { cryptkeeper, cryptkeeperCuffs } = getSigilTextures();
   const lastGlitchAt = useRef(0);
   const glitchOffset = useMemo(() => new THREE.Vector3(), []);
+  const fixedPos = useMemo(() => {
+    // Pin at the midpoint so the man in black stays perfectly fixed in space
+    return new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+  }, [start, end]);
 
   useEffect(() => { startTime.current = performance.now() / 1000; }, []);
 
@@ -517,8 +524,8 @@ function PhenomenonCryptkeeper({ start, end, duration, onComplete, seed }: Pheno
     const t = (clock.elapsedTime - startTime.current) / duration;
     if (t > 1.0) { onComplete(); return; }
 
-    // Limp step modulation
-    const stepPhase = Math.abs(Math.sin(t * 14));
+    // Limp step modulation — subtle breathing instead of limping movement
+    const stepPhase = Math.abs(Math.sin(clock.elapsedTime * 1.5));
 
     // Glitch jumps — more frequent than before
     const since = clock.elapsedTime - lastGlitchAt.current;
@@ -533,9 +540,8 @@ function PhenomenonCryptkeeper({ start, end, duration, onComplete, seed }: Pheno
     glitchOffset.multiplyScalar(0.84);
     const glitchActive = glitchOffset.lengthSq() > 0.001;
 
-    const base = new THREE.Vector3().lerpVectors(start, end, t);
-    ref.current.position.copy(base).add(glitchOffset);
-    ref.current.position.y += stepPhase * 0.05 - 0.025;
+    ref.current.position.copy(fixedPos).add(glitchOffset);
+    ref.current.position.y += stepPhase * 0.02 - 0.01;
 
     const env = Math.pow(Math.sin(t * Math.PI), 0.5);
     const flick = 1 - 0.10 * Math.pow(Math.sin(clock.elapsedTime * 2.3 + seed), 12);

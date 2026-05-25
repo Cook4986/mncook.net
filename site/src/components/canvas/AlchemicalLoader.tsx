@@ -4,26 +4,17 @@ import { useEffect, useState } from 'react';
 import { useProgress } from '@react-three/drei';
 
 /* =========================================================
-   AlchemicalLoader — shown while the stibine GLB is loading.
+   WatcherLoader — shown while the stibine GLB is loading.
 
-   A two-ring sigil wheel rotating against the void, with a
-   central antimony glyph (♁) — the metal of which stibine
-   is the principal ore. Below sits a single Latinate label
-   set in IM Fell English: DISTILLATIO.
-
-   We don't show progress percentage; the alchemist's apparatus
-   does not announce its work.
+   Displays the emerald, glowing "Watcher" eye from the landing
+   page, blinking and pulsing against the dark void. Underneath sits
+   a single Latinate label: INTUITIO.
    ========================================================= */
 
-const RING_SIZE = 220;
+const LOADER_SIZE = 240;
 
 export default function AlchemicalLoader() {
-  // useProgress works outside Canvas (it subscribes to three.DefaultLoadingManager)
   const { active, loaded } = useProgress();
-
-  // We always start visible on first mount, then transition out
-  // once loading is *done* (active=false AND at least one asset reached
-  // the loaded state). A 6 s hard fallback covers the all-cached path.
   const [show, setShow] = useState(true);
 
   useEffect(() => {
@@ -47,113 +38,176 @@ export default function AlchemicalLoader() {
         position: 'absolute',
         inset: 0,
         background:
-          'radial-gradient(ellipse at center, #14101e 0%, #0a080f 70%, #06050a 100%)',
+          'radial-gradient(ellipse at center, #091310 0%, #060908 70%, #020403 100%)',
         zIndex: 500,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '28px',
+        gap: '24px',
         opacity: show ? 1 : 0,
         transition: 'opacity 700ms cubic-bezier(0.22, 1, 0.36, 1)',
         pointerEvents: show ? 'auto' : 'none',
       }}
     >
-      <svg width={RING_SIZE} height={RING_SIZE} viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}>
-        <defs>
-          <radialGradient id="al-center-glow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(255, 255, 255, 0.45)" />
-            <stop offset="60%" stopColor="rgba(255, 255, 255, 0.10)" />
-            <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
-          </radialGradient>
-          <filter id="al-soft" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="0.7" />
-          </filter>
-        </defs>
+      <div style={{ position: 'relative', width: `${LOADER_SIZE}px`, height: `${LOADER_SIZE}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Soft emerald radial glow behind the eye */}
+        <div style={{
+          position: 'absolute',
+          width: '180px',
+          height: '180px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(74, 176, 132, 0.35) 0%, rgba(31, 90, 58, 0.08) 50%, rgba(0,0,0,0) 70%)',
+          animation: 'eye-glow 3.5s infinite ease-in-out',
+        }} />
 
-        {/* Center atmospheric glow */}
-        <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={56} fill="url(#al-center-glow)" />
+        <svg width={LOADER_SIZE} height={LOADER_SIZE} viewBox="0 0 240 240" style={{ zIndex: 10 }}>
+          <defs>
+            {/* Emerald inner glow */}
+            <radialGradient id="iris-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#5cd6a5" />
+              <stop offset="45%" stopColor="#1f5a3a" />
+              <stop offset="100%" stopColor="#06160c" />
+            </radialGradient>
+            
+            {/* Eye silhouette shadow */}
+            <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="4" />
+            </filter>
+          </defs>
 
-        {/* OUTER RING — rotates clockwise. 12 tick marks. */}
-        <g style={{ transformOrigin: `${RING_SIZE / 2}px ${RING_SIZE / 2}px`, animation: 'al-spin 24s linear infinite' }}>
-          <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={96} fill="none" stroke="#ffffff" strokeWidth="0.6" opacity="0.40" />
-          {Array.from({ length: 12 }).map((_, i) => {
-            const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
-            const cx = RING_SIZE / 2, cy = RING_SIZE / 2;
-            const major = i % 3 === 0;
-            const ri = major ? 90 : 92;
-            const ro = major ? 102 : 100;
-            const x1 = cx + Math.cos(a) * ri;
-            const y1 = cy + Math.sin(a) * ri;
-            const x2 = cx + Math.cos(a) * ro;
-            const y2 = cy + Math.sin(a) * ro;
-            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#ffffff" strokeWidth={major ? 1.4 : 0.8} strokeLinecap="round" opacity={major ? 0.85 : 0.55} />;
-          })}
-        </g>
+          {/* Background Almond Outline Glow */}
+          <path 
+            d="M 10,120 Q 120,30 230,120 Q 120,210 10,120 Z" 
+            fill="none" 
+            stroke="#4ab084" 
+            strokeWidth="1" 
+            opacity="0.25"
+            strokeDasharray="2, 4"
+          />
 
-        {/* MIDDLE RING — counter-rotation. 4 cardinal marks. */}
-        <g style={{ transformOrigin: `${RING_SIZE / 2}px ${RING_SIZE / 2}px`, animation: 'al-spin 14s linear infinite reverse' }}>
-          <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={72} fill="none" stroke="#ffffff" strokeWidth="0.5" opacity="0.50" />
-          {[0, 1, 2, 3].map((i) => {
-            const a = (i / 4) * Math.PI * 2 - Math.PI / 2;
-            const cx = RING_SIZE / 2 + Math.cos(a) * 72;
-            const cy = RING_SIZE / 2 + Math.sin(a) * 72;
-            return (
-              <g key={i} transform={`translate(${cx}, ${cy})`} stroke="#ffffff" strokeWidth="1.3" fill="none" strokeLinecap="round" opacity="0.85">
-                {i === 0 && <polygon points="0,-6 5.2,3 -5.2,3" />}
-                {i === 1 && (
-                  <>
-                    <path d="M -5 -4 Q 0 -7 5 -4" />
-                    <circle cx="0" cy="2" r="3.5" />
-                  </>
-                )}
-                {i === 2 && (
-                  <>
-                    <line x1="-6" y1="0" x2="6" y2="0" />
-                    <line x1="0" y1="-6" x2="0" y2="6" />
-                  </>
-                )}
-                {i === 3 && (
-                  <>
-                    <circle cx="0" cy="-2" r="3.5" />
-                    <line x1="0" y1="2" x2="0" y2="7" />
-                    <line x1="-3.5" y1="5" x2="3.5" y2="5" />
-                  </>
-                )}
-              </g>
-            );
-          })}
-        </g>
+          {/* Almond Eyelid Shell */}
+          <path 
+            d="M 15,120 Q 120,40 225,120 Q 120,200 15,120 Z" 
+            fill="#03030a" 
+            stroke="#4ab084" 
+            strokeWidth="2.2" 
+            filter="url(#soft-shadow)"
+          />
 
-        {/* INNER — antimony sigil (circle over cross). Static. */}
-        <g stroke="#ffffff" strokeWidth="1.6" fill="none" strokeLinecap="round" filter="url(#al-soft)" opacity="0.95">
-          <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2 - 10} r={14} />
-          <line x1={RING_SIZE / 2} y1={RING_SIZE / 2 + 4} x2={RING_SIZE / 2} y2={RING_SIZE / 2 + 28} />
-          <line x1={RING_SIZE / 2 - 10} y1={RING_SIZE / 2 + 17} x2={RING_SIZE / 2 + 10} y2={RING_SIZE / 2 + 17} />
-        </g>
+          {/* Emerald Iris (Rotates subtly) */}
+          <g style={{ transformOrigin: '120px 120px', animation: 'iris-rotate 40s linear infinite' }}>
+            <circle cx="120" cy="120" r="38" fill="url(#iris-grad)" />
+            {/* Iris striations */}
+            {Array.from({ length: 24 }).map((_, i) => {
+              const angle = (i / 24) * Math.PI * 2;
+              const r1 = 15;
+              const r2 = 36;
+              const x1 = 120 + Math.cos(angle) * r1;
+              const y1 = 120 + Math.sin(angle) * r1;
+              const x2 = 120 + Math.cos(angle) * r2;
+              const y2 = 120 + Math.sin(angle) * r2;
+              return (
+                <line 
+                  key={i} 
+                  x1={x1} 
+                  y1={y1} 
+                  x2={x2} 
+                  y2={y2} 
+                  stroke="rgba(180, 240, 200, 0.45)" 
+                  strokeWidth="0.8" 
+                />
+              );
+            })}
+          </g>
 
-        {/* Center pulse */}
-        <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2 - 10} r={2} fill="#ffffff">
-          <animate attributeName="r" values="1.2;3;1.2" dur="2.6s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.55;1;0.55" dur="2.6s" repeatCount="indefinite" />
-        </circle>
-      </svg>
+          {/* Pupil (Pulsates in size and blinks with eyelids) */}
+          <ellipse 
+            cx="120" 
+            cy="120" 
+            rx="12" 
+            ry="24" 
+            fill="#000000" 
+            style={{ 
+              transformOrigin: '120px 120px', 
+              animation: 'pupil-pulse 5s infinite ease-in-out' 
+            }} 
+          />
+
+          {/* Catchlight */}
+          <circle cx="132" cy="108" r="6" fill="rgba(220, 255, 235, 0.95)" />
+
+          {/* Eyelid Eyelashes / Accent ticks */}
+          <line x1="120" y1="36" x2="120" y2="28" stroke="#4ab084" strokeWidth="1.5" opacity="0.6" />
+          <line x1="120" y1="204" x2="120" y2="212" stroke="#4ab084" strokeWidth="1.5" opacity="0.6" />
+        </svg>
+
+        {/* Eyelid blink cover (SVG masking representation utilizing CSS) */}
+        <div style={{
+          position: 'absolute',
+          top: '38px',
+          width: '210px',
+          height: '164px',
+          background: '#020403',
+          zIndex: 12,
+          transformOrigin: '50% 0%',
+          transform: 'scaleY(0)',
+          borderRadius: '50% 50% 0 0',
+          animation: 'eyelid-blink-top 4.8s infinite cubic-bezier(0.77, 0, 0.175, 1)'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '38px',
+          width: '210px',
+          height: '164px',
+          background: '#020403',
+          zIndex: 12,
+          transformOrigin: '50% 100%',
+          transform: 'scaleY(0)',
+          borderRadius: '0 0 50% 50%',
+          animation: 'eyelid-blink-bottom 4.8s infinite cubic-bezier(0.77, 0, 0.175, 1)'
+        }} />
+      </div>
 
       <div style={{
         fontFamily: 'var(--font-serif)',
         fontStyle: 'italic',
-        color: 'rgba(255, 255, 255, 0.88)',
-        fontSize: '0.95rem',
-        letterSpacing: '0.32em',
+        color: '#4ab084',
+        fontSize: '1rem',
+        letterSpacing: '0.45em',
         textTransform: 'uppercase',
+        opacity: 0.85,
+        animation: 'text-glow 2.5s infinite ease-in-out',
+        paddingLeft: '0.45em' // compensate for letter spacing center offset
       }}>
-        Distillatio
+        Intuitio
       </div>
 
       <style>{`
-        @keyframes al-spin {
+        @keyframes eye-glow {
+          0%, 100% { transform: scale(0.92); opacity: 0.6; }
+          50% { transform: scale(1.08); opacity: 0.9; }
+        }
+        @keyframes text-glow {
+          0%, 100% { opacity: 0.65; text-shadow: 0 0 4px rgba(74, 176, 132, 0.2); }
+          50% { opacity: 1; text-shadow: 0 0 10px rgba(74, 176, 132, 0.6); }
+        }
+        @keyframes iris-rotate {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+        @keyframes pupil-pulse {
+          0%, 100% { transform: scale(1.0); }
+          45%, 55% { transform: scale(1.15) scaleX(0.9); }
+          50% { transform: scale(0.8) scaleX(1.1); }
+        }
+        @keyframes eyelid-blink-top {
+          0%, 8%, 12%, 100% { transform: scaleY(0); }
+          10% { transform: scaleY(0.52); }
+        }
+        @keyframes eyelid-blink-bottom {
+          0%, 8%, 12%, 100% { transform: scaleY(0); }
+          10% { transform: scaleY(0.52); }
         }
       `}</style>
     </div>
