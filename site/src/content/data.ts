@@ -72,13 +72,13 @@ export const publications: Publication[] = [
 ];
 
 export const fiction: Fiction[] = [
-  { title: 'Walk Your Age and Live Forever', description: 'A world where walking physically extends lifespan—until an obituary in Texas triggers the end of humanity.', pdfUrl: 'https://mncook.net/s/Walk-Your-Age_Cook2023_website.pdf' },
-  { title: 'Ancient Power', description: 'Elite supplicants journey to Boston for a secret, subterranean ritual beneath Widener Library.', pdfUrl: 'https://mncook.net/s/AncientPower_Cook2025.pdf' },
-  { title: 'Listen to the Dead', description: 'A cash-strapped student sleeping in Mount Auburn Cemetery gets cornered during a midnight police hunt.', pdfUrl: 'https://mncook.net/s/Listen-to-the-Dead_Cook2022-sg32.pdf' },
-  { title: 'First Pizza on Mars', description: 'The sole pizza maker on Mars runs a black-market supply chain to maintain a strict five-pie-a-day limit.', pdfUrl: 'https://mncook.net/s/Best-Pizza_Cook2023_website.pdf' },
-  { title: 'Petty Cash', description: 'A burglar is haunted by an antique Ouija board that projects surreal, colored geometries on his walls.', pdfUrl: 'https://mncook.net/s/Petty-Cash_Cook2023.pdf' },
-  { title: 'Zoning Violation', description: 'A cut-rate, unlicensed psychic in Cambridge becomes a sounding board for eccentric neighborhood locals.', pdfUrl: 'https://mncook.net/s/theFlorist_Cook2022.pdf' },
-  { title: 'Scorpio', description: 'A multi-layered novel linking a phantom LAX jetpacker with a midnight researcher at Widener Library.', pdfUrl: 'https://mncook.net/s/Scorpio_Cook2022_October-fwmr.pdf' }
+  { title: 'Walk Your Age and Live Forever', description: 'Every step physically extends your lifespan. Until a Texas obituary triggers the end.', pdfUrl: 'https://mncook.net/s/Walk-Your-Age_Cook2023_website.pdf' },
+  { title: 'Ancient Power', description: 'Elite supplicants gather for a dark, subterranean ritual beneath Widener Library.', pdfUrl: 'https://mncook.net/s/AncientPower_Cook2025.pdf' },
+  { title: 'Listen to the Dead', description: 'A student sleeping in Mount Auburn Cemetery is cornered by a midnight hunt.', pdfUrl: 'https://mncook.net/s/Listen-to-the-Dead_Cook2022-sg32.pdf' },
+  { title: 'First Pizza on Mars', description: 'The sole baker on Mars runs a black-market supply chain under a deadly five-pie limit.', pdfUrl: 'https://mncook.net/s/Best-Pizza_Cook2023_website.pdf' },
+  { title: 'Petty Cash', description: 'A burglar is haunted by an antique Ouija board projecting alien geometries on his walls.', pdfUrl: 'https://mncook.net/s/Petty-Cash_Cook2023.pdf' },
+  { title: 'Zoning Violation', description: 'A cut-rate psychic in Cambridge begins channeling eccentric, dangerous voices from the beyond.', pdfUrl: 'https://mncook.net/s/theFlorist_Cook2022.pdf' },
+  { title: 'Scorpio', description: 'A multi-layered thriller linking a phantom jetpacker with a midnight library researcher.', pdfUrl: 'https://mncook.net/s/Scorpio_Cook2022_October-fwmr.pdf' }
 ];
 
 // --- PROFESSIONAL ---
