@@ -128,8 +128,10 @@ export default function TerrainScene() {
     const parseUrlState = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
       if (OVERLAY_MAP[hash]) {
-        // Trigger select from center of the screen if loading directly
-        handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+        // Only select if not already active to prevent click overriding and loop conflicts
+        if (renderedPin !== hash) {
+          handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+        }
       } else if (renderedPin && !isClosing) {
         // Close if URL state has cleared
         handleClose();
