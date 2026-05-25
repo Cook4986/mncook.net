@@ -898,7 +898,6 @@ export default function Atmosphere() {
       ['pilgrim', 32],
       ['scorpion', 18],
       ['lantern', 16],
-      ['watcher', 16],
       ['whisper', 18],
       ['cryptkeeper', cooldown <= 0 ? 4 : 0],
     ];
@@ -1063,7 +1062,7 @@ export default function Atmosphere() {
       phenomena.length < 1
     ) {
       s.idleApparitionFired = true;
-      const type: PhenomenonType = Math.random() < 0.55 ? 'watcher' : 'cryptkeeper';
+      const type: PhenomenonType = 'cryptkeeper';
       const { start, end, duration } = makeSpawnFor(type);
       const idle: Phenomenon = {
         id: `idle-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
