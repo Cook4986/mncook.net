@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useRef, useEffect, useCallback } from 'react';
+import { Suspense, useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
@@ -76,9 +76,8 @@ export default function TerrainScene() {
   // out of the spot the user actually touched on screen.
   const [bleedOrigin, setBleedOrigin] = useState<PinSelectOrigin>({ x: 0, y: 0 });
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isFirstRender = useRef(true);
 
-  const handleSelect = useCallback((id: string, origin: PinSelectOrigin) => {
+  const handleSelect = (id: string, origin: PinSelectOrigin) => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
@@ -87,9 +86,9 @@ export default function TerrainScene() {
     setActivePin(id);
     setRenderedPin(id);
     setIsClosing(false);
-  }, []);
+  };
 
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     if (!renderedPin || isClosing) return;
     setIsClosing(true);
     setActivePin(null);
@@ -103,7 +102,7 @@ export default function TerrainScene() {
       setIsClosing(false);
       closeTimeoutRef.current = null;
     }, 600);
-  }, [renderedPin, isClosing]);
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -113,66 +112,7 @@ export default function TerrainScene() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleClose]);
-
-  // Update window URL hash reactively based on activePin state
-  useEffect(() => {
-    try {
-      if (activePin) {
-        if (window.location.hash !== `#${activePin}`) {
-          window.history.replaceState('', document.title, `#${activePin}`);
-        }
-      } else {
-        if (window.location.hash) {
-          try {
-            window.history.replaceState('', document.title, window.location.pathname + window.location.search);
-          } catch {
-            window.history.replaceState('', document.title, '#');
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('Failed to update URL hash due to security/environment restrictions:', err);
-      // Fallback: use direct location.hash if history.replaceState is blocked
-      try {
-        if (activePin) {
-          window.location.hash = activePin;
-        } else {
-          window.location.hash = '';
-        }
-      } catch (fallbackErr) {
-        console.warn('Fallback hash update failed:', fallbackErr);
-      }
-    }
-  }, [activePin]);
-
-  // Support direct slug-sharing and back/forward browser navigation cleanly
-  useEffect(() => {
-    const handleHashChange = () => {
-      try {
-        const hash = window.location.hash.replace('#', '').toLowerCase();
-        if (OVERLAY_MAP[hash]) {
-          if (activePin !== hash) {
-            handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
-          }
-        } else {
-          if (activePin) {
-            handleClose();
-          }
-        }
-      } catch (err) {
-        console.warn('Failed to handle hash change:', err);
-      }
-    };
-
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      handleHashChange();
-    }
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [activePin, handleSelect, handleClose]);
+  }, [renderedPin, isClosing]);
 
   const folio = renderedPin ? roman(PIN_ORDER[renderedPin] ?? 1) : '';
 
