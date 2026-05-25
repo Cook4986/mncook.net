@@ -77,6 +77,19 @@ export default function TerrainScene() {
   const [bleedOrigin, setBleedOrigin] = useState<PinSelectOrigin>({ x: 0, y: 0 });
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Keep references to the latest state to avoid stale closure issues
+  // in single-mount event listeners
+  const renderedPinRef = useRef<string | null>(null);
+  const isClosingRef = useRef(false);
+
+  useEffect(() => {
+    renderedPinRef.current = renderedPin;
+  }, [renderedPin]);
+
+  useEffect(() => {
+    isClosingRef.current = isClosing;
+  }, [isClosing]);
+
   const handleSelect = (id: string, origin: PinSelectOrigin) => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -93,7 +106,7 @@ export default function TerrainScene() {
   };
 
   const handleClose = () => {
-    if (!renderedPin || isClosing) return;
+    if (!renderedPinRef.current || isClosingRef.current) return;
     setIsClosing(true);
     setActivePin(null);
 
@@ -121,19 +134,18 @@ export default function TerrainScene() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [renderedPin, isClosing]);
+  }, []);
 
-  // Support direct slug-sharing and back/forward browser navigation
+  // Support direct slug-sharing and back/forward browser navigation cleanly
+  // using mount-only effect decoupled from render loop states
   useEffect(() => {
     const parseUrlState = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
       if (OVERLAY_MAP[hash]) {
-        // Only select if not already active to prevent click overriding and loop conflicts
-        if (renderedPin !== hash) {
+        if (renderedPinRef.current !== hash) {
           handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
         }
-      } else if (renderedPin && !isClosing) {
-        // Close if URL state has cleared
+      } else if (renderedPinRef.current && !isClosingRef.current) {
         handleClose();
       }
     };
@@ -144,7 +156,7 @@ export default function TerrainScene() {
     // Listen for back/forward navigation or manual URL updates
     window.addEventListener('hashchange', parseUrlState);
     return () => window.removeEventListener('hashchange', parseUrlState);
-  }, [renderedPin, isClosing]);
+  }, []);
 
   const folio = renderedPin ? roman(PIN_ORDER[renderedPin] ?? 1) : '';
 
