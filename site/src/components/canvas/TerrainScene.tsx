@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useRef, useEffect } from 'react';
+import { Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
@@ -76,44 +76,23 @@ export default function TerrainScene() {
   // out of the spot the user actually touched on screen.
   const [bleedOrigin, setBleedOrigin] = useState<PinSelectOrigin>({ x: 0, y: 0 });
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isFirstRender = useRef(true);
 
-  // Keep references to the latest state to avoid stale closure issues
-  // in single-mount event listeners
-  const renderedPinRef = useRef<string | null>(null);
-  const isClosingRef = useRef(false);
-
-  useEffect(() => {
-    renderedPinRef.current = renderedPin;
-  }, [renderedPin]);
-
-  useEffect(() => {
-    isClosingRef.current = isClosing;
-  }, [isClosing]);
-
-  const handleSelect = (id: string, origin: PinSelectOrigin) => {
+  const handleSelect = useCallback((id: string, origin: PinSelectOrigin) => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
-    }
-    // Update hash cleanly without disrupting history flow
-    if (window.location.hash !== `#${id}`) {
-      window.history.replaceState('', document.title, `#${id}`);
     }
     setBleedOrigin(origin);
     setActivePin(id);
     setRenderedPin(id);
     setIsClosing(false);
-  };
+  }, []);
 
-  const handleClose = () => {
-    if (!renderedPinRef.current || isClosingRef.current) return;
+  const handleClose = useCallback(() => {
+    if (!renderedPin || isClosing) return;
     setIsClosing(true);
     setActivePin(null);
-
-    // Clear hash cleanly when closing overlay
-    if (window.location.hash) {
-      window.history.replaceState('', document.title, window.location.pathname + window.location.search);
-    }
 
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -124,7 +103,7 @@ export default function TerrainScene() {
       setIsClosing(false);
       closeTimeoutRef.current = null;
     }, 600);
-  };
+  }, [renderedPin, isClosing]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -134,29 +113,44 @@ export default function TerrainScene() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleClose]);
+
+  // Update window URL hash reactively based on activePin state
+  useEffect(() => {
+    if (activePin) {
+      if (window.location.hash !== `#${activePin}`) {
+        window.history.replaceState('', document.title, `#${activePin}`);
+      }
+    } else {
+      if (window.location.hash) {
+        window.history.replaceState('', document.title, window.location.pathname + window.location.search);
+      }
+    }
+  }, [activePin]);
 
   // Support direct slug-sharing and back/forward browser navigation cleanly
-  // using mount-only effect decoupled from render loop states
   useEffect(() => {
-    const parseUrlState = () => {
+    const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '').toLowerCase();
       if (OVERLAY_MAP[hash]) {
-        if (renderedPinRef.current !== hash) {
+        if (activePin !== hash) {
           handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
         }
-      } else if (renderedPinRef.current && !isClosingRef.current) {
-        handleClose();
+      } else {
+        if (activePin) {
+          handleClose();
+        }
       }
     };
 
-    // Parse on mount
-    parseUrlState();
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      handleHashChange();
+    }
 
-    // Listen for back/forward navigation or manual URL updates
-    window.addEventListener('hashchange', parseUrlState);
-    return () => window.removeEventListener('hashchange', parseUrlState);
-  }, []);
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [activePin, handleSelect, handleClose]);
 
   const folio = renderedPin ? roman(PIN_ORDER[renderedPin] ?? 1) : '';
 
