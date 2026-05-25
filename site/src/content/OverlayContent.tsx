@@ -667,7 +667,7 @@ export function ContactContent() {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "e4cda711-b4f0-4e3a-969f-3efd02cf00be",
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "50789f80-9f2d-4e01-bcfa-520ce551ac0d",
           name,
           email,
           message: body,
