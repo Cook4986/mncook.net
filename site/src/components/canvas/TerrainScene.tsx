@@ -82,6 +82,10 @@ export default function TerrainScene() {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
     }
+    // Update hash cleanly without disrupting history flow
+    if (window.location.hash !== `#${id}`) {
+      window.history.replaceState('', document.title, `#${id}`);
+    }
     setBleedOrigin(origin);
     setActivePin(id);
     setRenderedPin(id);
@@ -92,6 +96,11 @@ export default function TerrainScene() {
     if (!renderedPin || isClosing) return;
     setIsClosing(true);
     setActivePin(null);
+
+    // Clear hash cleanly when closing overlay
+    if (window.location.hash) {
+      window.history.replaceState('', document.title, window.location.pathname + window.location.search);
+    }
 
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -112,6 +121,27 @@ export default function TerrainScene() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [renderedPin, isClosing]);
+
+  // Support direct slug-sharing and back/forward browser navigation
+  useEffect(() => {
+    const parseUrlState = () => {
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (OVERLAY_MAP[hash]) {
+        // Trigger select from center of the screen if loading directly
+        handleSelect(hash, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+      } else if (renderedPin && !isClosing) {
+        // Close if URL state has cleared
+        handleClose();
+      }
+    };
+
+    // Parse on mount
+    parseUrlState();
+
+    // Listen for back/forward navigation or manual URL updates
+    window.addEventListener('hashchange', parseUrlState);
+    return () => window.removeEventListener('hashchange', parseUrlState);
   }, [renderedPin, isClosing]);
 
   const folio = renderedPin ? roman(PIN_ORDER[renderedPin] ?? 1) : '';
