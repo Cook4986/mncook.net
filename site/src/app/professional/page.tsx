@@ -27,8 +27,8 @@ export default function ProfessionalPage() {
             <a
               key={project.id}
               href={project.liveUrl || project.url || '#'}
-              target={project.url ? '_blank' : undefined}
-              rel={project.url ? 'noopener noreferrer' : undefined}
+              target={(project.liveUrl || project.url)?.startsWith('http') ? '_blank' : undefined}
+              rel={(project.liveUrl || project.url)?.startsWith('http') ? 'noopener noreferrer' : undefined}
               className="project-card"
               id={`project-${project.id}`}
             >

@@ -45,6 +45,19 @@ const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { 
   </div>
 );
 
+const ProjectLink = ({ href, children = 'Open project' }: { href: string, children?: React.ReactNode }) => (
+  <p style={{ marginTop: '16px' }}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: 'var(--ivory)', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+    >
+      {children}
+    </a>
+  </p>
+);
+
 // --- SPATIAL ---
 
 const ImageWithCaption = ({ src, alt, caption }: { src: string, alt: string, caption?: string }) => (
@@ -466,26 +479,33 @@ export function ProfessionalContent() {
         paddingLeft: '16px'
       }}>
         As Digital Scholarship Program Manager for Harvard Library (and, formerly, as Head of Emerging Technologies for the University of Oklahoma Libraries), I explore/develop/deploy tech for research and instructional purposes.
+        <br/><br/>
+        Below are a few examples. Please don't hesitate to reach out (matt@mncook.net) to collaborate.
       </p>
 
       <CollapsibleSection title="3D Research Data Curation Framework (3DFrame) — Scholarly 3D data curation">
         <ImageWithCaption src="/Professional/3DF_testLogo3.webp" alt="3DF Logo" />
         
         <p>Deployed in virtual and augmented reality, 3D models provide the means for researchers and students to remotely experience diverse scholarly materials first-hand, though this content seldom finds its way into institutional repositories or peer-reviewed literature where it could be reused and cited. Currently, these methods are dispersed; an no single discipline, institution, or practitioner has yet to document a truly citable 3D curation method.</p>
+        <p>The IMLS-funded 3D Research Data Curation Framework (3DFrame) grant is our attempt to conceptually unite interrelated - but administratively disparate - 3D data production, immersive analytics, and preservation methods, which combine to connect a range of computational processes. Our goal: ensure the scholarly rigor of 3D contents, thereby preserving these materials as credible, FAIR primary sources for downstream citation by researchers across disciplines. Here's 3DF so far...</p>
         
         <ImageWithCaption src="/Professional/UofU_3DF_8.webp" alt="UofU 3DF" />
 
         <p>Professor Zack and I have been working on the issue of scholarly 3D/VR for about a decade, since the release of the Oculus DK1. Mainly, we've focused on getting VR out of the lab and into the classroom, specifically by providing practical guidance and publishing on the instructional benefits. Increasingly, content has been the issue, not a lack of interest. However, academic rigor for 3D contents remains an issue.</p>
+        <p>Accessible scanning techniques like photogrammetry have partially solved the content problem, but the scholarly value of these outputs isn't measurable. To address the question of curation, we've dedicated part of 3DF to studying the state of the 3D-production art, across academic and cultural heritage institutions, and another part (specifically, research question 4) to understanding the potential impact of quality control methods for 3D content in immersive viewing environments.</p>
+        <p>Everyone is doing 3D scanning and viewing a little differently, depending on their training, discipline, budget, home institution mission, and no one is quite sure what constitutes a "good" model at the end of the day. So, we must first understand what's currently being done, and why...</p>
         
         <ImageWithCaption src="/Professional/UMass_3DF_2.webp" alt="UMass 3DF" />
 
-        <p>At the core of 3DF is travel. The narrative specifies a range of 3D scanning lab types, where the research team will observe, interview, and test current and future workflows. The Irshick Lab and its DigitalLife3D project was our first stop in our mission to document the messy true story of 3D data production.</p>
+        <p>At the core of 3DF is travel. The narrative specifies a range of 3D scanning lab types, where the research team will observe, interview, and test current and future XR-enhanced workflows. Insofar as we are most interested in the quirks and idiosyncrasies, you can think of this approach as a sort of ethnography. That is, we seek the sort of secret knowledge that disproportionally informs immature data types like 3D.</p>
+        <p>The Irshick Lab and its DigitalLife3D project was our first stop in our mission to document the messy true story of 3D data production. There, at UMass in the spring of 2024, we were given a behind-the-scenes look at both the methods and challenges associated with live animal scanning. Then, in February, we spent a week at Utah, witnessing contrasting end user communities representing public libraries and flagship universities.</p>
+        <p>By the end of the grant period (2026) we anticipate visiting upwards of 10 distinct institutions, ranging from public universities, to the Ivy League, to cultural heritage institutions. This diversity of research data will let us triangulate and then publish on the state and trajectory of 3D data curation, before extrapolating scalable methods that might help future practitioners, whatever their discipline or institution type.</p>
 
         <ImageWithCaption src="/Professional/RQ4_3DF_3.webp" alt="RQ4 3DF" />
 
         <p>Getting back to research question #4 (RQ4), we have a viable protocol and promising early participant data comparing the performance of immersive and "flat" (traditional display-based) viewing experiences for 3D future quality control workflows. The experiment we've developed to gather this data begins this prompt:</p>
         <p>Today you will be conducting quality control on 3D models. Momentarily, you will be prompted with a fictional scenario and asked to respond to a question. It is important that you limit your verbal response to "yes" or "no" only. Do you understand? We will now begin with a practice scenario.</p>
-        <p>From there, participants are presented with a series of scenes and scenarios, each of which represents quality issues commonly encountered by 3D practitioners.</p>
+        <p>From there, participants are presented with a series of scenes and scenarios, each of which represents quality issues commonly encountered by 3D practitioners. Questions of mislabeling, feature identification, data loss, and resolution are all posed, and a combination of self-reported and performance data-gathering methods are deployed.</p>
 
         <ImageWithCaption src="/Professional/MattZackJosh_3DF_2024.webp" alt="Matt, Zack, Josh 3DF 2024" />
       </CollapsibleSection>
@@ -564,21 +584,28 @@ export function ProfessionalContent() {
         <ImageWithCaption src="/Professional/image-asset (8).webp" alt="Arduino Tutorial" caption="https://www.sparkfun.com/tutorials/400" />
         <p>This implementation used an Arduino Uno along with a SparkFun motor shield to power a stepper motor via a wall outlet. The precise rotational control provided by a stepper motor (as opposed to a torque-heavy servo) allows the below code to "jump" a measuring spoon - containing a small amount of scented wax melt - to a position directly above a heat lamp.</p>
 
-        <ImageWithCaption src="/Professional/image-asset (9).webp" alt="Code Snippet" />
-        <ImageWithCaption src="/Professional/image-asset (10).webp" alt="Original model" caption="The assembly, originally modeled in Sketchup (above), takes its cue from a 1st century bronze sculpture discovered in central Italy." />
-        <ImageWithCaption src="/Professional/image-asset (11).webp" alt="Hypnose face" caption='The Hypnose "face" - an amalgamation of a free, low-poly mask model found online and a set of wings' />
-        <ImageWithCaption src="/Professional/image-asset (12).webp" alt="Final prototype" caption="More importantly, OU Libraries now offers free training on all the tech associated with this project..." />
+        <ImageWithCaption src="/Professional/image-asset (9).webp" alt="Original Hypnose model" caption="The assembly, originally modeled in Sketchup (above), takes its cue from a 1st century bronze sculpture discovered in central Italy." />
+        <ImageWithCaption src="/Professional/image-asset (10).webp" alt="Hypnose face" caption='The Hypnose "face" - an amalgamation of a free, low-poly mask model found online and a set of wings' />
+        <ImageWithCaption src="/Professional/image-asset (11).webp" alt="Final Hypnose prototype" caption="More importantly, OU Libraries now offers free training on all the tech associated with this project..." />
       </CollapsibleSection>
 
       <CollapsibleSection title="NavApp — Indoor wayfinding GPS and library guide">
-        <p>We are in a second proof-of-concept stage for a mobile app that guides users through large indoor spaces while providing a plethora of location-based info and relevant push notifications (e.g. events, technology tutorials, etc.) along the way.</p>
+        <ImageWithCaption src="/Professional/image-asset (12).webp" alt="NavApp download graphic" />
+
+        <p>We are in a second proof-of-concept stage for a mobile app that guides users through large indoor spaces while providing a plethora of location-based info and relevant push notifications (e.g. events, technology tutorials, etc.) along the way. The ongoing OU Libraries-based pilot program paved the way for a campus-wide rollout of this cutting edge technology.</p>
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
+          <li>Integration of online/offline University of Oklahoma user experience by providing real-time, turn-by-turn navigation.</li>
+          <li>Delivery of hyper-local contents, corresponding to the user's location with respect to campus resources both indoors and out.</li>
+          <li>Powerful analytics capabilities for analyzing space, service, and technology usage throughout navigable areas.</li>
+          <li>Associated utilities to assist disabled users and aid in emergency situations.</li>
+        </ul>
         <p>People tend to refer to the central routing feature as "indoor GPS". It's accurate at up to a meter and it fulfills a goal we started focusing on early last year: simplify an extraordinarily complex physical environment.</p>
+        <p>Bizzell, after all, is huge and filled with services. Our aim from the beginning was to put an end to the intimidation factor that new students might feel when visiting the library for the first time, while making our diverse services visible to visitors using an increasingly prevalent piece of pocket-sized hardware, the smartphone.</p>
 
         <ImageWithCaption src="/Professional/image-asset (13).webp" alt="NavApp" />
         
-        <p>At the end of the 2015/16 academic year - the first semester where the NavApp was available for (free) public download - ~2,000+ unique users had downloaded and engaged with this innovative wayfinding tool.</p>
-
-        <ImageWithCaption src="/Professional/image-asset (14).webp" alt="NavApp Usage" />
+        <p>At the end of the 2015/16 academic year - the first semester where the NavApp was available for (free) public download - ~2,000+ unique users had downloaded and engaged with this innovative wayfinding tool. Indeed, our engagement factor was particularly encouraging, with back-end analytics indicating that individual users accessed more than 16 in-app screens on average.</p>
+        <p>Finally, the press responded positively to the NavApp, and we even received national awards for our work on this project.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
           <iframe title="NavApp Indoor Wayfinding Demonstration Video" width="100%" height="100%" src="https://www.youtube.com/embed/tTpuYP1of1I?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
@@ -586,11 +613,14 @@ export function ProfessionalContent() {
       </CollapsibleSection>
 
       <CollapsibleSection title="OVAL 1.0 — Multiplayer VR 3D classroom uploader">
-        <p>After months of R&D, OVAL 1.0 is ready for use. With this hardware/software platform, instructors and researchers alike can quickly populate a custom learning space with fully interactive 3D objects from any field.</p>
+        <ImageWithCaption src="/Professional/image-asset (14).webp" alt="OVAL logo" />
+
+        <p>After months of R&D, OVAL 1.0 is ready for use. With this hardware/software platform, instructors and researchers alike can quickly populate a custom learning space with fully interactive 3D objects from any field. Then, they can share the analysis of those models across a network of virtual reality headsets - regardless of physical location or technical expertise.</p>
+        <p>In this way, you are free to take your students or co-researchers into the "field" without leaving campus.</p>
         
         <ImageWithCaption src="/Professional/image-asset (15).webp" alt="RNA fly-through" caption="CHEM 4923, group RNA fly-through." />
 
-        <p>Not only are previously imperceptible/fragile/distant objects (like chemical molecules, museum artifacts, historical sites, etc.) readily accessible in this shared learning environment, but - using our public facing file uploader - even the most novice users can easily drag-and-drop their 3D files into virtual space for collaborative research and instruction in virtual reality.</p>
+        <p>Not only are previously imperceptible/fragile/distant objects (like chemical molecules, museum artifacts, historical sites, etc.) readily accessible in this shared learning environment, but - using our public facing file uploader - even the most novice users can easily drag-and-drop their 3D files into virtual space for collaborative research and instruction in virtual reality. Simply upload and sit down to begin.</p>
 
         <ImageWithCaption src="/Professional/image-asset (16).webp" alt="VR Workstation" caption="Custom fabricated, library-designed VR workstation - courtesy of OU Physics dept." />
 
@@ -600,8 +630,6 @@ export function ProfessionalContent() {
 
         <p>"The impact on the students this week was immeasurable", says one OU faculty member who has already incorporated the OVAL into her coursework. How can we help you achieve the same impact?</p>
 
-        <ImageWithCaption src="/Professional/image-asset (18).webp" alt="OVAL usage" />
-
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
           <iframe title="OVAL 1.0 Multiplayer VR Classroom Demonstration Video" width="100%" height="100%" src="https://www.youtube.com/embed/tmL3T28Ud1k?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
         </div>
@@ -609,6 +637,10 @@ export function ProfessionalContent() {
 
       <CollapsibleSection title="3D Scanning - Experiments & Implications — Field scans & botany trials">
         <p>My current professional focus on 3D visualization has led to experimentation with a host of scanning solutions. Basically, the goal is a more accurate digitization - an interactive snapshot with searchable/browsable depth.</p>
+        <p>The 3D assets below were generated using the Sony DSC-RX100 for capturing high-definition, multi-angle stills of the specimens and Autodesk Memento for stitching those stills together into a surface mesh.</p>
+        <p>Please reach out if you have a collection, antique, artifact, or specimen that you would like to see preserved in this robust digital format.</p>
+
+        <ImageWithCaption src="/Professional/image-asset (18).webp" alt="3D scanning diagram" />
         
         <p>The above prickly pear scan isn't perfect, but it's the only usable botanical scan that I've managed to generate after a half-dozen tries. Narrow-width connecting components (e.g. stems) in particular seem to disappear during Autodesk's cloud-based stitching process...</p>
 
@@ -687,7 +719,7 @@ export function ContactContent() {
       } else {
         setStatus('error');
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
     }
   };
@@ -904,6 +936,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 14, Supabase (PostgreSQL), Cloudflare R2, Sharp, MediaPipe WASM, PDFKit</span></li>
         </ul>
+        <ProjectLink href="https://chatpak.store/" />
         <TechnicalPreview src="/Professional/chatpak-mockup.png" alt="Chatpak Photobook Mockup" caption="AI-powered photobook design layouts." />
       </CollapsibleSection>
 
@@ -912,6 +945,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, OpenCV, NCNN, Bash, Edge AI, YOLO</span></li>
         </ul>
+        <ProjectLink href="https://github.com/Cook4986/rook-sensor" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/rook-sensor/main/assets/architecture.png" alt="Rook Sensor Pipeline Architecture" caption="Rook object detection pipeline architecture." invert={true} pad={true} />
       </CollapsibleSection>
 
@@ -920,6 +954,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 15, FastAPI, Supabase, LLM APIs</span></li>
         </ul>
+        <ProjectLink href="https://github.com/Cook4986/scribble" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/scribble/main/web/public/logo.svg" alt="Scribble Logo" caption="Scribble archival document transcription platform." invert={true} pad={true} />
       </CollapsibleSection>
 
@@ -928,6 +963,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: React 18, Three.js, Manifold-3D</span></li>
         </ul>
+        <ProjectLink href="https://slice-it-chi.vercel.app" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/SliceIT/main/Slice%20It.png" alt="Slice It Interface" caption="Browser-based mesh slicing." />
       </CollapsibleSection>
 
@@ -936,6 +972,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: React, Three.js, React Three Fiber</span></li>
         </ul>
+        <ProjectLink href="https://autotomb.pages.dev" />
         <TechnicalPreview src="/Professional/throughputAFrame_Cook2025.jpg" alt="Digital Giza Twin Interface" caption="Digital Giza Twin WebGL visualization pipeline." />
       </CollapsibleSection>
 
@@ -944,6 +981,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Selenium, OpenAI API, UMAP, Meshy API, AFrame</span></li>
         </ul>
+        <ProjectLink href="https://github.com/Cook4986/AutoTomb" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/AutoTomb/main/autotombScreencap.png" alt="AutoTomb Unity Screencap" caption="AutoTomb generated models visualized in Unity." />
       </CollapsibleSection>
 
@@ -952,6 +990,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Apify, ETL pipelines</span></li>
         </ul>
+        <ProjectLink href="https://github.com/Cook4986/nieto" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/nieto/main/header.png" alt="Nieto Network" caption="Experimental Music Network." />
       </CollapsibleSection>
 

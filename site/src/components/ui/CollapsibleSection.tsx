@@ -74,7 +74,7 @@ export default function CollapsibleSection({ title, children, defaultOpen = fals
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div style={{ padding: '20px' }}>
+          <div className="collapsible-section-body" style={{ padding: '20px' }}>
             {children}
           </div>
         </div>

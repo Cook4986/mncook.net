@@ -101,6 +101,7 @@ export const projects: Project[] = [
     tags: ['Three.js', 'React', 'Next.js', 'Blender', 'Python'],
     emoji: '🏛️',
     url: 'https://github.com/Cook4986/AutoTomb',
+    liveUrl: 'https://autotomb.pages.dev',
   },
   {
     id: 'scribble',
@@ -133,6 +134,7 @@ export const projects: Project[] = [
     description: 'NEH-funded microcontroller frame for 3D-printed museum artifacts. Raspberry Pi + accelerometer drives interactive digital overlays.',
     tags: ['Raspberry Pi', 'Python', 'Arduino', '3D Printing'],
     emoji: '🔧',
+    url: 'https://infosci.arizona.edu/research-areas/cultural-heritage-humanities-archives',
   },
   {
     id: 'sparq',
@@ -140,6 +142,7 @@ export const projects: Project[] = [
     description: 'Tangible maze interface for meditation practice. Laser-cut acrylic with embedded LEDs and capacitive touch sensing.',
     tags: ['Arduino', 'Laser Cutting', 'Electronics', 'UX'],
     emoji: '🌀',
+    url: 'https://crln.acrl.org/index.php/crlnews/article/view/9328/10444',
   },
   {
     id: 'nieto',
