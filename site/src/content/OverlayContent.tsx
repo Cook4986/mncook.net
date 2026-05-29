@@ -8,10 +8,11 @@
 import React, { useState } from 'react';
 import CollapsibleSection from '../components/ui/CollapsibleSection';
 import { publications, fiction, bizarreBooks } from './data';
+import { RitualDossier } from '../app/ritual/RitualExperience';
 
 const CactusFooter = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '60px 0 20px 0', opacity: 0.45 }}>
-    <img src="/cactus-icon.png" alt="Cactus Mark" style={{ width: '28px', height: 'auto', filter: 'brightness(0) invert(1)' }} />
+    <img src="/cactus-icon.png" alt="Cactus Mark" loading="lazy" style={{ width: '28px', height: 'auto', filter: 'brightness(0) invert(1)' }} />
   </div>
 );
 
@@ -33,6 +34,7 @@ const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { 
       <img 
         src={src} 
         alt={alt} 
+        loading="lazy"
         style={{ 
           maxWidth: '100%', 
           maxHeight: '260px', 
@@ -45,17 +47,15 @@ const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { 
   </div>
 );
 
-const ProjectLink = ({ href, children = 'Open project' }: { href: string, children?: React.ReactNode }) => (
-  <p style={{ marginTop: '16px' }}>
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: 'var(--ivory)', textDecoration: 'underline', textUnderlineOffset: '3px' }}
-    >
-      {children}
-    </a>
-  </p>
+const ProjectName = ({ href, children }: { href: string, children: React.ReactNode }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ color: 'var(--ivory)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: '3px' }}
+  >
+    {children}
+  </a>
 );
 
 // --- SPATIAL ---
@@ -72,7 +72,7 @@ const ImageWithCaption = ({ src, alt, caption }: { src: string, alt: string, cap
         e.currentTarget.style.filter = 'brightness(1)';
     }}
   >
-    <img src={src} alt={alt} style={{ maxWidth: '100%', height: 'auto', borderRadius: '6px', boxShadow: '0 12px 30px rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)' }} />
+    <img src={src} alt={alt} loading="lazy" style={{ maxWidth: '100%', height: 'auto', borderRadius: '6px', boxShadow: '0 12px 30px rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)' }} />
     {caption && <p style={{ fontSize: '0.85rem', color: 'var(--ivory-dim)', marginTop: '12px', fontStyle: 'italic', padding: '0 10%' }}>{caption}</p>}
   </div>
 );
@@ -399,6 +399,7 @@ export function AudiovisualContent() {
             >
               <button 
                 onClick={() => setActiveVideo(null)}
+                aria-label="Close video"
                 style={{
                   position: 'absolute',
                   top: '12px',
@@ -486,7 +487,7 @@ export function ProfessionalContent() {
       <CollapsibleSection title="3D Research Data Curation Framework (3DFrame) — Scholarly 3D data curation">
         <ImageWithCaption src="/Professional/3DF_testLogo3.webp" alt="3DF Logo" />
         
-        <p>Deployed in virtual and augmented reality, 3D models provide the means for researchers and students to remotely experience diverse scholarly materials first-hand, though this content seldom finds its way into institutional repositories or peer-reviewed literature where it could be reused and cited. Currently, these methods are dispersed; an no single discipline, institution, or practitioner has yet to document a truly citable 3D curation method.</p>
+        <p>Deployed in virtual and augmented reality, 3D models provide the means for researchers and students to remotely experience diverse scholarly materials first-hand, though this content seldom finds its way into institutional repositories or peer-reviewed literature where it could be reused and cited. Currently, these methods are dispersed; and no single discipline, institution, or practitioner has yet to document a truly citable 3D curation method.</p>
         <p>The IMLS-funded 3D Research Data Curation Framework (3DFrame) grant is our attempt to conceptually unite interrelated - but administratively disparate - 3D data production, immersive analytics, and preservation methods, which combine to connect a range of computational processes. Our goal: ensure the scholarly rigor of 3D contents, thereby preserving these materials as credible, FAIR primary sources for downstream citation by researchers across disciplines. Here's 3DF so far...</p>
         
         <ImageWithCaption src="/Professional/UofU_3DF_8.webp" alt="UofU 3DF" />
@@ -932,67 +933,80 @@ export function TechnicalContent() {
       </p>
 
       <CollapsibleSection title="Chatpak — Photobook design generator and layout pipeline">
-        <p>An automated publishing platform that transforms photo collections into professional, print-ready hardcover photobooks. Features intelligent AI-powered layout, golden ratio tiling (φ = 1.618), instant preview generation, and premium print quality.</p>
+        <p><ProjectName href="https://chatpak.store/">Chatpak</ProjectName> is an automated publishing platform that transforms photo collections into professional, print-ready hardcover photobooks. Features intelligent AI-powered layout, golden ratio tiling (φ = 1.618), instant preview generation, and premium print quality.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 14, Supabase (PostgreSQL), Cloudflare R2, Sharp, MediaPipe WASM, PDFKit</span></li>
         </ul>
-        <ProjectLink href="https://chatpak.store/" />
         <TechnicalPreview src="/Professional/chatpak-mockup.png" alt="Chatpak Photobook Mockup" caption="AI-powered photobook design layouts." />
       </CollapsibleSection>
 
       <CollapsibleSection title="Rook Sensor — YOLO-based edge AI object detection">
-        <p>An edge-computing surveillance and intelligence gathering pipeline designed to run on constrained hardware (Raspberry Pi). It serves as an SMS-based street monitoring device utilizing custom YOLO models for real-time object detection with low thermal overhead.</p>
+        <p><ProjectName href="https://github.com/Cook4986/rook-sensor">Rook Sensor</ProjectName> is an edge-computing surveillance and intelligence gathering pipeline designed to run on constrained hardware (Raspberry Pi). It serves as an SMS-based street monitoring device utilizing custom YOLO models for real-time object detection with low thermal overhead.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, OpenCV, NCNN, Bash, Edge AI, YOLO</span></li>
         </ul>
-        <ProjectLink href="https://github.com/Cook4986/rook-sensor" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/rook-sensor/main/assets/architecture.png" alt="Rook Sensor Pipeline Architecture" caption="Rook object detection pipeline architecture." invert={true} pad={true} />
       </CollapsibleSection>
 
       <CollapsibleSection title="Scribble — Archival document OCR transcription platform">
-        <p>An archival document transcription tool for non-technical researchers. It empowers users to transcribe and natively translate image-based document collections at scale. Researchers upload batches of archival photographs (JPEG, PNG, HEIC, PDF) and receive structured transcription packages via email.</p>
+        <p><ProjectName href="https://github.com/Cook4986/scribble">Scribble</ProjectName> is an archival document transcription tool for non-technical researchers. It empowers users to transcribe and natively translate image-based document collections at scale. Researchers upload batches of archival photographs (JPEG, PNG, HEIC, PDF) and receive structured transcription packages via email.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 15, FastAPI, Supabase, LLM APIs</span></li>
         </ul>
-        <ProjectLink href="https://github.com/Cook4986/scribble" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/scribble/main/web/public/logo.svg" alt="Scribble Logo" caption="Scribble archival document transcription platform." invert={true} pad={true} />
       </CollapsibleSection>
 
       <CollapsibleSection title="SliceIT — Browser-based WebGL mesh processing WASM slicer">
-        <p>A browser-based tool for slicing 3D meshes using boolean operations. Drop a model, pick a tool, press one button — done. Completely client-side with no installs or sign-ups required.</p>
+        <p><ProjectName href="https://slice-it-chi.vercel.app">SliceIT</ProjectName> is a browser-based tool for slicing 3D meshes using boolean operations. Drop a model, pick a tool, press one button — done. Completely client-side with no installs or sign-ups required.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: React 18, Three.js, Manifold-3D</span></li>
         </ul>
-        <ProjectLink href="https://slice-it-chi.vercel.app" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/SliceIT/main/Slice%20It.png" alt="Slice It Interface" caption="Browser-based mesh slicing." />
       </CollapsibleSection>
 
       <CollapsibleSection title="Digital Giza Twin — Level-of-Detail 3D spatial index map">
-        <p>An interactive 3D Spatial Index for navigating the Digital Giza Corpus. It features a Level of Detail (LOD) system where landmarks scale by zoom, a click-to-explore tomb info panel, and dynamically scraped inline corpus media (photographs, maps, diaries).</p>
+        <p><ProjectName href="https://autotomb.pages.dev">Digital Giza Twin</ProjectName> is an interactive 3D Spatial Index for navigating the Digital Giza Corpus. It features a Level of Detail (LOD) system where landmarks scale by zoom, a click-to-explore tomb info panel, and dynamically scraped inline corpus media (photographs, maps, diaries).</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: React, Three.js, React Three Fiber</span></li>
         </ul>
-        <ProjectLink href="https://autotomb.pages.dev" />
         <TechnicalPreview src="/Professional/throughputAFrame_Cook2025.jpg" alt="Digital Giza Twin Interface" caption="Digital Giza Twin WebGL visualization pipeline." />
       </CollapsibleSection>
 
       <CollapsibleSection title="AutoTomb — Unity diary-to-3D pipelines and XR coordinate logger">
-        <p>A pipeline that takes Digital Giza tomb pages and returns a set of AI-generated 3D models corresponding to ancient Egyptian object references mentioned in early 20th-century excavation diaries. It logs prompts, local outputs, and X,Y,Z coordinates for placing models in downstream XR environments.</p>
+        <p><ProjectName href="https://github.com/Cook4986/AutoTomb">AutoTomb</ProjectName> is a pipeline that takes Digital Giza tomb pages and returns a set of AI-generated 3D models corresponding to ancient Egyptian object references mentioned in early 20th-century excavation diaries. It logs prompts, local outputs, and X,Y,Z coordinates for placing models in downstream XR environments.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Selenium, OpenAI API, UMAP, Meshy API, AFrame</span></li>
         </ul>
-        <ProjectLink href="https://github.com/Cook4986/AutoTomb" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/AutoTomb/main/autotombScreencap.png" alt="AutoTomb Unity Screencap" caption="AutoTomb generated models visualized in Unity." />
       </CollapsibleSection>
 
       <CollapsibleSection title="Nieto — Concurrent data scrapers of regional music event networks">
-        <p>Automated information gathering pipeline focused on the experimental music scene across Germany, Austria, and Switzerland. Orchestrates concurrent data extraction and network mapping.</p>
+        <p><ProjectName href="https://github.com/Cook4986/nieto">Nieto</ProjectName> is an automated information gathering pipeline focused on the experimental music scene across Germany, Austria, and Switzerland. It orchestrates concurrent data extraction and network mapping.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Apify, ETL pipelines</span></li>
         </ul>
-        <ProjectLink href="https://github.com/Cook4986/nieto" />
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/nieto/main/header.png" alt="Nieto Network" caption="Experimental Music Network." />
       </CollapsibleSection>
+
+      <CactusFooter />
+      <div style={{ height: '40px' }} />
+    </div>
+  );
+}
+
+export function RitualContent() {
+  return (
+    <div style={{ height: '100%', overflowY: 'auto' }}>
+      <RitualDossier embedded />
+
+      <div style={{ padding: '0 20px' }}>
+        <CollapsibleSection title="Coming additions — weird events and experiments">
+        <p>
+          This section is meant to grow: odd field reports, occult-adjacent experiments, archival rabbit holes, coincidence logs,
+          and other current obsessions that need a place between research note and story.
+        </p>
+        </CollapsibleSection>
+      </div>
 
       <CactusFooter />
       <div style={{ height: '40px' }} />

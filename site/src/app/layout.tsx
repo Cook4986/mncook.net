@@ -4,7 +4,7 @@ import "./globals.css";
 
 const eczar = Eczar({ 
   subsets: ['latin'], 
-  weight: ['400', '700'],
+  weight: ['400'],
   variable: '--font-display',
   display: 'swap',
 });

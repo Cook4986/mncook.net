@@ -13,7 +13,7 @@ new_prof = """export function ProfessionalContent() {
         As Digital Scholarship Program Manager for Harvard Library (and, formerly, as Head of Emerging Technologies for the University of Oklahoma Libraries), I explore/develop/deploy tech for research and instructional purposes.
       </p>
       <p style={{ marginBottom: '32px', color: 'var(--ivory)', fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: '1.6' }}>
-        Below are a few examples, and <a href="https://mncook.net/s/CookCV_Fall-2025.pdf" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)', textDecoration: 'underline' }}>here is a CV link</a> detailing work projects, professional service, and associated talks/publications. Please don't hesitate to reach out (matt@mncook.net) to collaborate.
+        Below are a few examples. Please don't hesitate to reach out (matt@mncook.net) to collaborate.
       </p>
 
       <CollapsibleSection title="3D Research Data Curation Framework (3DFrame)">

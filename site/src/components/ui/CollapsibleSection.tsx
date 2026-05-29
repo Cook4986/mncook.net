@@ -10,6 +10,17 @@ interface CollapsibleSectionProps {
 
 export default function CollapsibleSection({ title, children, defaultOpen = false }: CollapsibleSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  // Defer mounting the body (and any heavy third-party iframes within) until
+  // the section is first opened. Once mounted it stays mounted so the
+  // collapse animation still has content to animate on subsequent toggles.
+  const [hasOpened, setHasOpened] = useState(defaultOpen);
+
+  const toggle = () => {
+    setIsOpen((prev) => {
+      if (!prev) setHasOpened(true);
+      return !prev;
+    });
+  };
 
   const renderTitle = () => {
     const parts = title.split(' — ');
@@ -37,7 +48,8 @@ export default function CollapsibleSection({ title, children, defaultOpen = fals
   return (
     <div style={{ marginBottom: '16px', border: '1px solid var(--rule-dark)', borderRadius: '8px', overflow: 'hidden' }}>
       <button 
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggle}
+        aria-expanded={isOpen}
         style={{
           width: '100%',
           display: 'flex',
@@ -74,8 +86,8 @@ export default function CollapsibleSection({ title, children, defaultOpen = fals
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="collapsible-section-body" style={{ padding: '20px' }}>
-            {children}
+          <div className="collapsible-section-body" style={{ padding: '20px' }} hidden={!isOpen && !hasOpened}>
+            {hasOpened ? children : null}
           </div>
         </div>
       </div>

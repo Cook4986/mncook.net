@@ -22,9 +22,9 @@ export default function AudiovisualPage() {
         </div>
 
         <div style={{ marginTop: '40px' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', marginBottom: '24px', color: 'var(--ink)' }}>Bizzarre Books</h2>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', marginBottom: '24px', color: 'var(--ink)' }}>Bizarre Books</h2>
           <div style={{ marginBottom: '60px' }}>
-            <iframe width="100%" height="450" src="https://www.youtube.com/embed/vmTXjTLKYfs?feature=oembed" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen title="Bizzarre Books: Sacrifice in the Stacks" style={{ borderRadius: '12px' }}></iframe>
+            <iframe width="100%" height="450" loading="lazy" src="https://www.youtube.com/embed/vmTXjTLKYfs?feature=oembed" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen title="Bizarre Books: Sacrifice in the Stacks" style={{ borderRadius: '12px' }}></iframe>
           </div>
 
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', marginBottom: '24px', color: 'var(--ink)' }}>Songs</h2>

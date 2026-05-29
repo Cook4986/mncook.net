@@ -9,7 +9,7 @@ import TerrainMesh from './TerrainMesh';
 import ContentPins, { PIN_ORDER, type PinSelectOrigin } from './ContentPins';
 import Atmosphere from './Atmosphere';
 import AlchemicalLoader from './AlchemicalLoader';
-import { SpatialContent, TextualContent, TechnicalContent, AudiovisualContent, ProfessionalContent, ContactContent } from '@/content/OverlayContent';
+import { SpatialContent, TextualContent, TechnicalContent, AudiovisualContent, ProfessionalContent, ContactContent, RitualContent } from '@/content/OverlayContent';
 
 /* Roman numeral helper (1..399 is more than enough for folio markers). */
 function roman(n: number): string {
@@ -34,6 +34,7 @@ const OVERLAY_MAP: Record<string, { title: string; component: React.ReactNode }>
   spatial: { title: 'Spatial', component: <SpatialContent /> },
   audiovisual: { title: 'Audiovisual', component: <AudiovisualContent /> },
   technical: { title: 'Technical', component: <TechnicalContent /> },
+  ritual: { title: 'Ritual', component: <RitualContent /> },
   contact: { title: 'Contact', component: <ContactContent /> },
 };
 
@@ -113,6 +114,13 @@ export default function TerrainScene() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [renderedPin, isClosing]);
+
+  // Clear any pending close timeout if the scene unmounts mid-animation.
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    };
+  }, []);
 
   const folio = renderedPin ? roman(PIN_ORDER[renderedPin] ?? 1) : '';
 
@@ -197,6 +205,9 @@ export default function TerrainScene() {
 
           <div
             className={`annotation-overlay ${isClosing ? 'closing' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label={OVERLAY_MAP[renderedPin].title}
             style={{
               position: 'fixed',
               width: 'min(92vw, 900px)',
@@ -230,6 +241,7 @@ export default function TerrainScene() {
 
             <button
               onClick={handleClose}
+              aria-label="Close"
               style={{
                 position: 'absolute',
                 top: 'clamp(12px, 3vw, 20px)',

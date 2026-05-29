@@ -1,34 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# mncook.net
 
-## Getting Started
+Personal portfolio for Matt Cook — spatial computing, digital humanities, and creative practice. A statically exported Next.js site with an interactive React Three Fiber landing scene and themed content sections (Textual, Professional, Spatial, Audiovisual, Technical, Ritual, Contact).
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, `output: 'export'` — static site)
+- **React 19**
+- **three / @react-three/fiber / @react-three/drei / @react-three/postprocessing** — the hero gem scene, content pins, and atmosphere
+- **next/font** (Eczar, IM Fell English, Rajdhani — self-hosted)
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build & deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build    # static export to ./out
+```
 
-## Learn More
+The site is deployed to GitHub Pages (custom domain via `public/CNAME`). Static assets that mirror the legacy Squarespace URLs (PDFs, audio) live in `public/s/`.
 
-To learn more about Next.js, take a look at the following resources:
+## Project layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/app/` — routes. `page.tsx` is the 3D landing; each section also has a standalone warm-themed route.
+- `src/components/canvas/` — the WebGL scene (`TerrainScene`, `TerrainMesh`, `ContentPins`, `Atmosphere`, procedural `sigils`).
+- `src/components/ui/` — `SiteNav`, `Footer`, `CollapsibleSection`.
+- `src/content/` — `data.ts` (publications, projects, fiction, episodes) and `OverlayContent.tsx` (modal section content).
+- `public/` — images, audio/PDF assets (`s/`), section header images (`headers/`), and the `.glb` model.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> Note: the root-level `*.py` and `*_layout.{html,txt}` files are one-time Squarespace migration artifacts and are not part of the build.
 
-## Deploy on Vercel
+## Contact
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The contact form posts to [Web3Forms](https://web3forms.com). Set `NEXT_PUBLIC_WEB3FORMS_KEY` to override the access key.

@@ -107,15 +107,6 @@ h2 { font-size: 1.8rem; line-height: 1.25; }
 h3 { font-size: 1.3rem; line-height: 1.35; }
 h4 { font-size: 1.05rem; line-height: 1.4; }
 
-.mono {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--ink-faint);
-}
-
 /* ============================================================
    DARK SECTION (Landing / Hero)
    ============================================================ */
@@ -133,14 +124,22 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
   color: var(--ivory);
 }
 
-.section-dark .mono { color: var(--ivory-dim); }
-
 /* ============================================================
    WARM SECTION (Content pages)
    ============================================================ */
 .section-warm {
   background: var(--paper);
   color: var(--ink);
+
+  /* The global --accent is pure white for the dark hero. On the cream/white
+     warm pages that renders eyebrow labels, links, focus rings, and text
+     selection invisible, so re-scope the accent tokens to the ink family
+     here. The cascade carries this into :focus-visible and ::selection for
+     any element inside a warm section. */
+  --accent:       var(--ink);
+  --accent-light: var(--ink-mid);
+  --accent-glow:  rgba(26, 26, 46, 0.20);
+  --accent-dim:   rgba(26, 26, 46, 0.08);
 }
 
 /* Paper texture overlay (from Scribble) */
@@ -202,43 +201,6 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
 .nav-logo--dark { color: var(--ink); }
 .nav-logo--dark:hover { color: var(--ink); }
 
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-}
-
-.nav-link {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ivory-dim);
-  text-decoration: none;
-  padding: 4px 0;
-  position: relative;
-  transition: color var(--duration) var(--ease);
-}
-.nav-link:hover { color: var(--ivory); text-decoration: none; }
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0%;
-  height: 1px;
-  background: var(--accent);
-  transition: width var(--duration) var(--ease);
-}
-.nav-link:hover::after { width: 100%; }
-.nav-link--active { color: var(--accent-light); }
-.nav-link--active::after { width: 100%; }
-
-.nav-link--dark { color: var(--ink-light); }
-.nav-link--dark:hover { color: var(--ink); text-decoration: none; }
-
 /* ============================================================
    HERO / TERRAIN LANDING
    ============================================================ */
@@ -256,69 +218,6 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
   position: absolute;
   inset: 0;
   z-index: 0;
-}
-
-.hero-overlay {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  pointer-events: none;
-}
-
-.hero-title {
-  font-family: var(--font-display);
-  font-size: 4.5rem;
-  font-weight: 400;
-  color: var(--ivory);
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-  text-shadow: 0 4px 30px rgba(0,0,0,0.5);
-  margin-bottom: 12px;
-}
-
-.hero-subtitle {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--ivory-dim);
-  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
-}
-
-.hero-scroll-hint {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--ivory-dim);
-  animation: float 3s ease-in-out infinite;
-}
-
-.hero-scroll-hint span {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-}
-
-.hero-scroll-chevron {
-  width: 20px;
-  height: 20px;
-  border-right: 1.5px solid var(--ivory-dim);
-  border-bottom: 1.5px solid var(--ivory-dim);
-  transform: rotate(45deg);
-  opacity: 0.5;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
 }
 
 /* ============================================================
@@ -362,70 +261,6 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
 
 .collapsible-section-body > p + p {
   margin-top: 1rem;
-}
-
-/* ============================================================
-   THEME CARDS (Homepage: four pillars)
-   ============================================================ */
-.theme-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
-.theme-card {
-  position: relative;
-  background: #fff;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-lg);
-  padding: 32px 28px;
-  cursor: pointer;
-  transition: all var(--duration) var(--ease);
-  overflow: hidden;
-  text-decoration: none;
-  color: var(--ink);
-  display: flex;
-  flex-direction: column;
-  min-height: 200px;
-}
-
-.theme-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px var(--paper-shadow);
-  border-color: var(--accent);
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.theme-card-icon {
-  font-size: 2rem;
-  margin-bottom: 16px;
-}
-
-.theme-card-title {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-
-.theme-card-desc {
-  font-size: 0.92rem;
-  color: var(--ink-light);
-  line-height: 1.6;
-  flex: 1;
-}
-
-.theme-card-link {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--accent);
-  margin-top: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 
 /* ============================================================
@@ -550,64 +385,6 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
 }
 
 /* ============================================================
-   TIMELINE (Spatial page)
-   ============================================================ */
-.timeline {
-  position: relative;
-  padding-left: 40px;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 15px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--rule);
-}
-
-.timeline-entry {
-  position: relative;
-  padding-bottom: 48px;
-}
-
-.timeline-dot {
-  position: absolute;
-  left: -33px;
-  top: 6px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid var(--paper);
-  box-shadow: 0 0 0 3px var(--accent-dim);
-}
-
-.timeline-year {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  margin-bottom: 6px;
-}
-
-.timeline-title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-
-.timeline-text {
-  font-size: 0.95rem;
-  color: var(--ink-mid);
-  line-height: 1.7;
-  max-width: 650px;
-}
-
-/* ============================================================
    FOOTER
    ============================================================ */
 .site-footer {
@@ -643,45 +420,14 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
-  .hero-title { font-size: 2.6rem; }
   .content-section { padding: 60px 20px; }
-  .theme-grid { grid-template-columns: 1fr; }
   .project-grid { grid-template-columns: 1fr; }
   .site-nav { padding: 0 20px; }
-  .nav-links { gap: 16px; }
-  .nav-link { font-size: 0.6rem; letter-spacing: 0.1em; }
   h1 { font-size: 2rem; }
   h2 { font-size: 1.4rem; }
   .site-footer { flex-direction: column; gap: 20px; align-items: flex-start; }
-  .timeline { padding-left: 30px; }
-  .timeline::before { left: 10px; }
-  .timeline-dot { left: -27px; }
 }
 
 @media (max-width: 480px) {
-  .hero-title { font-size: 2rem; }
-  .nav-links { display: none; }
   .content-section { padding: 48px 16px; }
-}
-
-/* ============================================================
-   OVERLAY SCROLL CONTENT
-   ============================================================ */
-.overlay-scroll-content {
-  max-height: 100%;
-  overflow-y: auto;
-  padding-right: 16px;
-  /* Custom scrollbar for overlay */
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-}
-.overlay-scroll-content::-webkit-scrollbar {
-  width: 6px;
-}
-.overlay-scroll-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-.overlay-scroll-content::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
 }

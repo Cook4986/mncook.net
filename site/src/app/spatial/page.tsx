@@ -43,7 +43,7 @@ export default function SpatialPage() {
             When you're 50 miles from the nearest medical facility, clustering illusions ("bad news comes in threes") sometimes appear more than psychologically grounded. In this case, it was a trio of near misses that spurred fanciful conjecture of the most preposterous sort.
           </p>
           <p style={{ marginBottom: '24px' }}>
-            We encountered our first threat during a routine trek from the nearest vehicle parking - off Magnolia, ~30 miles from Tucumcari - through an overgrowth of Cane Cholla (Cylindropuntia imbricata), Desert Spoon (asylirion wheeler), and Desert Prickly Pear (Opuntia phaeacantha). It was the Prickly Pear (sweet, but seedy) that sheltered our attacker.
+            We encountered our first threat during a routine trek from the nearest vehicle parking - off Magnolia, ~30 miles from Tucumcari - through an overgrowth of Cane Cholla (Cylindropuntia imbricata), Desert Spoon (Dasylirion wheeleri), and Desert Prickly Pear (Opuntia phaeacantha). It was the Prickly Pear (sweet, but seedy) that sheltered our attacker.
           </p>
 
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '40px 0 16px', color: 'var(--ink)' }}>The Rattler Encounter</h3>
@@ -73,7 +73,7 @@ export default function SpatialPage() {
           
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '40px 0 16px', color: 'var(--ink)' }}>A Decade On (2020-2024)</h3>
           <p style={{ marginBottom: '24px' }}>
-            New Job, now house, new baby. COVID. Missed a year, which I hope will never happen again. Fortunately, we were back in ‘21, and every year since, despite the vast distances that separate the New England coast from the desert Southwest.
+            New job, new house, new baby. COVID. Missed a year, which I hope will never happen again. Fortunately, we were back in ‘21, and every year since, despite the vast distances that separate the New England coast from the desert Southwest.
           </p>
           <p style={{ marginBottom: '24px' }}>
             This year marks 10 years since development on "the property"/"Porcupine Ranch"/"mini mesa" began in earnest. Of course I mean development in the broadest sense; more of the self-improvement than commercial variety, as evidenced by the scale and nature of actual structures on the land: A travel trailer and an outhouse. The truth is that the landscape itself - and time spent within it - make further development superfluous.

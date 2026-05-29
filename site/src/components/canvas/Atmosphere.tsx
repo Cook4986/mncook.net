@@ -765,7 +765,6 @@ export default function Atmosphere() {
     lightningTimer: number;
     lightningFlashCount: number;
     phenomenaTimer: number;
-    cryptkeeperCooldown: number;
     lastActiveAt: number;
     idleApparitionFired: boolean;
   } | null>(null);
@@ -774,7 +773,6 @@ export default function Atmosphere() {
       lightningTimer: 14,
       lightningFlashCount: 0,
       phenomenaTimer: 4,
-      cryptkeeperCooldown: 90,
       lastActiveAt: 0,
       idleApparitionFired: false,
     };
@@ -785,7 +783,6 @@ export default function Atmosphere() {
     if (!s) return;
     s.lightningTimer = 45 + Math.random() * 45; // first lightning strike in 45-90 s (infrequent)
     s.phenomenaTimer = 15 + Math.random() * 20; // first phenomenon in 15-35 s (slower start)
-    s.cryptkeeperCooldown = 60 + Math.random() * 60;
     s.lastActiveAt = performance.now() / 1000;
   }, []);
 
@@ -810,13 +807,11 @@ export default function Atmosphere() {
   }, []);
 
   function rollType(): PhenomenonType {
-    const cooldown = state.current?.cryptkeeperCooldown ?? 0;
     const wheel: Array<[PhenomenonType, number]> = [
       ['pilgrim', 32],
       ['scorpion', 18],
       ['lantern', 16],
       ['whisper', 18],
-      ['cryptkeeper', cooldown <= 0 ? 4 : 0],
     ];
     const total = wheel.reduce((s, [, w]) => s + w, 0);
     let r = Math.random() * total;
@@ -941,7 +936,6 @@ export default function Atmosphere() {
 
     /* PHENOMENA SPAWN DISPATCHER — at most one at a time, with a
        long wait between. Pure anticipation. */
-    s.cryptkeeperCooldown -= delta;
     s.phenomenaTimer -= delta;
     if (s.phenomenaTimer <= 0) {
       if (phenomena.length < 1) {
@@ -953,9 +947,6 @@ export default function Atmosphere() {
           seed: Math.floor(Math.random() * 1024),
         };
         setPhenomena(prev => [...prev, newP]);
-        if (type === 'cryptkeeper') {
-          s.cryptkeeperCooldown = 120 + Math.random() * 90;
-        }
       }
       // 45-90 s between spawns (much slower/reduced frequency, higher anticipation)
       s.phenomenaTimer = 45 + Math.random() * 45;
@@ -970,7 +961,7 @@ export default function Atmosphere() {
       phenomena.length < 1
     ) {
       s.idleApparitionFired = true;
-      const type: PhenomenonType = 'cryptkeeper';
+      const type = rollType();
       const { start, end, duration } = makeSpawnFor(type);
       const idle: Phenomenon = {
         id: `idle-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -979,7 +970,6 @@ export default function Atmosphere() {
         seed: Math.floor(Math.random() * 1024),
       };
       setPhenomena(prev => [...prev, idle]);
-      s.cryptkeeperCooldown = 180 + Math.random() * 60;
     }
   });
 
