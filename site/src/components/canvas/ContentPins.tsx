@@ -31,7 +31,7 @@ const PINS: PinData[] = [
   { id: 'professional', label: 'Professional', rayOrigin: [-10, -5, 10] },
   { id: 'spatial', label: 'Spatial', rayOrigin: [10, 5, -10] },
   { id: 'technical', label: 'Technical', rayOrigin: [0, 15, 0] },
-  { id: 'ritual', label: 'Ritual', rayOrigin: [12, 0, 0] },
+  // NOTE: 'ritual' pin temporarily removed — feature in development, not for production.
   { id: 'audiovisual', label: 'Audiovisual', rayOrigin: [10, -10, 10] },
   { id: 'contact', label: 'Contact', rayOrigin: [0, -15, 0] },
 ];

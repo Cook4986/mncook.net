@@ -9,7 +9,7 @@ import TerrainMesh from './TerrainMesh';
 import ContentPins, { PIN_ORDER, type PinSelectOrigin } from './ContentPins';
 import Atmosphere from './Atmosphere';
 import AlchemicalLoader from './AlchemicalLoader';
-import { SpatialContent, TextualContent, TechnicalContent, AudiovisualContent, ProfessionalContent, ContactContent, RitualContent } from '@/content/OverlayContent';
+import { SpatialContent, TextualContent, TechnicalContent, AudiovisualContent, ProfessionalContent, ContactContent } from '@/content/OverlayContent';
 
 /* Roman numeral helper (1..399 is more than enough for folio markers). */
 function roman(n: number): string {
@@ -34,7 +34,7 @@ const OVERLAY_MAP: Record<string, { title: string; component: React.ReactNode }>
   spatial: { title: 'Spatial', component: <SpatialContent /> },
   audiovisual: { title: 'Audiovisual', component: <AudiovisualContent /> },
   technical: { title: 'Technical', component: <TechnicalContent /> },
-  ritual: { title: 'Ritual', component: <RitualContent /> },
+  // NOTE: 'ritual' overlay temporarily removed — feature in development, not for production.
   contact: { title: 'Contact', component: <ContactContent /> },
 };
 

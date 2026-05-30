@@ -8,7 +8,9 @@
 import React, { useState } from 'react';
 import CollapsibleSection from '../components/ui/CollapsibleSection';
 import { publications, fiction, bizarreBooks } from './data';
-import { RitualDossier } from '../app/ritual/RitualExperience';
+// NOTE: RitualContent / RitualDossier temporarily removed — feature in
+// development, not for production. The source lives in
+// src/app/ritual/RitualExperience.tsx (currently orphaned) for easy restore.
 
 const CactusFooter = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '60px 0 20px 0', opacity: 0.45 }}>
@@ -987,26 +989,6 @@ export function TechnicalContent() {
         </ul>
         <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/nieto/main/header.png" alt="Nieto Network" caption="Experimental Music Network." />
       </CollapsibleSection>
-
-      <CactusFooter />
-      <div style={{ height: '40px' }} />
-    </div>
-  );
-}
-
-export function RitualContent() {
-  return (
-    <div style={{ height: '100%', overflowY: 'auto' }}>
-      <RitualDossier embedded />
-
-      <div style={{ padding: '0 20px' }}>
-        <CollapsibleSection title="Coming additions — weird events and experiments">
-        <p>
-          This section is meant to grow: odd field reports, occult-adjacent experiments, archival rabbit holes, coincidence logs,
-          and other current obsessions that need a place between research note and story.
-        </p>
-        </CollapsibleSection>
-      </div>
 
       <CactusFooter />
       <div style={{ height: '40px' }} />
