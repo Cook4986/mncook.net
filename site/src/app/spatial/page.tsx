@@ -6,7 +6,7 @@ import SiteNav from '@/components/ui/SiteNav';
 import Footer from '@/components/ui/Footer';
 
 export const metadata: Metadata = {
-  title: 'Spatial — M.N. Cook',
+  title: 'Spatial — matt cook',
   description: 'Homesteading in the New Mexico mesalands. Creative inspiration from a blank spot on the map, which is sometimes filled with danger.',
 };
 

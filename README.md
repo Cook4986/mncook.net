@@ -1,6 +1,6 @@
 # mncook.net
 
-Personal site of **Matt Cook** — spatial computing, digital humanities, and creative practice. A single interactive WebGL landing scene (a slowly rotating stibine-mineral "gem" studded with content pins) opens into themed sections: Textual, Professional, Spatial, Audiovisual, Technical, Ritual, and Contact.
+Personal site of **Matt Cook** — spatial computing, digital humanities, and creative practice. A single interactive WebGL landing scene (a slowly rotating stibine-mineral "gem" studded with content pins) opens into themed sections: Textual, Professional, Spatial, Audiovisual, Technical, and Contact.
 
 🌐 **Live:** [mncook.net](https://mncook.net)
 
@@ -37,5 +37,3 @@ npm run build      # static export to site/out
 ## Deploy
 
 Push to `main` — the [`deploy.yml`](.github/workflows/deploy.yml) workflow builds `site/` and publishes `site/out` to GitHub Pages. The `NEXT_PUBLIC_WEB3FORMS_KEY` repository secret supplies the contact-form key at build time.
-
-> The root-level `*.py` and `*_layout.{html,txt}` files are one-time Squarespace migration artifacts and are not part of the build.

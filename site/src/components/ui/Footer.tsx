@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-brand">
-        © {year} Matthew N. Cook
+        © {year} matt cook
       </div>
       <ul className="footer-links">
         <li><Link href="https://github.com/Cook4986" target="_blank" rel="noopener noreferrer">GitHub</Link></li>

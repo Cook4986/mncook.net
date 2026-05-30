@@ -137,12 +137,10 @@ function DustParticles({ count = 150 }) {
    =============================================================== */
 
 type PhenomenonType =
-  | 'aero'
   | 'pilgrim'
   | 'lantern'
   | 'whisper'
-  | 'scorpion'
-  | 'cryptkeeper';
+  | 'scorpion';
 
 interface Phenomenon {
   id: string;
@@ -168,56 +166,6 @@ function useNoiseDrift(seed: number, scale = 0.3, speed = 0.4) {
     out.z = noise2D(time * speed + 200, seed) * scale * 0.5;
     return out;
   };
-}
-
-/* ===============================================================
-   THE AERO — phantom airship.
-   Linework-only sprite + rare lurch + slow swing.
-   =============================================================== */
-function PhenomenonAero({ start, end, duration, onComplete, seed }: PhenomenonProps) {
-  const ref = useRef<THREE.Group>(null);
-  const bodyRef = useRef<THREE.Sprite>(null);
-  const startTime = useRef(0);
-  const { aero } = getSigilTextures();
-  const drift = useMemo(() => new THREE.Vector3(), []);
-  // Tight drift — keeps the airship in its lane within the frustum
-  const sampleDrift = useNoiseDrift(seed * 0.013, 0.12, 0.28);
-
-  useEffect(() => { startTime.current = performance.now() / 1000; }, []);
-
-  useFrame(({ clock }) => {
-    if (!ref.current || startTime.current === 0) return;
-    const t = (clock.elapsedTime - startTime.current) / duration;
-    if (t > 1.0) { onComplete(); return; }
-
-    sampleDrift(clock.elapsedTime, drift);
-
-    // Base path + slow sin bob + rare lurch (lurchY tamed so the
-    // airship can't pop above the viewport during a glitch tick)
-    const lurchX = glitchTick(clock.elapsedTime, seed, 5.0, 0.20) * Math.sin(seed * 31) * 0.6;
-    const lurchY = glitchTick(clock.elapsedTime, seed + 1, 4.5, 0.20) * Math.cos(seed * 19) * 0.2;
-
-    ref.current.position.lerpVectors(start, end, t).add(drift);
-    ref.current.position.x += lurchX;
-    ref.current.position.y += Math.sin(t * Math.PI * 2.8 + seed) * 0.08 + lurchY;
-
-    // Slow tilt swing as it drifts
-    ref.current.rotation.z = Math.sin(clock.elapsedTime * 0.45 + seed) * 0.06;
-
-    if (bodyRef.current) {
-      const mat = bodyRef.current.material as THREE.SpriteMaterial;
-      const env = Math.min(1, Math.sin(t * Math.PI) * 1.8);
-      mat.opacity = env * rareBlink(clock.elapsedTime, seed, 0.4) * 0.92;
-    }
-  });
-
-  return (
-    <group ref={ref}>
-      <sprite ref={bodyRef} scale={[6.2, 3.1, 1]}>
-        <spriteMaterial map={aero} transparent opacity={0} depthWrite={false} toneMapped={false} />
-      </sprite>
-    </group>
-  );
 }
 
 /* ===============================================================
@@ -415,74 +363,6 @@ function PhenomenonScorpion({ start, end, duration, onComplete, seed }: Phenomen
     <sprite ref={ref} scale={[1.6, 1.6, 1]}>
       <spriteMaterial map={scorpion} transparent opacity={0} depthWrite={false} />
     </sprite>
-  );
-}
-
-/* ===============================================================
-   THE CRYPTKEEPER — frequent glitch jumps, long flicker dips.
-   =============================================================== */
-function PhenomenonCryptkeeper({ start, end, duration, onComplete, seed }: PhenomenonProps) {
-  const ref = useRef<THREE.Group>(null);
-  const bodyRef = useRef<THREE.Sprite>(null);
-  const cuffsRef = useRef<THREE.Sprite>(null);
-  const startTime = useRef(0);
-  const { cryptkeeper, cryptkeeperCuffs } = getSigilTextures();
-  const lastGlitchAt = useRef(0);
-  const glitchOffset = useMemo(() => new THREE.Vector3(), []);
-  const fixedPos = useMemo(() => {
-    // Pin at the midpoint so the man in black stays perfectly fixed in space
-    return new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-  }, [start, end]);
-
-  useEffect(() => { startTime.current = performance.now() / 1000; }, []);
-
-  useFrame(({ clock }) => {
-    if (!ref.current || startTime.current === 0) return;
-    const t = (clock.elapsedTime - startTime.current) / duration;
-    if (t > 1.0) { onComplete(); return; }
-
-    // Limp step modulation — subtle breathing instead of limping movement
-    const stepPhase = Math.abs(Math.sin(clock.elapsedTime * 1.5));
-
-    // Glitch jumps — more frequent than before
-    const since = clock.elapsedTime - lastGlitchAt.current;
-    if (since > 1.6 && Math.random() < 0.0065) {
-      glitchOffset.set(
-        (Math.random() - 0.5) * 1.4,
-        (Math.random() - 0.5) * 0.5,
-        (Math.random() - 0.5) * 0.7,
-      );
-      lastGlitchAt.current = clock.elapsedTime;
-    }
-    glitchOffset.multiplyScalar(0.84);
-    const glitchActive = glitchOffset.lengthSq() > 0.001;
-
-    ref.current.position.copy(fixedPos).add(glitchOffset);
-    ref.current.position.y += stepPhase * 0.02 - 0.01;
-
-    const env = Math.pow(Math.sin(t * Math.PI), 0.5);
-    const flick = 1 - 0.10 * Math.pow(Math.sin(clock.elapsedTime * 2.3 + seed), 12);
-    // Stronger long-flicker — rare dips to ~10% opacity
-    const blink = rareBlink(clock.elapsedTime, seed, 0.7);
-    if (bodyRef.current) {
-      const mat = bodyRef.current.material as THREE.SpriteMaterial;
-      mat.opacity = env * 0.93 * flick * blink * (glitchActive ? 0.45 : 1.0);
-    }
-    if (cuffsRef.current) {
-      const mat = cuffsRef.current.material as THREE.SpriteMaterial;
-      mat.opacity = env * (glitchActive ? 1.0 : 0.9) * blink;
-    }
-  });
-
-  return (
-    <group ref={ref}>
-      <sprite ref={bodyRef} scale={[2.0, 4.0, 1]}>
-        <spriteMaterial map={cryptkeeper} transparent opacity={0} depthWrite={false} />
-      </sprite>
-      <sprite ref={cuffsRef} scale={[2.0, 4.0, 1]}>
-        <spriteMaterial map={cryptkeeperCuffs} transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
-      </sprite>
-    </group>
   );
 }
 
@@ -751,7 +631,7 @@ function GemRimLight() {
 /* ===============================================================
    Atmosphere — orchestrator
    =============================================================== */
-export default function Atmosphere() {
+export default function Atmosphere({ dustCount = 150 }: { dustCount?: number }) {
   const { scene } = useThree();
   const lightningLight = useRef<THREE.PointLight>(null);
   const lightningDir = useRef<THREE.DirectionalLight>(null);
@@ -824,20 +704,6 @@ export default function Atmosphere() {
     const sideSign = Math.random() < 0.5 ? -1 : 1;
 
     switch (type) {
-      case 'aero':
-        // At fov 45 with camera at [6,5,8], anything above world-y≈2
-        // at z≈-12 projects above the viewport top edge. We pin
-        // y ∈ [0.4, 1.4] and push z back to -12…-16 so the airship
-        // reads as a distant miniature and the sprite quad has clear
-        // padding around it within the camera frustum.
-        startX = sideSign * (14 + Math.random() * 3);
-        startY = 0.4 + Math.random() * 1.0;
-        startZ = -12 - Math.random() * 4;
-        endX = -sideSign * (12 + Math.random() * 3);
-        endY = startY + (Math.random() - 0.5) * 0.6;
-        endZ = startZ + (Math.random() - 0.5) * 2;
-        duration = 25 + Math.random() * 10;
-        break;
       case 'scorpion':
         startX = sideSign * (11 + Math.random() * 3);
         startY = -2 + Math.random() * 2;
@@ -864,15 +730,6 @@ export default function Atmosphere() {
         endY = startY + (Math.random() - 0.5) * 3;
         endZ = startZ + (Math.random() - 0.5) * 1.5;
         duration = 10.0 + Math.random() * 4.0;
-        break;
-      case 'cryptkeeper':
-        startX = sideSign * (12 + Math.random() * 2);
-        startY = -1 + Math.random() * 1.5;
-        startZ = -4 - Math.random() * 1.5;
-        endX = -sideSign * (11 + Math.random() * 2);
-        endY = startY + (Math.random() - 0.5) * 0.3;
-        endZ = startZ;
-        duration = 24 + Math.random() * 8;
         break;
       case 'pilgrim':
       default:
@@ -998,18 +855,16 @@ export default function Atmosphere() {
 
       <fog attach="fog" args={['#0d0d1a', 15, 60]} />
 
-      <DustParticles count={150} />
+      <DustParticles count={dustCount} />
 
       {phenomena.map(p => {
         const remove = () => setPhenomena(curr => curr.filter(x => x.id !== p.id));
         const common = { start: p.start, end: p.end, duration: p.duration, onComplete: remove, seed: p.seed };
         switch (p.type) {
-          case 'aero':        return <PhenomenonAero        key={p.id} {...common} />;
           case 'pilgrim':     return <PhenomenonPilgrim     key={p.id} {...common} />;
           case 'lantern':     return <PhenomenonLantern     key={p.id} {...common} />;
           case 'whisper':     return <PhenomenonWhisper     key={p.id} {...common} />;
           case 'scorpion':    return <PhenomenonScorpion    key={p.id} {...common} />;
-          case 'cryptkeeper': return <PhenomenonCryptkeeper key={p.id} {...common} />;
           default: return null;
         }
       })}

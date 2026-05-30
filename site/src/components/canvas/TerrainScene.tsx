@@ -69,7 +69,22 @@ function InteractiveGemRotation({ activePin, children }: { activePin: string | n
   return <group ref={groupRef}>{children}</group>;
 }
 
+// Detect a low-power tier (small screens, few CPU cores, or low device
+// memory) so the WebGL scene can shed expensive work on weaker hardware.
+// Computed once via a lazy useState initializer; defaults to the full-
+// quality path when the signals are unavailable. This component only ever
+// renders client-side (dynamic import with ssr:false), so window/navigator
+// are safe to read here.
+function detectLowPower(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+  const cores = navigator.hardwareConcurrency ?? 8;
+  const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+  const smallScreen = window.innerWidth < 768;
+  return smallScreen || cores <= 4 || (typeof mem === 'number' && mem <= 4);
+}
+
 export default function TerrainScene() {
+  const [lowPower] = useState(detectLowPower);
   const [activePin, setActivePin] = useState<string | null>(null);
   const [renderedPin, setRenderedPin] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);
@@ -139,13 +154,13 @@ export default function TerrainScene() {
           alpha: false,
           powerPreference: 'high-performance',
         }}
-        dpr={[1, 2]}
+        dpr={lowPower ? [1, 1.5] : [1, 2]}
         style={{
           background: '#0d0d1a',
         }}
       >
         <Suspense fallback={null}>
-          <Atmosphere />
+          <Atmosphere dustCount={lowPower ? 60 : 150} />
           <InteractiveGemRotation activePin={activePin}>
             <TerrainMesh />
             <ContentPins onSelect={handleSelect} activePin={activePin} />
@@ -167,14 +182,14 @@ export default function TerrainScene() {
             cryptkeeper cuffs, comet streaks) into actual light bleed.
             Vignette darkens edges so attention falls on the gem.
             Noise adds film grain so the dark void doesn't read as flat HEX. */}
-        <EffectComposer multisampling={4}>
+        <EffectComposer multisampling={lowPower ? 0 : 4}>
           <Bloom
             intensity={0.95}
             luminanceThreshold={0.18}
             luminanceSmoothing={0.5}
             mipmapBlur
             radius={0.8}
-            kernelSize={KernelSize.LARGE}
+            kernelSize={lowPower ? KernelSize.SMALL : KernelSize.LARGE}
           />
           <Vignette
             eskil={false}

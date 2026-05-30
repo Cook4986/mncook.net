@@ -4,7 +4,7 @@ import Footer from '@/components/ui/Footer';
 import { publications, fiction } from '@/content/data';
 
 export const metadata: Metadata = {
-  title: 'Textual — M.N. Cook',
+  title: 'Textual — matt cook',
   description: 'Scholarship in book history, digital humanities, and manuscript studies. Short fiction and creative writing.',
 };
 

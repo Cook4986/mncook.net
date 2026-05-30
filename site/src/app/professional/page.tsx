@@ -4,7 +4,7 @@ import Footer from '@/components/ui/Footer';
 import { projects } from '@/content/data';
 
 export const metadata: Metadata = {
-  title: 'Professional — M.N. Cook',
+  title: 'Professional — matt cook',
   description: 'Software projects spanning 3D visualization, AI transcription, mesh processing, VR, IoT, and museum technology.',
 };
 

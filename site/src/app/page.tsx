@@ -19,10 +19,10 @@ const TerrainScene = dynamic(
 
 export default function HomePage() {
   return (
-    <div className="section-dark" style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'relative' }}>
+    <div className="section-dark viewport-dvh" style={{ width: '100vw', overflow: 'hidden', position: 'relative' }}>
       <SiteNav variant="dark" />
 
-      <section className="hero" id="hero" style={{ height: '100vh', position: 'relative' }}>
+      <section className="hero" id="hero" style={{ position: 'relative' }}>
         <div className="hero-canvas" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
           <TerrainScene />
         </div>

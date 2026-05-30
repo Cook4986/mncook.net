@@ -1,6 +1,6 @@
 # mncook.net
 
-Personal portfolio for Matt Cook — spatial computing, digital humanities, and creative practice. A statically exported Next.js site with an interactive React Three Fiber landing scene and themed content sections (Textual, Professional, Spatial, Audiovisual, Technical, Ritual, Contact).
+Personal portfolio for Matt Cook — spatial computing, digital humanities, and creative practice. A statically exported Next.js site with an interactive React Three Fiber landing scene and themed content sections (Textual, Professional, Spatial, Audiovisual, Technical, Contact).
 
 ## Stack
 
@@ -31,8 +31,6 @@ The site is deployed to GitHub Pages (custom domain via `public/CNAME`). Static 
 - `src/components/ui/` — `SiteNav`, `Footer`, `CollapsibleSection`.
 - `src/content/` — `data.ts` (publications, projects, fiction, episodes) and `OverlayContent.tsx` (modal section content).
 - `public/` — images, audio/PDF assets (`s/`), section header images (`headers/`), and the `.glb` model.
-
-> Note: the root-level `*.py` and `*_layout.{html,txt}` files are one-time Squarespace migration artifacts and are not part of the build.
 
 ## Contact
 

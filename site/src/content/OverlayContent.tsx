@@ -703,7 +703,7 @@ export function ContactContent() {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "50789f80-9f2d-4e01-bcfa-520ce551ac0d",
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
           name,
           email,
           message: body,
@@ -775,7 +775,7 @@ export function ContactContent() {
             fontFamily: 'var(--font-serif)',
             animation: 'pulse-glow 2s infinite ease-in-out'
           }}>
-            The frequencies are aligned. Your message has been encrypted and safely routed to <span style={{ color: 'var(--accent)' }}>matt@mncook.net</span>.
+            The frequencies are aligned. Your message is on its way to <span style={{ color: 'var(--accent)' }}>matt@mncook.net</span>.
           </p>
           <p style={{ 
             color: 'var(--ink-faint)', 

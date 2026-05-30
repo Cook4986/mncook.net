@@ -10,7 +10,7 @@
   --void-3:         #18181f;
   --void-surface:   #202028;
 
-  /* === Warm palette (unused but kept for fallback) === */
+  /* === Warm palette (used by the warm content section pages) === */
   --paper:          #f7f4ef;
   --paper-2:        #ede9e1;
   --paper-3:        #ddd7cc;
@@ -204,9 +204,18 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
 /* ============================================================
    HERO / TERRAIN LANDING
    ============================================================ */
+/* Dynamic-viewport height utility: the 100vh declaration is the fallback,
+   the 100dvh declaration wins where supported so the mobile browser chrome
+   doesn't clip the hero. */
+.viewport-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+
 .hero {
   position: relative;
   height: 100vh;
+  height: 100dvh;
   width: 100%;
   overflow: hidden;
   display: flex;
