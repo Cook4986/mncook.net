@@ -17,6 +17,7 @@ export interface Publication {
 export interface Fiction {
   title: string;
   description: string;
+  category: 'short' | 'novel';
   pdfUrl?: string;
 }
 
@@ -72,13 +73,13 @@ export const publications: Publication[] = [
 ];
 
 export const fiction: Fiction[] = [
-  { title: 'Walk Your Age and Live Forever', description: 'Every step physically extends your lifespan.', pdfUrl: 'https://mncook.net/s/Walk-Your-Age_Cook2023_website.pdf' },
-  { title: 'Ancient Power', description: 'Elite supplicants gather for a dark, subterranean ritual beneath Widener Library.', pdfUrl: 'https://mncook.net/s/AncientPower_Cook2025.pdf' },
-  { title: 'Listen to the Dead', description: 'A student sleeping in Mount Auburn Cemetery is cornered by a midnight hunt.', pdfUrl: 'https://mncook.net/s/Listen-to-the-Dead_Cook2022-sg32.pdf' },
-  { title: 'First Pizza on Mars', description: 'The sole baker on Mars runs a black-market supply chain under a deadly five-pie limit.', pdfUrl: 'https://mncook.net/s/Best-Pizza_Cook2023_website.pdf' },
-  { title: 'Petty Cash', description: 'A burglar is haunted by an antique Ouija board projecting alien geometries on his walls.', pdfUrl: 'https://mncook.net/s/Petty-Cash_Cook2023.pdf' },
-  { title: 'Zoning Violation', description: 'A cut-rate psychic in Cambridge begins channeling eccentric, dangerous voices from the beyond.', pdfUrl: 'https://mncook.net/s/theFlorist_Cook2022.pdf' },
-  { title: 'Scorpio', description: 'A midnight librarian at Harvard is drawn into an occult subterranean conspiracy after a clawed visitor in black demands a missing ancient text.', pdfUrl: 'https://mncook.net/s/Scorpio_Cook2022_October-fwmr.pdf' }
+  { title: 'Walk Your Age and Live Forever', category: 'short', description: 'Every step physically extends your lifespan.', pdfUrl: '/s/Walk-Your-Age_Cook2023_website.pdf' },
+  { title: 'Ancient Power', category: 'short', description: 'Elite supplicants gather for a dark, subterranean ritual beneath Widener Library.', pdfUrl: '/s/AncientPower_Cook2025.pdf' },
+  { title: 'Listen to the Dead', category: 'short', description: 'A student sleeping in Mount Auburn Cemetery is cornered by a midnight hunt.', pdfUrl: '/s/Listen-to-the-Dead_Cook2022-sg32.pdf' },
+  { title: 'First Pizza on Mars', category: 'short', description: 'The sole baker on Mars runs a black-market supply chain under a deadly five-pie limit.', pdfUrl: '/s/Best-Pizza_Cook2023_website.pdf' },
+  { title: 'Petty Cash', category: 'short', description: 'A burglar is haunted by an antique Ouija board projecting alien geometries on his walls.', pdfUrl: '/s/Petty-Cash_Cook2023.pdf' },
+  { title: 'Zoning Violation', category: 'short', description: 'A cut-rate psychic in Cambridge begins channeling eccentric, dangerous voices from the beyond.', pdfUrl: '/s/theFlorist_Cook2022.pdf' },
+  { title: 'Scorpio', category: 'novel', description: 'A midnight librarian at Harvard is drawn into an occult subterranean conspiracy after a clawed visitor in black demands a missing ancient text.', pdfUrl: '/s/Scorpio_Cook2022_October-fwmr.pdf' }
 ];
 
 // --- PROFESSIONAL ---
@@ -173,6 +174,19 @@ export interface BizarreBookEpisode {
   start?: number;
   description: string;
 }
+
+export interface Song {
+  title: string;
+  src: string;
+}
+
+export const songs: Song[] = [
+  { title: 'Red Rock Paranoia', src: '/s/RedRockParanoia2.mp3' },
+  { title: 'Blue Haze', src: '/s/Blue_Haze_instrumental.mp3' },
+  { title: 'SVU', src: '/s/svu.mp3' },
+  { title: 'Balcony Dub', src: '/s/Balcony_Dub.mp3' },
+  { title: 'Project Bluebird: A Study in Rhythm', src: '/s/project_bluebird.mp3' },
+];
 
 export const bizarreBooks: BizarreBookEpisode[] = [
   { title: 'Apparitions at Harvard', youtubeId: '5JDxyVpmbJA', start: 16, description: 'Eerie specters and unexplained phenomena within the historic halls of Harvard Yard.' },

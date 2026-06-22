@@ -85,6 +85,7 @@ function detectLowPower(): boolean {
 
 export default function TerrainScene() {
   const [lowPower] = useState(detectLowPower);
+  const [isTabVisible, setIsTabVisible] = useState(true);
   const [activePin, setActivePin] = useState<string | null>(null);
   const [renderedPin, setRenderedPin] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);
@@ -92,6 +93,9 @@ export default function TerrainScene() {
   // out of the spot the user actually touched on screen.
   const [bleedOrigin, setBleedOrigin] = useState<PinSelectOrigin>({ x: 0, y: 0 });
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
 
   const handleSelect = (id: string, origin: PinSelectOrigin) => {
     if (closeTimeoutRef.current) {
@@ -137,12 +141,54 @@ export default function TerrainScene() {
     };
   }, []);
 
+  // Pause the render loop when the tab is hidden to save battery/GPU.
+  useEffect(() => {
+    const onVisibility = () => setIsTabVisible(!document.hidden);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
+
+  // Focus management: when the overlay opens, remember what was focused and
+  // move focus to the close button; when it fully closes, restore focus so
+  // keyboard users aren't dropped back at the top of the document.
+  useEffect(() => {
+    if (renderedPin) {
+      lastFocusedRef.current = (document.activeElement as HTMLElement) ?? null;
+      const t = setTimeout(() => closeButtonRef.current?.focus(), 50);
+      return () => clearTimeout(t);
+    }
+    const prev = lastFocusedRef.current;
+    if (prev) {
+      prev.focus?.();
+      lastFocusedRef.current = null;
+    }
+  }, [renderedPin]);
+
+  // Keep Tab focus inside the open dialog.
+  const handleDialogKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab' || !dialogRef.current) return;
+    const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
   const folio = renderedPin ? roman(PIN_ORDER[renderedPin] ?? 1) : '';
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <AlchemicalLoader />
       <Canvas
+        frameloop={isTabVisible ? 'always' : 'never'}
         camera={{
           position: [6, 5, 8],
           fov: 45,
@@ -219,6 +265,8 @@ export default function TerrainScene() {
           />
 
           <div
+            ref={dialogRef}
+            onKeyDown={handleDialogKeyDown}
             className={`annotation-overlay ${isClosing ? 'closing' : ''}`}
             role="dialog"
             aria-modal="true"
@@ -255,6 +303,7 @@ export default function TerrainScene() {
             />
 
             <button
+              ref={closeButtonRef}
               onClick={handleClose}
               aria-label="Close"
               style={{

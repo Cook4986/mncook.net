@@ -13,7 +13,7 @@ export default function TextualPage() {
     <div className="section-warm">
       <SiteNav variant="warm" />
 
-      <div className="content-section" style={{ paddingTop: '120px' }}>
+      <main id="main-content" className="content-section" style={{ paddingTop: '120px' }}>
         {/* Scholarship Section */}
         <div className="section-header">
           <div className="section-label">Scholarship</div>
@@ -24,8 +24,8 @@ export default function TextualPage() {
         </div>
 
         <div className="pub-list">
-          {publications.map((pub, i) => (
-            <div key={i} className="pub-card">
+          {publications.map((pub) => (
+            <div key={pub.url} className="pub-card">
               <div className="pub-title">{pub.title}</div>
               <div className="pub-venue">{pub.venue} ({pub.year})</div>
               <a href={pub.url} target="_blank" rel="noopener noreferrer" className="pub-link">
@@ -45,8 +45,8 @@ export default function TextualPage() {
         </div>
 
         <div className="pub-list">
-          {fiction.filter(f => f.title !== 'Scorpio').map((f, i) => (
-            <div key={i} className="pub-card">
+          {fiction.filter(f => f.category === 'short').map((f) => (
+            <div key={f.title} className="pub-card">
               <div className="pub-title">{f.title}</div>
               <div className="pub-venue">{f.description}</div>
               {f.pdfUrl && (
@@ -68,8 +68,8 @@ export default function TextualPage() {
         </div>
 
         <div className="pub-list">
-          {fiction.filter(f => f.title === 'Scorpio').map((f, i) => (
-            <div key={i} className="pub-card">
+          {fiction.filter(f => f.category === 'novel').map((f) => (
+            <div key={f.title} className="pub-card">
               <div className="pub-title">{f.title}</div>
               <div className="pub-venue">{f.description}</div>
               {f.pdfUrl && (
@@ -80,7 +80,7 @@ export default function TextualPage() {
             </div>
           ))}
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>

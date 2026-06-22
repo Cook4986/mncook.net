@@ -15,7 +15,7 @@ export default function SpatialPage() {
     <div className="section-warm">
       <SiteNav variant="warm" />
 
-      <div className="content-section" style={{ paddingTop: '120px' }}>
+      <main id="main-content" className="content-section" style={{ paddingTop: '120px' }}>
         <div className="section-header">
           <div className="section-label">Field Work</div>
           <h1 className="section-title">Spatial</h1>
@@ -92,7 +92,7 @@ export default function SpatialPage() {
             <p style={{ fontSize: '0.9rem', color: 'var(--ink-light)', marginTop: '10px' }}>— Richard Ford</p>
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>

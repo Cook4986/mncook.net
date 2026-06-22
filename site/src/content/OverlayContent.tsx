@@ -1,3 +1,5 @@
+'use client';
+
 /* OverlayContent renders Squarespace-migrated content. We intentionally
    use raw <img> and <iframe> (not next/image / next/iframe equivalents) so
    `output: 'export'` can fully prerender; and a few literal apostrophes
@@ -5,9 +7,9 @@
    reflect those deliberate choices rather than masking unrelated bugs. */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CollapsibleSection from '../components/ui/CollapsibleSection';
-import { publications, fiction, bizarreBooks } from './data';
+import { publications, fiction, bizarreBooks, songs } from './data';
 // NOTE: RitualContent / RitualDossier temporarily removed — feature in
 // development, not for production. The source lives in
 // src/app/ritual/RitualExperience.tsx (currently orphaned) for easy restore.
@@ -216,16 +218,16 @@ export function SpatialContent() {
   );
 }
 export function TextualContent() {
-  const shortFiction = fiction.filter(f => f.title !== 'Scorpio');
-  const novel = fiction.filter(f => f.title === 'Scorpio');
+  const shortFiction = fiction.filter(f => f.category === 'short');
+  const novel = fiction.filter(f => f.category === 'novel');
 
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
 
       <CollapsibleSection title="Scholarship — Peer-reviewed journal papers">
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', lineHeight: '1.8' }}>
-          {publications.map((pub, i) => (
-            <li key={i} style={{ marginBottom: '12px' }}>
+          {publications.map((pub) => (
+            <li key={pub.url} style={{ marginBottom: '12px' }}>
               <a 
                 href={pub.url} 
                 target="_blank" 
@@ -246,8 +248,8 @@ export function TextualContent() {
 
       <CollapsibleSection title="Short Fiction — Selected stories available as PDFs">
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', lineHeight: '1.8' }}>
-          {shortFiction.map((story, i) => (
-            <li key={i} style={{ marginBottom: '12px' }}>
+          {shortFiction.map((story) => (
+            <li key={story.title} style={{ marginBottom: '12px' }}>
               {story.pdfUrl ? (
                 <a 
                   href={story.pdfUrl} 
@@ -272,8 +274,8 @@ export function TextualContent() {
 
       <CollapsibleSection title="Novel — Occult technology in the book stacks">
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', lineHeight: '1.8' }}>
-          {novel.map((nov, i) => (
-            <li key={i} style={{ marginBottom: '12px' }}>
+          {novel.map((nov) => (
+            <li key={nov.title} style={{ marginBottom: '12px' }}>
               {nov.pdfUrl ? (
                 <a 
                   href={nov.pdfUrl} 
@@ -303,6 +305,19 @@ export function TextualContent() {
 }
 export function AudiovisualContent() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const closeVideoRef = useRef<HTMLButtonElement>(null);
+
+  // While the video lightbox is open, move focus to its close button and
+  // let Escape dismiss it (dialog semantics for keyboard users).
+  useEffect(() => {
+    if (!activeVideo) return;
+    closeVideoRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveVideo(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [activeVideo]);
 
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
@@ -320,10 +335,19 @@ export function AudiovisualContent() {
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
-          {bizarreBooks.map((episode, i) => (
+          {bizarreBooks.map((episode) => (
             <div 
-              key={i} 
+              key={episode.youtubeId} 
+              role="button"
+              tabIndex={0}
+              aria-label={`Watch episode: ${episode.title}`}
               onClick={() => setActiveVideo(episode.youtubeId)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setActiveVideo(episode.youtubeId);
+                }
+              }}
               style={{ 
                 background: 'rgba(255,255,255,0.03)', 
                 border: '1px solid var(--rule-dark)', 
@@ -374,6 +398,9 @@ export function AudiovisualContent() {
         {/* Video Lightbox Overlay */}
         {activeVideo && (
           <div 
+            role="dialog"
+            aria-modal="true"
+            aria-label="Video player"
             onClick={() => setActiveVideo(null)}
             style={{
               position: 'fixed',
@@ -400,6 +427,7 @@ export function AudiovisualContent() {
               }}
             >
               <button 
+                ref={closeVideoRef}
                 onClick={() => setActiveVideo(null)}
                 aria-label="Close video"
                 style={{
@@ -426,8 +454,8 @@ export function AudiovisualContent() {
                 title="Bizarre Books Episode Video Player"
                 width="100%" 
                 height="100%" 
-                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&wmode=opaque&enablejsapi=1`} 
-                frameBorder="0" 
+                src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&wmode=opaque&enablejsapi=1`} 
+                style={{ border: 0 }} 
                 allow="autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
               ></iframe>
@@ -437,30 +465,12 @@ export function AudiovisualContent() {
       </CollapsibleSection>
 
       <CollapsibleSection title="Songs — Muted, atmospheric ambient & dub tracks">
-        <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: 'var(--ivory)', fontSize: '1.1rem', marginBottom: '8px' }}>Red Rock Paranoia</p>
-          <audio controls style={{ width: '100%' }} src="/s/RedRockParanoia2.mp3"></audio>
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: 'var(--ivory)', fontSize: '1.1rem', marginBottom: '8px' }}>Blue Haze</p>
-          <audio controls style={{ width: '100%' }} src="/s/Blue_Haze_instrumental.mp3"></audio>
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: 'var(--ivory)', fontSize: '1.1rem', marginBottom: '8px' }}>SVU</p>
-          <audio controls style={{ width: '100%' }} src="/s/svu.mp3"></audio>
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: 'var(--ivory)', fontSize: '1.1rem', marginBottom: '8px' }}>Balcony Dub</p>
-          <audio controls style={{ width: '100%' }} src="/s/Balcony_Dub.mp3"></audio>
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <p style={{ color: 'var(--ivory)', fontSize: '1.1rem', marginBottom: '8px' }}>Project Bluebird: A Study in Rhythm</p>
-          <audio controls style={{ width: '100%' }} src="/s/project_bluebird.mp3"></audio>
-        </div>
+        {songs.map((song) => (
+          <div key={song.src} style={{ marginBottom: '24px' }}>
+            <p style={{ color: 'var(--ivory)', fontSize: '1.1rem', marginBottom: '8px' }}>{song.title}</p>
+            <audio controls preload="none" style={{ width: '100%' }} src={song.src}></audio>
+          </div>
+        ))}
       </CollapsibleSection>
 
       <CactusFooter />
@@ -530,7 +540,7 @@ export function ProfessionalContent() {
         <p>Given the increasing size and complexity of research data generally, and the recent advancement of scanning and visualization methods specifically (e.g. photogrammetry and virtual reality), 3D data has the potential to become the asset "of record," or primary source material, for researchers in a wide range of academic disciplines. Moreover, this content can be produced for objects of study at various scales, including large-scale facilities, like Harvard's very own Widener Library.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden' }}>
-          <iframe title="Widener Library 360-degree Matterport Scan" width="100%" height="100%" src="https://my.matterport.com/show/?m=fs3gQv7n1QG&utm_source=4" frameBorder="0" allowFullScreen></iframe>
+          <iframe title="Widener Library 360-degree Matterport Scan" width="100%" height="100%" src="https://my.matterport.com/show/?m=fs3gQv7n1QG&utm_source=4" style={{ border: 0 }} allowFullScreen></iframe>
         </div>
 
         <p>But, as we began annotating the scan with historical imagery, links to Harvard Library materials, and historical information concerning the inspiring architectural history of the building, we began to understand the linked data implications of these virtual facilities. With Widener 360, our stunning architecture functions as a sort of visual index for collections, services, and history.</p>
@@ -560,7 +570,7 @@ export function ProfessionalContent() {
         <p>What's Next? Print out a set for yourself! The complete Instructional Chess 3D model set is downloadable from Sketchfab (for free), and I'll be posting 3D printing instructions shortly, to ensure your set prints cleanly and efficiently.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe title="Instructional Chess - Bishop" width="100%" height="100%" src="https://sketchfab.com/models/6b7f539e814c417a8f02c12eef887271/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" frameBorder="0" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+          <iframe title="Instructional Chess - Bishop" width="100%" height="100%" src="https://sketchfab.com/models/6b7f539e814c417a8f02c12eef887271/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" style={{ border: 0 }} allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
         </div>
       </CollapsibleSection>
 
@@ -611,7 +621,7 @@ export function ProfessionalContent() {
         <p>Finally, the press responded positively to the NavApp, and we even received national awards for our work on this project.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe title="NavApp Indoor Wayfinding Demonstration Video" width="100%" height="100%" src="https://www.youtube.com/embed/tTpuYP1of1I?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
+          <iframe title="NavApp Indoor Wayfinding Demonstration Video" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/tTpuYP1of1I?wmode=opaque&enablejsapi=1" style={{ border: 0 }} allowFullScreen></iframe>
         </div>
       </CollapsibleSection>
 
@@ -634,7 +644,7 @@ export function ProfessionalContent() {
         <p>"The impact on the students this week was immeasurable", says one OU faculty member who has already incorporated the OVAL into her coursework. How can we help you achieve the same impact?</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe title="OVAL 1.0 Multiplayer VR Classroom Demonstration Video" width="100%" height="100%" src="https://www.youtube.com/embed/tmL3T28Ud1k?wmode=opaque&enablejsapi=1" frameBorder="0" allowFullScreen></iframe>
+          <iframe title="OVAL 1.0 Multiplayer VR Classroom Demonstration Video" width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/tmL3T28Ud1k?wmode=opaque&enablejsapi=1" style={{ border: 0 }} allowFullScreen></iframe>
         </div>
       </CollapsibleSection>
 
@@ -648,19 +658,19 @@ export function ProfessionalContent() {
         <p>The above prickly pear scan isn't perfect, but it's the only usable botanical scan that I've managed to generate after a half-dozen tries. Narrow-width connecting components (e.g. stems) in particular seem to disappear during Autodesk's cloud-based stitching process...</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe title="Opuntia (Prickly Pear) Cactus" width="100%" height="100%" src="https://sketchfab.com/models/bbc37de8363e45b5a33175942ffe7368/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" frameBorder="0" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+          <iframe title="Opuntia (Prickly Pear) Cactus" width="100%" height="100%" src="https://sketchfab.com/models/bbc37de8363e45b5a33175942ffe7368/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" style={{ border: 0 }} allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
         </div>
 
         <p>This statue of Omar Kayyam is located in the heart of OU's Norman campus. Fortunately, it was an overcast day when the scan was done, otherwise the direct sunlight would have reflected off the white stone.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe title="Omar Kayyam" width="100%" height="100%" src="https://sketchfab.com/models/2ca7f8d0a71a4a8696266629c186092c/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" frameBorder="0" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+          <iframe title="Omar Kayyam" width="100%" height="100%" src="https://sketchfab.com/models/2ca7f8d0a71a4a8696266629c186092c/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" style={{ border: 0 }} allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
         </div>
         
         <p>As described on the spatial page, this Sheepherder's cabin represents a "field scan", whereby off-grid artifacts can be manipulated, analyzed, or otherwise investigated after the fact for details that onsite limitations (like time) simply won't allow for.</p>
 
         <div style={{ margin: '20px 0', width: '100%', aspectRatio: '16/9', borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
-          <iframe title="Sheepherder's Cabin" width="100%" height="100%" src="https://sketchfab.com/models/15790973e5b44cf9abdda0fcd9982948/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" frameBorder="0" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
+          <iframe title="Sheepherder's Cabin" width="100%" height="100%" src="https://sketchfab.com/models/15790973e5b44cf9abdda0fcd9982948/embed?autostart=0&ui_controls=1&ui_infos=1&ui_inspector=1&ui_stop=1&ui_watermark=1&ui_watermark_link=1" style={{ border: 0 }} allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
         </div>
         
         <ImageWithCaption src="/Professional/image-asset (19).webp" alt="VR analysis of ruins" caption="VR-based analysis of early 20th century sheepherder's ruins. Note the measurement tool." />
@@ -680,20 +690,28 @@ export function ContactContent() {
   const [honey, setHoney] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
+  const resetForm = () => {
+    setName('');
+    setEmail('');
+    setBody('');
+    setStatus('idle');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
 
     // If honeypot is filled, silent reject (intercept and prevent actual post)
     if (honey) {
-      setTimeout(() => {
-        setStatus('success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 3200);
-      }, 600);
+      setTimeout(() => setStatus('success'), 600);
       return;
     }
+
+    // Trim and clamp inputs; collapse any newlines in the name so it can't
+    // be used to inject extra headers into the email subject line.
+    const cleanName = name.trim().replace(/[\r\n]+/g, ' ').slice(0, 100);
+    const cleanEmail = email.trim().slice(0, 200);
+    const cleanBody = body.trim().slice(0, 5000);
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -704,10 +722,10 @@ export function ContactContent() {
         },
         body: JSON.stringify({
           access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
-          name,
-          email,
-          message: body,
-          subject: `New Message from ${name} via mncook.net`,
+          name: cleanName,
+          email: cleanEmail,
+          message: cleanBody,
+          subject: `New Message from ${cleanName || 'a visitor'} via mncook.net`,
           from_name: "mncook.net Portal",
           botcheck: honey
         }),
@@ -716,9 +734,6 @@ export function ContactContent() {
       const result = await response.json();
       if (response.ok && result.success) {
         setStatus('success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 3500);
       } else {
         setStatus('error');
       }
@@ -730,7 +745,7 @@ export function ContactContent() {
   return (
     <div style={{ padding: '0 20px', height: '100%', overflowY: 'auto' }}>
       {status === 'success' && (
-        <div style={{ 
+        <div role="status" aria-live="polite" style={{ 
           padding: '40px 20px', 
           display: 'flex', 
           flexDirection: 'column', 
@@ -777,15 +792,25 @@ export function ContactContent() {
           }}>
             The frequencies are aligned. Your message is on its way to <span style={{ color: 'var(--accent)' }}>matt@mncook.net</span>.
           </p>
-          <p style={{ 
-            color: 'var(--ink-faint)', 
-            fontSize: '0.8rem', 
-            marginTop: '32px',
-            fontFamily: 'var(--font-mono)',
-            letterSpacing: '0.1em'
-          }}>
-            RELOADING PORTAL IN 3s...
-          </p>
+          <button
+            type="button"
+            onClick={resetForm}
+            style={{
+              marginTop: '32px',
+              padding: '10px 18px',
+              background: 'transparent',
+              color: 'var(--ivory-dim)',
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              fontSize: '0.75rem',
+              border: '1px solid var(--rule-dark)',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            Send another →
+          </button>
         </div>
       )}
 
@@ -807,6 +832,7 @@ export function ContactContent() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            maxLength={100}
             disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
@@ -829,6 +855,7 @@ export function ContactContent() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            maxLength={200}
             disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
@@ -865,6 +892,7 @@ export function ContactContent() {
             value={body}
             onChange={(e) => setBody(e.target.value)}
             required
+            maxLength={5000}
             disabled={status === 'submitting'}
             style={{ 
               padding: '12px', 
@@ -880,7 +908,7 @@ export function ContactContent() {
         </div>
 
         {status === 'error' && (
-          <p style={{ color: '#ff6b6b', fontSize: '0.9rem', margin: '10px 0 0 0' }}>
+          <p role="alert" style={{ color: '#ff6b6b', fontSize: '0.9rem', margin: '10px 0 0 0' }}>
             Transmission failed. Please check your network or email matt@mncook.net directly.
           </p>
         )}
@@ -888,6 +916,7 @@ export function ContactContent() {
         <button 
           type="submit"
           disabled={status === 'submitting'}
+          aria-busy={status === 'submitting'}
           style={{
             marginTop: '10px',
             padding: '14px 24px',

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import SiteNav from '@/components/ui/SiteNav';
 import Footer from '@/components/ui/Footer';
-import { bizarreBooks } from '@/content/data';
+import { bizarreBooks, songs } from '@/content/data';
 
 export const metadata: Metadata = {
   title: 'Audiovisual — matt cook',
@@ -13,7 +13,7 @@ export default function AudiovisualPage() {
     <div className="section-warm">
       <SiteNav variant="warm" />
 
-      <div className="content-section" style={{ paddingTop: '120px' }}>
+      <main id="main-content" className="content-section" style={{ paddingTop: '120px' }}>
         <div className="section-header">
           <div className="section-label">Media</div>
           <h1 className="section-title">Audiovisual</h1>
@@ -35,9 +35,8 @@ export default function AudiovisualPage() {
                     width="100%"
                     height="100%"
                     loading="lazy"
-                    src={`https://www.youtube.com/embed/${episode.youtubeId}${episode.start ? `?start=${episode.start}` : ''}`}
+                    src={`https://www.youtube-nocookie.com/embed/${episode.youtubeId}${episode.start ? `?start=${episode.start}` : ''}`}
                     title={`Bizarre Books: ${episode.title}`}
-                    frameBorder="0"
                     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     style={{ display: 'block', border: 'none' }}
@@ -53,21 +52,15 @@ export default function AudiovisualPage() {
 
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', marginBottom: '24px', color: 'var(--ink)' }}>Songs</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-            {[
-              { title: "Red Rock Paranoia", src: "/s/RedRockParanoia2.mp3" },
-              { title: "Blue Haze", src: "/s/Blue_Haze_instrumental.mp3" },
-              { title: "SVU", src: "/s/svu.mp3" },
-              { title: "Balcony Dub", src: "/s/Balcony_Dub.mp3" },
-              { title: "Project Bluebird: A Study in Rhythm", src: "/s/project_bluebird.mp3" }
-            ].map((song, i) => (
-              <div key={i} style={{ padding: '24px', border: '1px solid var(--rule)', borderRadius: '12px', background: '#fff' }}>
+            {songs.map((song) => (
+              <div key={song.src} style={{ padding: '24px', border: '1px solid var(--rule)', borderRadius: '12px', background: '#fff' }}>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', color: 'var(--ink)', marginBottom: '16px' }}>{song.title}</div>
-                <audio controls src={song.src} style={{ width: '100%', height: '40px' }}></audio>
+                <audio controls preload="none" src={song.src} style={{ width: '100%', height: '40px' }}></audio>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>

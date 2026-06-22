@@ -13,7 +13,7 @@ export default function ProfessionalPage() {
     <div className="section-warm">
       <SiteNav variant="warm" />
 
-      <div className="content-section" style={{ paddingTop: '120px' }}>
+      <main id="main-content" className="content-section" style={{ paddingTop: '120px' }}>
         <div className="section-header">
           <div className="section-label">Engineering</div>
           <h1 className="section-title">Professional</h1>
@@ -47,7 +47,7 @@ export default function ProfessionalPage() {
             </a>
           ))}
         </div>
-      </div>
+      </main>
 
       <Footer />
     </div>

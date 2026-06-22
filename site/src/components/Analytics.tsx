@@ -38,17 +38,31 @@ function PageviewTracker() {
 
     // count.js loads async, so it may not be ready on the first
     // navigation — poll briefly until the count() method exists.
+    // The cancelled flag + cleared timer prevent a stray pageview
+    // (or a setState-after-unmount style leak) if the route changes
+    // or the component unmounts before count.js finishes loading.
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     let tries = 0;
+
     const send = () => {
+      if (cancelled) return;
       if (window.goatcounter?.count) {
         window.goatcounter.count({
           path: window.location.pathname + window.location.search + window.location.hash,
         });
         return;
       }
-      if (tries++ < 50) window.setTimeout(send, 100);
+      if (tries++ < 50) {
+        timer = setTimeout(send, 100);
+      }
     };
     send();
+
+    return () => {
+      cancelled = true;
+      if (timer !== undefined) clearTimeout(timer);
+    };
   }, [pathname]);
 
   return null;
@@ -60,7 +74,7 @@ export default function Analytics() {
       <Script
         data-goatcounter={GC_ENDPOINT}
         data-goatcounter-settings='{"no_onload": true}'
-        src="//gc.zgo.at/count.js"
+        src="https://gc.zgo.at/count.js"
         strategy="afterInteractive"
       />
       <PageviewTracker />
