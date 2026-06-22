@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Eczar, IM_Fell_English, Rajdhani } from 'next/font/google';
 import "./globals.css";
+import Analytics from "@/components/Analytics";
 
 const eczar = Eczar({ 
   subsets: ['latin'], 
@@ -54,7 +55,7 @@ export default function RootLayout({
             "default-src 'self'",
             "base-uri 'self'",
             "object-src 'none'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.gstatic.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.gstatic.com https://gc.zgo.at",
             "worker-src 'self' blob:",
             "style-src 'self' 'unsafe-inline'",
             "img-src 'self' data: blob: https:",
@@ -65,7 +66,10 @@ export default function RootLayout({
           ].join('; ')}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
