@@ -5,11 +5,14 @@ import { useEffect, useRef, useState } from 'react';
 /* =========================================================
    ShareButton — sits beside the close (✕) in a section popup.
 
-   Shares the canonical hash URL for the open section
-   (e.g. https://mncook.net/#textual) so a recipient lands on
-   the gem with that popup auto-opened. Uses the native share
-   sheet where available and falls back to copy-to-clipboard
-   with a brief confirmation toast. Fires a GoatCounter event.
+   Copies the canonical hash URL for the open section
+   (e.g. https://mncook.net/#textual) to the clipboard and shows
+   a brief confirmation toast, then fires a GoatCounter event.
+
+   We intentionally do NOT use the Web Share API: on desktop it
+   defers to OS-specific sheets (e.g. the macOS/iCloud sheet has
+   no "copy link"), so a plain copy is the most predictable,
+   cross-device behavior.
    ========================================================= */
 
 interface ShareButtonProps {
@@ -44,21 +47,9 @@ export default function ShareButton({ slug, title }: ShareButtonProps) {
         ? window.location.origin
         : 'https://mncook.net';
     const url = `${origin}/#${slug}`;
-    const shareTitle = `${title} — matt cook`;
 
     // Count the share intent (cookieless, no PII).
     window.goatcounter?.count?.({ path: `share/${slug}`, event: true });
-
-    if (typeof navigator !== 'undefined' && navigator.share) {
-      try {
-        await navigator.share({ title: shareTitle, url });
-        return;
-      } catch (err) {
-        // User dismissed the sheet, or share was blocked — fall through
-        // to clipboard only if it wasn't an explicit cancel.
-        if (err instanceof DOMException && err.name === 'AbortError') return;
-      }
-    }
 
     try {
       await navigator.clipboard.writeText(url);
@@ -73,7 +64,7 @@ export default function ShareButton({ slug, title }: ShareButtonProps) {
       <button
         type="button"
         onClick={handleShare}
-        aria-label="Share this section"
+        aria-label={`Copy link to the ${title} section`}
         className="share-button"
         style={{
           position: 'absolute',
