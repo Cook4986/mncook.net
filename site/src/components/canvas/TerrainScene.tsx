@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useRef, useEffect } from 'react';
+import { Suspense, useState, useRef, useEffect, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
@@ -9,6 +9,7 @@ import TerrainMesh from './TerrainMesh';
 import ContentPins, { PIN_ORDER, type PinSelectOrigin } from './ContentPins';
 import Atmosphere from './Atmosphere';
 import AlchemicalLoader from './AlchemicalLoader';
+import ShareButton from '@/components/ui/ShareButton';
 import { SpatialContent, TextualContent, TechnicalContent, AudiovisualContent, ProfessionalContent, ContactContent } from '@/content/OverlayContent';
 
 /* Roman numeral helper (1..399 is more than enough for folio markers). */
@@ -97,42 +98,86 @@ export default function TerrainScene() {
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
-  const handleSelect = (id: string, origin: PinSelectOrigin) => {
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-    setBleedOrigin(origin);
-    setActivePin(id);
-    setRenderedPin(id);
-    setIsClosing(false);
-  };
+  // Latest values mirrored into refs so the imperative open/close helpers
+  // (and the history listeners below) can read fresh state without being
+  // re-created or capturing stale closures.
+  const renderedPinRef = useRef(renderedPin);
+  const isClosingRef = useRef(isClosing);
+  useEffect(() => { renderedPinRef.current = renderedPin; }, [renderedPin]);
+  useEffect(() => { isClosingRef.current = isClosing; }, [isClosing]);
 
-  const handleClose = () => {
-    if (!renderedPin || isClosing) return;
+  // Open a section overlay. `fromHistory` is true when the call originates
+  // from a hash change (initial load, back/forward), in which case we must
+  // NOT push another history entry.
+  const openSection = useCallback(
+    (id: string, origin: PinSelectOrigin, fromHistory = false) => {
+      if (!OVERLAY_MAP[id]) return;
+      if (renderedPinRef.current === id && !isClosingRef.current) return;
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
+      setBleedOrigin(origin);
+      setActivePin(id);
+      setRenderedPin(id);
+      setIsClosing(false);
+      if (!fromHistory && typeof window !== 'undefined' && window.location.hash.slice(1) !== id) {
+        window.history.pushState(null, '', `#${id}`);
+      }
+    },
+    []
+  );
+
+  const closeOverlay = useCallback((fromHistory = false) => {
+    if (!renderedPinRef.current || isClosingRef.current) return;
     setIsClosing(true);
     setActivePin(null);
 
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
     }
-
     closeTimeoutRef.current = setTimeout(() => {
       setRenderedPin(null);
       setIsClosing(false);
       closeTimeoutRef.current = null;
     }, 600);
-  };
+
+    if (!fromHistory && typeof window !== 'undefined' && window.location.hash) {
+      window.history.pushState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  const handleSelect = (id: string, origin: PinSelectOrigin) => openSection(id, origin, false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        handleClose();
-      }
+      if (e.key === 'Escape') closeOverlay(false);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [renderedPin, isClosing]);
+  }, [closeOverlay]);
+
+  // Hash-driven routing: reflect the open section as `/#<slug>` and restore
+  // it on direct load and back/forward. We push history ourselves on
+  // open/close (which does NOT fire hashchange/popstate), so these listeners
+  // only ever react to genuine user navigation or a shared deep link.
+  useEffect(() => {
+    const syncFromHash = () => {
+      const id = window.location.hash.slice(1);
+      if (id && OVERLAY_MAP[id]) {
+        openSection(id, { x: window.innerWidth / 2, y: window.innerHeight / 2 }, true);
+      } else {
+        closeOverlay(true);
+      }
+    };
+    syncFromHash();
+    window.addEventListener('popstate', syncFromHash);
+    window.addEventListener('hashchange', syncFromHash);
+    return () => {
+      window.removeEventListener('popstate', syncFromHash);
+      window.removeEventListener('hashchange', syncFromHash);
+    };
+  }, [openSection, closeOverlay]);
 
   // Clear any pending close timeout if the scene unmounts mid-animation.
   useEffect(() => {
@@ -261,7 +306,7 @@ export default function TerrainScene() {
               background: 'rgba(4, 4, 10, 0.55)',
               backdropFilter: 'blur(6px) saturate(0.85)',
             }}
-            onClick={handleClose}
+            onClick={() => closeOverlay(false)}
           />
 
           <div
@@ -302,10 +347,13 @@ export default function TerrainScene() {
               }}
             />
 
+            <ShareButton slug={renderedPin} title={OVERLAY_MAP[renderedPin].title} />
+
             <button
               ref={closeButtonRef}
-              onClick={handleClose}
+              onClick={() => closeOverlay(false)}
               aria-label="Close"
+              className="overlay-close-button"
               style={{
                 position: 'absolute',
                 top: 'clamp(12px, 3vw, 20px)',

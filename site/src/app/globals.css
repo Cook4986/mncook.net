@@ -515,6 +515,48 @@ h4 { font-size: 1.05rem; line-height: 1.4; }
 }
 .home-sections a:hover { color: var(--ivory); }
 
+/* ============================================================
+   SECTION OVERLAY — share + close controls
+   ============================================================ */
+.overlay-close-button,
+.share-button {
+  transition: color var(--duration) var(--ease), opacity var(--duration) var(--ease);
+}
+.overlay-close-button:hover,
+.share-button:hover { color: var(--ivory); }
+
+/* Polite confirmation toast shown when the link is copied (the native
+   share sheet path shows no toast). Lives inside the dialog so it shares
+   the modal's stacking context. */
+.share-toast-region {
+  position: absolute;
+  top: clamp(12px, 3vw, 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  pointer-events: none;
+  max-width: min(80vw, 520px);
+  text-align: center;
+}
+.share-toast {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  background: rgba(8, 8, 12, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 8px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  animation: shareToastIn 200ms var(--ease-out) both;
+}
+@keyframes shareToastIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Respect the OS "reduce motion" setting: neutralize the long modal
    zooms, gem-related CSS transitions, loader animation, and smooth
    scrolling for users prone to motion sickness. (JS-driven WebGL
