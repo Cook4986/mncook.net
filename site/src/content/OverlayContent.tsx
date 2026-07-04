@@ -213,7 +213,7 @@ export function SpatialContent() {
       <ImageWithCaption src="/Spatial/image-asset (3).webp" alt="Sheepherder's stone cabin" caption="A sheepherder's stone cabin." />
 
       <p style={{ marginBottom: '20px' }}>
-        But first, we <em>did</em> reach that stone cabin in the distance , and - perhaps more importantly - we've <TextLink href="/professional">3D scanned it for remote analysis</TextLink>. Using a series of high definition still images and a piece of Autodesk software now known as <em>Remake</em>, a surface mesh (with texual imagery superimposed) is now accessible to the general public, in virtual reality, at University of Oklahoma Libraries. <strong>Importantly, we can also take measurements, after the fact, by re-engaging with extremely detailed 3D models that no longer hide rattlesnakes.</strong> With ongoing evolution of low-cost drone equipment, and photogrammetric processing software, the entire Garita Valley can be surveyed and 3D mapped for virtual exploration from anywhere and with anyone.
+        But first, we <em>did</em> reach that stone cabin in the distance , and - perhaps more importantly - we've <TextLink href="/#professional">3D scanned it for remote analysis</TextLink>. Using a series of high definition still images and a piece of Autodesk software now known as <em>Remake</em>, a surface mesh (with texual imagery superimposed) is now accessible to the general public, in virtual reality, at University of Oklahoma Libraries. <strong>Importantly, we can also take measurements, after the fact, by re-engaging with extremely detailed 3D models that no longer hide rattlesnakes.</strong> With ongoing evolution of low-cost drone equipment, and photogrammetric processing software, the entire Garita Valley can be surveyed and 3D mapped for virtual exploration from anywhere and with anyone.
       </p>
 
       <ImageWithCaption src="/Spatial/image-asset (4).webp" alt="Excavating a driveway" caption="Excavating a half-mile driveway." />
@@ -629,7 +629,7 @@ export function ProfessionalContent() {
         As Digital Scholarship Program Manager for <TextLink href="https://library.harvard.edu/">Harvard Library</TextLink> (and, formerly, as Head of <TextLink href="https://libraries.ou.edu/content/edge">Emerging Technologies</TextLink> for the University of Oklahoma Libraries), I explore/develop/deploy tech for research and instructional purposes.
       </p>
       <p style={{ marginBottom: '16px', color: 'var(--ivory)', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1rem', lineHeight: '1.7' }}>
-        Below are a few examples. Please don't hesitate to <TextLink href="/contact">reach out</TextLink> to collaborate.
+        Below are a few examples. Please don't hesitate to <TextLink href="/#contact">reach out</TextLink> to collaborate.
       </p>
 
       <OverlayRule />
@@ -849,7 +849,7 @@ export function ProfessionalContent() {
         The Sparq provides for a uniquely personal meditation experience. With <strong>touch-screen access to a variety of patterns</strong> - each representing a distinct cultural heritage - the Sparq users connect with history while reconnecting with themselves.
       </p>
       <p style={{ marginBottom: '20px' }}>
-        Ready for a Sparq? <TextLink href="/contact">Contact me</TextLink>, and I'll make available tons more information about the thinking/motivation behind the Sparq, links to documented benefits, and instructions concerning <strong>how to set up the system at your institution</strong>. Then you can experience for yourself the myriad benefits of the Sparq meditation labyrinth.
+        Ready for a Sparq? <TextLink href="/#contact">Contact me</TextLink>, and I'll make available tons more information about the thinking/motivation behind the Sparq, links to documented benefits, and instructions concerning <strong>how to set up the system at your institution</strong>. Then you can experience for yourself the myriad benefits of the Sparq meditation labyrinth.
       </p>
 
       <ImageWithCaption src="/Professional/image-asset (4).webp" alt="Sparq hardware" />
@@ -960,7 +960,7 @@ void loop()
         At the end of the 2015/16 academic year – the first semester where the NavApp was available for (free) public download – ~<strong>2,000+ unique users had downloaded and engaged with this innovative wayfinding tool</strong>. Indeed, our engagement factor was particularly encouraging with back-end analytics indicating that, on average, individual users accessed more than 16 in-app screens.
       </p>
       <p style={{ marginBottom: '20px' }}>
-        Finally, <TextLink href="http://www.computerworld.com/article/3010270/wireless-networking/oklahoma-sooners-use-beacons-sensors-to-find-rooms-on-massive-campus.html?page=2">the press has been responding positively</TextLink> the NavApp and we've even received <TextLink href="https://campustechnology.com/microsites/innovators-microsite/home.aspx">national awards</TextLink> for our work on this project. <strong>Please <TextLink href="/contact">reach out</TextLink> to find out how to deploy your wayfinding tool.</strong>
+        Finally, <TextLink href="http://www.computerworld.com/article/3010270/wireless-networking/oklahoma-sooners-use-beacons-sensors-to-find-rooms-on-massive-campus.html?page=2">the press has been responding positively</TextLink> the NavApp and we've even received <TextLink href="https://campustechnology.com/microsites/innovators-microsite/home.aspx">national awards</TextLink> for our work on this project. <strong>Please <TextLink href="/#contact">reach out</TextLink> to find out how to deploy your wayfinding tool.</strong>
       </p>
 
       <OverlayRule />
@@ -1002,13 +1002,13 @@ void loop()
       <SectionHeading>3D Scanning - Experiments &amp; Implications</SectionHeading>
 
       <p style={{ marginBottom: '20px' }}>
-        My current <TextLink href="/professional">professional</TextLink> focus on 3D visualization has led to experimentation with a host of scanning solutions. Basically, the goal is a more accurate digitization - <strong>an interactive snapshot with searchable/browsable depth.</strong>
+        My current <TextLink href="/#professional">professional</TextLink> focus on 3D visualization has led to experimentation with a host of scanning solutions. Basically, the goal is a more accurate digitization - <strong>an interactive snapshot with searchable/browsable depth.</strong>
       </p>
       <p style={{ marginBottom: '20px' }}>
         <strong>The 3D assets below</strong> were generated using a the Sony DSC-RX100 (for capturing high-definition, multi-angle stills of the specimens) and <TextLink href="https://memento.autodesk.com/about">Autodesk Memento</TextLink> (for stitching those stills together into a surface mesh).
       </p>
       <p style={{ marginBottom: '20px' }}>
-        Please reach out, via <TextLink href="/contact">the personal page</TextLink>, <strong>if you have a collection/antique/artifact/specimen</strong> that you would like to see preserved in this robust digital format.
+        Please reach out, via <TextLink href="/#contact">the personal page</TextLink>, <strong>if you have a collection/antique/artifact/specimen</strong> that you would like to see preserved in this robust digital format.
       </p>
 
       <OverlayEmbed src="https://sketchfab.com/models/bbc37de8363e45b5a33175942ffe7368/embed" title="Opuntia (Prickly Pear) Cactus" />
@@ -1026,7 +1026,7 @@ void loop()
       <OverlayEmbed src="https://sketchfab.com/models/15790973e5b44cf9abdda0fcd9982948/embed" title="Sheepherder's Cabin" />
 
       <p style={{ marginBottom: '20px' }}>
-        As described on <TextLink href="/spatial">the spatial page</TextLink>, this Sheepherder's cabin represents a "field scan", whereby off-grid artifacts can be manipulated, analyzed, or otherwise investigated after the fact for details that onsite limitations (like time) simply won't allow for. <strong>Measurements, for example, can be made and recorded later</strong>, after the threat of rattlesnakes has long since passed.
+        As described on <TextLink href="/#spatial">the spatial page</TextLink>, this Sheepherder's cabin represents a "field scan", whereby off-grid artifacts can be manipulated, analyzed, or otherwise investigated after the fact for details that onsite limitations (like time) simply won't allow for. <strong>Measurements, for example, can be made and recorded later</strong>, after the threat of rattlesnakes has long since passed.
       </p>
 
       <ImageWithCaption src="/Professional/image-asset (19).webp" alt="VR measurement of the sheepherder's cabin scan" caption="VR-based analysis of early 20th century sheepherder's ruins. Note the measurement tool." />
