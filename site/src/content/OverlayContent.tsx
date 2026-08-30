@@ -1339,7 +1339,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: React 19, TypeScript, Three.js, React Three Fiber, manifold-3d WASM, Zustand, Vite 6</span></li>
         </ul>
-        <TechnicalPreview src="/Technical/sliceit-architecture.svg" alt="SliceIT main-thread and WebWorker architecture" caption="Architecture: React / R3F on the main thread; manifold-3d WASM in a Comlink worker." tall />
+        <TechnicalPreview src="/Technical/slice-it.png" alt="SliceIT knife tool across four viewports" caption="Knife tool (K): plane cuts from orthographic and perspective views." />
       </CollapsibleSection>
 
       <CollapsibleSection title="AutoTomb — Giza diary-to-3D pipeline and excavation explorer">
@@ -1355,7 +1355,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Apify, pandas, NetworkX, tenacity</span></li>
         </ul>
-        <TechnicalPreview src="/Technical/nieto-architecture.svg" alt="Nieto ETL pipeline from seed profiles to GraphML" caption="Architecture: seed list → concurrent Apify extract → ETL → CSV + GraphML." tall />
+        <TechnicalPreview src="/Technical/nieto-header.jpg" alt="Nieto experimental music network map of Germany, Austria, and Switzerland" caption="Experimental music network: DE · AT · CH." />
       </CollapsibleSection>
 
       <CollapsibleSection title="Longhand — Text corpora as navigable 3D word clouds">
@@ -1379,6 +1379,7 @@ export function TechnicalContent() {
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, pandas, pypdf, Google Cloud Translate</span></li>
         </ul>
+        <TechnicalPreview src="/Technical/shundlikht-export.png" alt="Shund.org search results with CSV export highlighted" caption="Shund.org search export — the UTF-8 CSV the notebook takes as input." />
       </CollapsibleSection>
 
       <CollapsibleSection title="sketchfabRotate — Infinite in-browser model spin">
