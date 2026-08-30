@@ -20,11 +20,13 @@ const CactusFooter = () => (
   </div>
 );
 
-const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { src: string, alt: string, caption?: string, invert?: boolean, pad?: boolean }) => (
+const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false, tall = false }: { src: string, alt: string, caption?: string, invert?: boolean, pad?: boolean, tall?: boolean }) => {
+  const maxH = tall ? '480px' : '280px';
+  return (
   <div style={{ margin: '1.5rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
     <div style={{ 
       width: '100%', 
-      maxHeight: '260px', 
+      maxHeight: maxH, 
       borderRadius: '6px', 
       overflow: 'hidden', 
       background: pad ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)', 
@@ -33,7 +35,7 @@ const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { 
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: pad ? '24px' : '0'
+      padding: pad ? '16px' : '8px'
     }}>
       <img 
         src={src} 
@@ -41,7 +43,7 @@ const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { 
         loading="lazy"
         style={{ 
           maxWidth: '100%', 
-          maxHeight: '260px', 
+          maxHeight: maxH, 
           objectFit: 'contain',
           filter: invert ? 'invert(1) brightness(1.2) contrast(1.1)' : 'none'
         }} 
@@ -49,7 +51,8 @@ const TechnicalPreview = ({ src, alt, caption, invert = false, pad = false }: { 
     </div>
     {caption && <p style={{ fontSize: '0.8rem', color: 'var(--ivory-dim)', marginTop: '8px', fontStyle: 'italic', textAlign: 'center' }}>{caption}</p>}
   </div>
-);
+  );
+};
 
 const ProjectName = ({ href, children }: { href: string, children: React.ReactNode }) => (
   <a
@@ -1320,63 +1323,88 @@ export function TechnicalContent() {
         borderLeft: '2px solid var(--accent)',
         paddingLeft: '16px'
       }}>
-        High-performance full-stack architectures, WebGL graphics, and edge AI applications bridging physical environments and spatial data.
+        Selected software from <ProjectName href="https://github.com/Cook4986">GitHub</ProjectName>: on-device vision, browser-side WebGL, and research pipelines for libraries, archaeology, and the field.
       </p>
 
-      <CollapsibleSection title="Chatpak — Photobook design generator and layout pipeline">
-        <p><ProjectName href="https://chatpak.store/">Chatpak</ProjectName> is an automated publishing platform that transforms photo collections into professional, print-ready hardcover photobooks. Features intelligent AI-powered layout, golden ratio tiling (φ = 1.618), instant preview generation, and premium print quality.</p>
+      <CollapsibleSection title="Rook Sensor — Privacy-first visual-to-emoji yard monitor">
+        <p><ProjectName href="https://github.com/Cook4986/rook-sensor">Rook</ProjectName> watches a yard and sends emoji summaries of what is happening — a delivery, a hawk, a possible coyote, sunrise — without saving or transmitting video. Frames exist only in RAM during inference. It runs 24/7 on a Raspberry Pi 5 with a Sony STARVIS camera and YOLO26n (NCNN), gating YOLO behind OpenCV MOG2 so idle frames cost almost nothing. Scene intelligence suppresses static fixtures, tracks lingerers, enriches with weather, and IDs birds by HSV before a scoring engine routes Slack, email, or a 3 AM digest.</p>
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, OpenCV, YOLO26n / NCNN, Raspberry Pi 5, Slack / email / SMS</span></li>
+        </ul>
+        <TechnicalPreview src="/Technical/rook-architecture.png" alt="Rook four-stage detection pipeline" caption="Architecture: motion gate → YOLO → scene intelligence → scoring and dispatch." tall />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="SliceIT — Browser-based 3D mesh slicer">
+        <p><ProjectName href="https://github.com/Cook4986/SliceIT">SliceIT!</ProjectName> slices 3D meshes with boolean operations entirely in the browser — no installs, no sign-ups, no uploads. Knife, lasso, box, sphere, and free-floating plane tools run CUT, KEEP, or BOTH modes; heavy CSG work lives in a WebWorker via manifold-3d WASM so the UI stays responsive. Live demo: <ProjectName href="https://slice-it-chi.vercel.app">slice-it-chi.vercel.app</ProjectName>.</p>
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: React 19, TypeScript, Three.js, React Three Fiber, manifold-3d WASM, Zustand, Vite 6</span></li>
+        </ul>
+        <TechnicalPreview src="/Technical/sliceit-architecture.svg" alt="SliceIT main-thread and WebWorker architecture" caption="Architecture: React / R3F on the main thread; manifold-3d WASM in a Comlink worker." tall />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="AutoTomb — Giza diary-to-3D pipeline and excavation explorer">
+        <p><ProjectName href="https://github.com/Cook4986/AutoTomb">AutoTomb</ProjectName> takes Digital Giza tomb pages and returns AI-generated 3D models of ancient Egyptian objects mentioned in early 20th-century excavation diaries. It logs prompts, local outputs, and XYZ coordinates for placing those models in XR — a targeted fork of Longhand. The notebook feeds an A-Frame explorer at <ProjectName href="https://autotomb.pages.dev">autotomb.pages.dev</ProjectName>, where artifacts can be browsed by semantic layout, excavation date, and cluster.</p>
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Selenium, OpenAI, UMAP, Meshy API, A-Frame</span></li>
+        </ul>
+        <TechnicalPreview src="/Technical/autotomb-throughput.jpg" alt="AutoTomb throughput: scrape, parse, images, models, A-Frame" caption="Throughput: Digital Giza scrape → ChatGPT parse/images → Meshy models → A-Frame." tall />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Nieto — Instagram network mapper">
+        <p><ProjectName href="https://github.com/Cook4986/nieto">Nieto</ProjectName> is a Python ETL pipeline that extracts public Instagram profile metadata and mention networks via Apify, then emits nodes, posts, weighted edges, and a GraphML graph for Gephi or Cytoscape. It was built to map the experimental music circuit across Germany, Austria, and Switzerland; swap the seed list of handles to map any community.</p>
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Apify, pandas, NetworkX, tenacity</span></li>
+        </ul>
+        <TechnicalPreview src="/Technical/nieto-architecture.svg" alt="Nieto ETL pipeline from seed profiles to GraphML" caption="Architecture: seed list → concurrent Apify extract → ETL → CSV + GraphML." tall />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Longhand — Text corpora as navigable 3D word clouds">
+        <p><ProjectName href="https://github.com/Cook4986/Longhand">Longhand</ProjectName> is a word-cloud generator whose “words” are 3D models surrounding the user. A bag-of-words is parsed with NLP; the most frequent tokens are resolved through the Sketchfab API and placed in Blender by frequency, then exported as a GLB for Mozilla Hubs and other multi-user environments. It exists so humanities researchers can glimpse an unwieldy corpus — including in VR — before committing to closer analysis.</p>
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, SpaCy, HandPrint, Sketchfab API, Blender / bpy, Mozilla Hubs</span></li>
+        </ul>
+        <TechnicalPreview src="/Technical/longhand-throughput.png" alt="Longhand processing pipeline throughput diagram" caption="Throughput: bag-of-words → NLP + Sketchfab lookup → Blender → GLB for Hubs." tall />
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Chatpak — Photobook design generator">
+        <p><ProjectName href="https://chatpak.store/">Chatpak</ProjectName> is an automated publishing platform that turns photo collections into print-ready hardcover photobooks. Layouts use golden-ratio tiling (φ = 1.618), with instant preview generation and premium print output.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
           <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 14, Supabase (PostgreSQL), Cloudflare R2, Sharp, MediaPipe WASM, PDFKit</span></li>
         </ul>
-        <TechnicalPreview src="/Professional/chatpak-mockup.png" alt="Chatpak Photobook Mockup" caption="AI-powered photobook design layouts." />
+        <TechnicalPreview src="/Professional/chatpak-mockup.png" alt="Chatpak photobook mockup" caption="AI-powered photobook design layouts." />
       </CollapsibleSection>
 
-      <CollapsibleSection title="Rook Sensor — YOLO-based edge AI object detection">
-        <p><ProjectName href="https://github.com/Cook4986/rook-sensor">Rook Sensor</ProjectName> is an edge-computing surveillance and intelligence gathering pipeline designed to run on constrained hardware (Raspberry Pi). It serves as an SMS-based street monitoring device utilizing custom YOLO models for real-time object detection with low thermal overhead.</p>
+      <CollapsibleSection title="Shundlikht — Yiddish pulp transcription and translation">
+        <p><ProjectName href="https://github.com/Cook4986/Shundlikht">Shundlikht</ProjectName> transcribes, optionally translates, and collates the text embedded in PDF page images for each installment of a work in the <ProjectName href="https://shund.org/">Shund.org</ProjectName> database. Source images are hosted by the National Library of Israel. A Jupyter notebook takes an exported search CSV and a local working directory, then runs the batch.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
-          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, OpenCV, NCNN, Bash, Edge AI, YOLO</span></li>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, pandas, pypdf, Google Cloud Translate</span></li>
         </ul>
-        <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/rook-sensor/main/assets/architecture.png" alt="Rook Sensor Pipeline Architecture" caption="Rook object detection pipeline architecture." invert={true} pad={true} />
       </CollapsibleSection>
 
-      <CollapsibleSection title="Scribble — Archival document OCR transcription platform">
-        <p><ProjectName href="https://github.com/Cook4986/scribble">Scribble</ProjectName> is an archival document transcription tool for non-technical researchers. It empowers users to transcribe and natively translate image-based document collections at scale. Researchers upload batches of archival photographs (JPEG, PNG, HEIC, PDF) and receive structured transcription packages via email.</p>
+      <CollapsibleSection title="sketchfabRotate — Infinite in-browser model spin">
+        <p><ProjectName href="https://github.com/Cook4986/sketchfabRotate">sketchfabRotate</ProjectName> is a single HTML page that rotates a Sketchfab model around the vertical axis indefinitely. Open the file, customize the header and the embed&apos;s <code>autospin</code>, then enter fullscreen.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
-          <li><span style={{ color: 'var(--ivory)' }}>Stack: Next.js 15, FastAPI, Supabase, LLM APIs</span></li>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: HTML, Sketchfab Viewer API</span></li>
         </ul>
-        <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/scribble/main/web/public/logo.svg" alt="Scribble Logo" caption="Scribble archival document transcription platform." invert={true} pad={true} />
+        <TechnicalPreview src="/Technical/sketchfab-rotate.png" alt="sketchfabRotate column model spinning in the browser" caption="Infinite autospin of a Sketchfab column in the browser." />
       </CollapsibleSection>
 
-      <CollapsibleSection title="SliceIT — Browser-based WebGL mesh processing WASM slicer">
-        <p><ProjectName href="https://slice-it-chi.vercel.app">SliceIT</ProjectName> is a browser-based tool for slicing 3D meshes using boolean operations. Drop a model, pick a tool, press one button — done. Completely client-side with no installs or sign-ups required.</p>
+      <CollapsibleSection title="BTA schoolFinder — Historic school geocoding">
+        <p><ProjectName href="https://github.com/Cook4986/BTA_schoolFinder">BTA_schoolFinder</ProjectName> automates search for the <ProjectName href="https://curiosity.lib.harvard.edu/black-teacher-archive">Black Teacher Archive</ProjectName>. Given historic school-name tables, it returns latitude/longitude, a GeoNames or Historical Marker Database placename, and a GeoNames feature code.</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
-          <li><span style={{ color: 'var(--ivory)' }}>Stack: React 18, Three.js, Manifold-3D</span></li>
+          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, pandas, Selenium, Requests</span></li>
         </ul>
-        <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/SliceIT/main/Slice%20It.png" alt="Slice It Interface" caption="Browser-based mesh slicing." />
       </CollapsibleSection>
 
-      <CollapsibleSection title="Digital Giza Twin — Level-of-Detail 3D spatial index map">
-        <p><ProjectName href="https://autotomb.pages.dev">Digital Giza Twin</ProjectName> is an interactive 3D Spatial Index for navigating the Digital Giza Corpus. It features a Level of Detail (LOD) system where landmarks scale by zoom, a click-to-explore tomb info panel, and dynamically scraped inline corpus media (photographs, maps, diaries).</p>
+      <CollapsibleSection title="Earlier notebooks — OCR, HTR, and library workflows">
+        <p>Older public notebooks from library R&amp;D, kept as templates rather than products:</p>
         <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
-          <li><span style={{ color: 'var(--ivory)' }}>Stack: React, Three.js, React Three Fiber</span></li>
+          <li><ProjectName href="https://github.com/Cook4986/SAEF_OCR">SAEF_OCR</ProjectName> — handwriting transcription throughput for Houghton&apos;s SAEF collection, via HandPrint.</li>
+          <li><ProjectName href="https://github.com/Cook4986/Sensemaking">Sensemaking</ProjectName> — template workflow for OCR/HTR, querying, and NLP.</li>
+          <li><ProjectName href="https://github.com/Cook4986/Bow_wow">Bow_wow</ProjectName> / <ProjectName href="https://github.com/Cook4986/Fuzzy-BoW">Fuzzy-BoW</ProjectName> — bag-of-words generation and fuzzy search over handwritten transcriptions.</li>
+          <li><ProjectName href="https://github.com/Cook4986/InnodataQC">InnodataQC</ProjectName> — compare image IDs across IIIF manifests and METS metadata.</li>
+          <li><ProjectName href="https://github.com/Cook4986/Scrapple">Scrapple</ProjectName> — scrape a staff directory for office locations and append a CSV.</li>
         </ul>
-        <TechnicalPreview src="/Professional/throughputAFrame_Cook2025.jpg" alt="Digital Giza Twin Interface" caption="Digital Giza Twin WebGL visualization pipeline." />
-      </CollapsibleSection>
-
-      <CollapsibleSection title="AutoTomb — Unity diary-to-3D pipelines and XR coordinate logger">
-        <p><ProjectName href="https://github.com/Cook4986/AutoTomb">AutoTomb</ProjectName> is a pipeline that takes Digital Giza tomb pages and returns a set of AI-generated 3D models corresponding to ancient Egyptian object references mentioned in early 20th-century excavation diaries. It logs prompts, local outputs, and X,Y,Z coordinates for placing models in downstream XR environments.</p>
-        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
-          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Selenium, OpenAI API, UMAP, Meshy API, AFrame</span></li>
-        </ul>
-        <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/AutoTomb/main/autotombScreencap.png" alt="AutoTomb Unity Screencap" caption="AutoTomb generated models visualized in Unity." />
-      </CollapsibleSection>
-
-      <CollapsibleSection title="Nieto — Concurrent data scrapers of regional music event networks">
-        <p><ProjectName href="https://github.com/Cook4986/nieto">Nieto</ProjectName> is an automated information gathering pipeline focused on the experimental music scene across Germany, Austria, and Switzerland. It orchestrates concurrent data extraction and network mapping.</p>
-        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: 'var(--ivory-dim)', marginBottom: '20px' }}>
-          <li><span style={{ color: 'var(--ivory)' }}>Stack: Python, Apify, ETL pipelines</span></li>
-        </ul>
-        <TechnicalPreview src="https://raw.githubusercontent.com/Cook4986/nieto/main/header.png" alt="Nieto Network" caption="Experimental Music Network." />
       </CollapsibleSection>
 
       <CactusFooter />

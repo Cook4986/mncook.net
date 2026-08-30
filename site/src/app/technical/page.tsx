@@ -6,7 +6,7 @@ import { TechnicalContent } from '@/content/OverlayContent';
 export const metadata: Metadata = {
   title: 'Technical — matt cook',
   description:
-    'High-performance full-stack architectures, WebGL graphics, and edge-AI applications bridging physical environments and spatial data.',
+    'Selected software from GitHub: on-device vision, browser-side WebGL, and research pipelines for libraries, archaeology, and the field.',
   alternates: { canonical: '/technical' },
 };
 
@@ -20,7 +20,7 @@ export default function TechnicalPage() {
           <div className="section-label">Engineering</div>
           <h1 className="section-title">Technical</h1>
           <p className="section-desc" style={{ color: 'var(--ivory-dim)' }}>
-            Selected software: WebGL graphics, edge AI, and full-stack pipelines.
+            Selected software from GitHub: edge AI, WebGL tools, and research pipelines.
           </p>
         </div>
 

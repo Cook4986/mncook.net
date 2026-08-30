@@ -166,10 +166,6 @@ export default function AlchemicalLoader() {
             stroke="#4ab084" 
             strokeWidth="2.2" 
           />
-
-          {/* Eyelid Eyelashes / Accent ticks */}
-          <line x1="120" y1="36" x2="120" y2="28" stroke="#4ab084" strokeWidth="1.5" opacity="0.6" />
-          <line x1="120" y1="204" x2="120" y2="212" stroke="#4ab084" strokeWidth="1.5" opacity="0.6" />
         </svg>
       </div>
 
